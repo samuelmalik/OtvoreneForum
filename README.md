@@ -1,6 +1,6 @@
 <h1>Angular with ASP.NET Core</h1>
 
-Projekt pozostáva z 2 častí. Zložka angular-project reprezentuje frontend (FE). Zložka AspNetWebAPI reprezentuje backend (BE).
+Projekt pozostáva z 2 oddelených častí. Zložka angular-project reprezentuje frontend (FE). Zložka AspNetWebAPI reprezentuje backend (BE).
 Projekt má slúžiť ako štartovací bod pre ďalší vývoj. Obsahuje funkčnú registráciu a login s použitím JSON Web Token (JWT).
 <br><br>
 Všetky súbory môžu byť upravované podľa potreby.

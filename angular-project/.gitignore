@@ -42,5 +42,6 @@ testem.log
 Thumbs.db
 
 .firebase/
+.firebaserc
 firebase-debug.log*
 firebase-debug.*.log*

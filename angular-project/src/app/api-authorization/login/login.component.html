@@ -12,6 +12,10 @@
       <input matInput [type]="'password'" formControlName="password">
     </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit">Login</button>
+    @if(showLoader == false){
+      <button mat-raised-button color="primary" type="submit">Login</button>
+    } @else {
+      <mat-spinner [diameter]="50"></mat-spinner>
+    }
   </form>
 }

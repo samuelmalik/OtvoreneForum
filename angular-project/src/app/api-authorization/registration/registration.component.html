@@ -17,6 +17,10 @@
       <input matInput [type]="'password'" formControlName="confirmPassword">
     </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit">Register</button>
+    @if(showLoader == false){
+      <button mat-raised-button color="primary" type="submit">Login</button>
+    } @else {
+      <mat-spinner [diameter]="50"></mat-spinner>
+    }
   </form>
 }

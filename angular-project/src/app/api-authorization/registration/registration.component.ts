@@ -8,6 +8,7 @@ import { MatButton, MatIconButton } from '@angular/material/button';
 import { HttpErrorResponse } from '@angular/common/http';
 import { equalValuesValidator, passwordStrengthValidator } from '../password-validators';
 import { Router } from '@angular/router';
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-registration',
@@ -19,7 +20,8 @@ import { Router } from '@angular/router';
     MatInput,
     MatIcon,
     MatIconButton,
-    MatButton
+    MatButton,
+    MatProgressSpinner
   ],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.css'
@@ -27,6 +29,7 @@ import { Router } from '@angular/router';
 export class RegistrationComponent implements OnInit {
   authService = inject(AuthenticationService);
   private router = inject(Router);
+  showLoader :boolean = false;
 
   registerForm: FormGroup;
 
@@ -40,9 +43,11 @@ export class RegistrationComponent implements OnInit {
 
   register() {
     if(this.registerForm.valid) {
+      this.showLoader = true;
       this.authService.registerUser({...this.registerForm.value}).subscribe({
         next: () => {
           console.log('Registration successful!');
+          this.showLoader = false;
           this.router.navigate(['/']);
         },
         error: (err: HttpErrorResponse) => console.log('Oops, something went wrong!', err)

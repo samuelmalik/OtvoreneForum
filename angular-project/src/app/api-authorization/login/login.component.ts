@@ -6,6 +6,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AuthenticationService } from '../authentication.service';
 import { AsyncPipe } from '@angular/common';
 import { Router } from '@angular/router';
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ import { Router } from '@angular/router';
     MatInput,
     MatLabel,
     ReactiveFormsModule,
-    AsyncPipe
+    AsyncPipe,
+    MatProgressSpinner
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -24,6 +26,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   authService = inject(AuthenticationService);
   private router = inject(Router);
+  showLoader :boolean = false
 
   loginForm: FormGroup;
 
@@ -36,9 +39,11 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (this.loginForm.valid) {
+      this.showLoader = true;
       this.authService.loginUser({...this.loginForm.value}).subscribe({
         next: (response) => {
           this.authService.storeToken(response.token);
+          this.showLoader = false;
           this.router.navigate(['/']);
         },
         error: (err) => console.log("Oops, something went wrong", err)

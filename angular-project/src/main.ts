@@ -7,6 +7,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { LoginComponent } from './app/api-authorization/login/login.component';
 import { DashboardComponent } from './app/dashboard/dashboard.component';
+import {ForumPageComponent} from "./app/forum-page/forum-page.component";
 import { JwtModule } from '@auth0/angular-jwt';
 import { errorHandlerInterceptor } from './app/api-authorization/error-handler.interceptor';
 import { authGuard } from './app/api-authorization/auth.guard';
@@ -37,9 +38,10 @@ bootstrapApplication(AppComponent, {
       provideAnimations(),
       provideHttpClient(withInterceptors([errorHandlerInterceptor, jwtInterceptor])),
       provideRouter([
-        { path: '', component: DashboardComponent, canActivate: [authGuard]},
+        { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard]},
         { path: 'login', component: LoginComponent},
-        { path: 'register', component: RegistrationComponent}
+        { path: 'register', component: RegistrationComponent},
+        { path: 'forum', component: ForumPageComponent,  canActivate: [authGuard]},
       ])
     ]
 })

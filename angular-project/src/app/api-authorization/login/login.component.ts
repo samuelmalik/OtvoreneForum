@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
         next: (response) => {
           this.authService.storeToken(response.token);
           this.showLoader = false;
-          this.router.navigate(['/']);
+          this.router.navigate(['/forum']);
         },
         error: (err) => console.log("Oops, something went wrong", err)
       });

@@ -1,6 +1,13 @@
 mat-toolbar {
-  button {
+  .right-button {
     margin-left: auto;
+  }
+
+  .title{
+    margin-right: 50px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-weight: 500;
+    font-size: 24px;
   }
 }
 

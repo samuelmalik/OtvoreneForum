@@ -2,8 +2,9 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatButton } from '@angular/material/button';
+import {MatGridListModule} from '@angular/material/grid-list';
 import { AuthenticationService } from '../api-authorization/authentication.service';
-import { NgIf } from '@angular/common';
+import {NgIf, NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-main-nav',
@@ -12,7 +13,9 @@ import { NgIf } from '@angular/common';
     RouterLink,
     MatToolbar,
     MatButton,
-    NgIf
+    MatGridListModule,
+    NgIf,
+    NgOptimizedImage
   ],
   templateUrl: './main-nav.component.html',
   styleUrl: './main-nav.component.css'

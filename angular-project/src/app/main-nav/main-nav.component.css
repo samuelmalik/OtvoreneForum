@@ -1,16 +1,27 @@
 mat-toolbar {
-  .right-button {
-    margin-left: auto;
-  }
-
-  .title{
-    margin-right: 50px;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    font-weight: 500;
-    font-size: 24px;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.spacer {
-  flex: 1 1 auto;
+
+
+.logo {
+  width: 8%;
+  height: auto;
+}
+
+.logo:hover {
+  cursor: pointer;
+}
+
+.left {
+  width: 30%;
+}
+.right {
+  width: 30%;
+  align-items: end;
+  display: flex;
+  justify-content: end;
+
 }

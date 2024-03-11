@@ -1,12 +1,18 @@
 <mat-toolbar>
-  <span class="title">OtvorenéFórum</span>
-  <button mat-button [routerLink]="['/forum']">Forum Page</button>
-  <button mat-button [routerLink]="['/dashboard']">Dashboard</button>
-  <span class="spacer"></span>
+  <div class="left">
+    <button mat-button [routerLink]="['/dashboard']">Dashboard</button>
+  </div>
+
+  <img class="logo" [routerLink]="['/forum']"  src="favicon.ico" alt="Favicon" />
+<div class="right">
   @if (authService.authenticated()) {
     <button class="right-button" mat-button (click)="logout()">Logout</button>
+    <button class="right-button" mat-button >Nový príspevok</button>
+    <button class="right-button" mat-button >Nastavenia</button>
+    <button class="right-button" mat-button >Profil</button>
   } @else {
     <button class="right-button" mat-button [routerLink]="['/login']">Login</button>
     <button class="right-button" mat-button [routerLink]="['/register']">Registration</button>
   }
+</div>
 </mat-toolbar>

@@ -1,0 +1,52 @@
+.container {
+  width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  width: 500px;
+  padding: 20px;
+  border: 1px solid #ddd;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input, textarea {
+  width: 96%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+textarea {
+  height: 100px;
+}
+
+button {
+  width: 100px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #000;
+  color: #fff;
+  cursor: pointer;
+}

@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using AspNetCoreAPI.Data;
+using System.Security.Claims;
+using AspNetCoreAPI.Authentication.dto;
 
 namespace AspNetCoreAPI.Controllers
 {
@@ -30,6 +32,28 @@ namespace AspNetCoreAPI.Controllers
             return users;
         }
 
+        [HttpPost("newPost")]
+        public void CreatePost([FromBody] string title, [FromBody] string description)
+        {
+            Post newPost = new Post()
+            {
+                UserId = GetCurrentUser().Id,
+                Title = title,
+                Description = description,
+                Date = DateTime.Now,
+            };
+
+            _context.Add(newPost);
+            _context.SaveChanges();
+                        
+        }
+
+        protected User? GetCurrentUser()
+        {
+            var userName = User.FindFirstValue(ClaimTypes.Name);
+
+            return _context.Users.SingleOrDefault(user => user.UserName == userName);
+        }
 
 
     }

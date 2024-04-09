@@ -24,6 +24,6 @@ export class CreatePostComponent {
 
   }
   submitPost() {
-    console.log(this.CreatePostForm.value);
+    console.log(this.CreatePostForm.value.title);
   }
 }

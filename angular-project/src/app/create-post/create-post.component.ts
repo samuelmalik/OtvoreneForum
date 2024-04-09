@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, inject, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
+import {HttpParams} from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-create-post',
@@ -14,8 +16,10 @@ import {MatCardModule} from '@angular/material/card';
 })
 export class CreatePostComponent {
   public CreatePostForm: FormGroup;
+  private httpClient = inject(HttpClient);
 
-  constructor(private formBuilder: FormBuilder) {
+
+  constructor(private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string) {
     this.CreatePostForm = this.formBuilder.group({
       title: ['', Validators.required, Validators.maxLength(50)],
       description: ['', Validators.required, Validators.maxLength(500)],
@@ -24,6 +28,10 @@ export class CreatePostComponent {
 
   }
   submitPost() {
-    console.log(this.CreatePostForm.value.title);
+    let parameters = new HttpParams();
+    parameters = parameters.append("title", this.CreatePostForm.value.title);
+    parameters = parameters.append("description", this.CreatePostForm.value.description);
+
+    this.httpClient.post(this.baseUrl, {params: parameters}) .subscribe();
   }
 }

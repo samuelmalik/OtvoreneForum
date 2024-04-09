@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
       this.showLoader = true;
       this.authService.loginUser({...this.loginForm.value}).subscribe({
         next: (response) => {
-          this.authService.storeToken(response.token);
+          this.authService.storeUserCredentials(response.token, response.username);
           this.showLoader = false;
           this.router.navigate(['/forum']);
         },

@@ -51,7 +51,7 @@ namespace AspNetCoreAPI.Registration
             var tokenOptions = _jwtHandler.GenerateTokenOptions(signingCredentials, claims);
             var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
-            return Ok(new UserLoginResponseDto { IsAuthSuccessful = true, Token = token });
+            return Ok(new UserLoginResponseDto { IsAuthSuccessful = true, Token = token, Username = user.UserName });
         }
     }
 }

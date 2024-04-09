@@ -25,9 +25,8 @@ namespace AspNetCoreAPI.Controllers
             var users = from u in _context.Users
                         select new UserInfoDto()
                         {
-                            Username = u.UserName
+                            Username = u.UserName,
                         };
-
             return users;
         }
 

@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, inject, Inject} from '@angular/core';
+import {HttpParams} from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
+import {FormBuilder, Validators} from "@angular/forms";
+import {UserRegistration} from '../api-authorization/user-registration';
+import {AuthenticationService} from "../api-authorization/authentication.service";
 
 @Component({
   selector: 'app-forum-page',
@@ -8,5 +13,23 @@ import { Component } from '@angular/core';
   styleUrl: './forum-page.component.css'
 })
 export class ForumPageComponent {
+  private httpClient = inject(HttpClient);
+  private authServie :AuthenticationService = inject(AuthenticationService);
+  username :string;
+  id :string;
+  constructor( @Inject('BASE_URL') private baseUrl: string) {
+    this.httpClient.get(this.baseUrl + '/forum/allUsers').subscribe();
+
+    this.username = this.authServie.getCurrentUsername();
+    this.id = this.authServie.getCurrentId();
+    console.log(this.username);
+    console.log(this.id);
+
+  }
+
 
 }
+
+
+
+

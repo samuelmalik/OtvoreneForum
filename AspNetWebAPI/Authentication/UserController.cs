@@ -1,4 +1,5 @@
-﻿using AspNetCoreAPI.Models;
+﻿using AspNetCoreAPI.Data;
+using AspNetCoreAPI.Models;
 using AspNetCoreAPI.Registration.dto;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
@@ -13,11 +14,13 @@ namespace AspNetCoreAPI.Registration
     {
         private readonly UserManager<User> _userManager;
         private readonly JwtHandler _jwtHandler;
+        private readonly ApplicationDbContext _context;
 
-        public UserController(UserManager<User> userManager, JwtHandler jwtHandler)
+        public UserController(UserManager<User> userManager, JwtHandler jwtHandler, ApplicationDbContext context)
         {
             _userManager = userManager;
             _jwtHandler = jwtHandler;
+            _context = context;
         }
 
         [HttpPost("register")]
@@ -51,7 +54,16 @@ namespace AspNetCoreAPI.Registration
             var tokenOptions = _jwtHandler.GenerateTokenOptions(signingCredentials, claims);
             var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
-            return Ok(new UserLoginResponseDto { IsAuthSuccessful = true, Token = token, Username = user.UserName });
+            return Ok(new UserLoginResponseDto { IsAuthSuccessful = true, Token = token, Username = user.UserName, Id = user.Id });
+        }
+
+        [HttpGet("getIdByUsername")]
+        public string GetIdByUsername(string username)
+        {
+            string userId = _context.Users
+                    .Where(u => u.UserName == username)
+                    .FirstOrDefault().Id;
+            return userId;
         }
     }
 }

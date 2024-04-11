@@ -1,5 +1,5 @@
 import { inject, Inject, Injectable, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RegistrationResponse, UserLogin, UserLoginResponse, UserRegistration } from './user-registration';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -10,6 +10,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class AuthenticationService {
   private httpClient = inject(HttpClient);
   private jwtHelper = inject(JwtHelperService);
+
+
 
   authenticated = signal(this.isAuthenticated());
 
@@ -28,14 +30,19 @@ export class AuthenticationService {
     this.authenticated.set(false);
   }
 
-  storeUserCredentials(token: string, username: string) {
+  storeUserCredentials(token: string, username: string, id: string) {
     localStorage.setItem('token', token);
     localStorage.setItem('username', username);
+    localStorage.setItem('id', id)
     this.authenticated.set(true);
   }
 
   getCurrentUsername(): string {
     return this.isAuthenticated() ? localStorage.getItem('username') : null;
+  }
+
+  getCurrentId(): string {
+    return this.isAuthenticated() ? localStorage.getItem('id') : null;
   }
 
   private isAuthenticated() {

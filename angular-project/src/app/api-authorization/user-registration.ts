@@ -19,4 +19,5 @@ export interface UserLoginResponse {
   errorMessage: string;
   token: string;
   username: string;
+  id: string;
 }

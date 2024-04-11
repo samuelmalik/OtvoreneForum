@@ -32,6 +32,6 @@ export class CreatePostComponent {
     parameters = parameters.append("title", this.CreatePostForm.value.title);
     parameters = parameters.append("description", this.CreatePostForm.value.description);
 
-    this.httpClient.post(this.baseUrl, {params: parameters}) .subscribe();
+    this.httpClient.post(this.baseUrl + '/forum/newPost', {params: parameters}).subscribe();
   }
 }

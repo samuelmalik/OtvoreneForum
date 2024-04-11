@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
   authService = inject(AuthenticationService);
   private router = inject(Router);
   showLoader :boolean = false
+  userId :string;
 
   loginForm: FormGroup;
 
@@ -40,9 +41,11 @@ export class LoginComponent implements OnInit {
   login() {
     if (this.loginForm.valid) {
       this.showLoader = true;
+
+
       this.authService.loginUser({...this.loginForm.value}).subscribe({
         next: (response) => {
-          this.authService.storeUserCredentials(response.token, response.username);
+          this.authService.storeUserCredentials(response.token, response.username, response.id);
           this.showLoader = false;
           this.router.navigate(['/forum']);
         },

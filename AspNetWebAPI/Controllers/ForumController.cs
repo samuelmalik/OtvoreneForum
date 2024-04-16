@@ -55,16 +55,16 @@ namespace AspNetCoreAPI.Controllers
         [HttpGet("getAllPosts")]
         public IEnumerable <PostInfoDto> GetAllPosts()
         {
-            var allPosts = _context.Post
-                .Include(c => c.User).ToList();
+            //var allPosts = _context.Post
+            //    .Include(c => c.User).ToList();
 
-            var posts = from p in allPosts
+            var posts = from p in _context.Post.Include(p => p.User)
                         select new PostInfoDto()
                         {
                             Author = p.User.UserName,
                             Title = p.Title,
                             Description = p.Description,
-                            Date = p.Date.ToString("dd MMMM yyyy"),
+                            Date = p.Date.ToString("dd MMMM yyyy HH:mm"),
                         };
             return posts;
             

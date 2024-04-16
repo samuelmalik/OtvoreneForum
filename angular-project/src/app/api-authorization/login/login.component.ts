@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   authService = inject(AuthenticationService);
   private router = inject(Router);
   showLoader :boolean = false
-  userId :string;
+  errorMessage :boolean = false;
 
   loginForm: FormGroup;
 
@@ -41,13 +41,19 @@ export class LoginComponent implements OnInit {
   login() {
     if (this.loginForm.valid) {
       this.showLoader = true;
-
+      this.errorMessage = false;
 
       this.authService.loginUser({...this.loginForm.value}).subscribe({
         next: (response) => {
-          this.authService.storeUserCredentials(response.token, response.username, response.id);
-          this.showLoader = false;
-          this.router.navigate(['/forum']);
+          if(response.isAuthSuccessful){
+            this.authService.storeUserCredentials(response.token, response.username, response.id);
+            this.showLoader = false;
+            this.router.navigate(['/forum']);
+          } else {
+            this.showLoader = false;
+            this.errorMessage = true;
+          }
+
         },
         error: (err) => console.log("Oops, something went wrong", err)
       });

@@ -5,7 +5,7 @@ import { provideRouter } from '@angular/router';
 import { RegistrationComponent } from './app/api-authorization/registration/registration.component';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { LoginComponent } from './app/api-authorization/login/login.component';
+import {LoginComponent} from "./app/api-authorization/login/login.component";
 import { DashboardComponent } from './app/dashboard/dashboard.component';
 import {ForumPageComponent} from "./app/forum-page/forum-page.component";
 import { CreatePostComponent} from "./app/create-post/create-post.component";

@@ -7,6 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using AspNetCoreAPI.Data;
 using System.Security.Claims;
 using AspNetCoreAPI.dto;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreAPI.Controllers
 {
@@ -45,16 +46,31 @@ namespace AspNetCoreAPI.Controllers
                 Date = DateTime.Now,
             };
 
-            return new CreatePostDto { Description = newPost.Description, Title = newPost.Title };
+            _context.Add(newPost);
+            _context.SaveChanges();
 
-         _context.Add(newPost);
-         _context.SaveChanges();
-
-            
-                        
+            return new CreatePostDto { Description = newPost.Description, Title = newPost.Title };                 
         }
 
-        
+        [HttpGet("getAllPosts")]
+        public IEnumerable <PostInfoDto> GetAllPosts()
+        {
+            var allPosts = _context.Post
+                .Include(c => c.User).ToList();
+
+            var posts = from p in allPosts
+                        select new PostInfoDto()
+                        {
+                            Author = p.User.UserName,
+                            Title = p.Title,
+                            Description = p.Description,
+                            Date = p.Date.ToString("dd MMMM yyyy"),
+                        };
+            return posts;
+            
+        }
+
+
 
 
     }

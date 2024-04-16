@@ -56,14 +56,5 @@ namespace AspNetCoreAPI.Registration
 
             return Ok(new UserLoginResponseDto { IsAuthSuccessful = true, Token = token, Username = user.UserName, Id = user.Id });
         }
-
-        [HttpGet("getIdByUsername")]
-        public string GetIdByUsername(string username)
-        {
-            string userId = _context.Users
-                    .Where(u => u.UserName == username)
-                    .FirstOrDefault().Id;
-            return userId;
-        }
     }
 }

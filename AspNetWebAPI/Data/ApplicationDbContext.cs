@@ -9,7 +9,9 @@ namespace AspNetCoreAPI.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
-        {
+        { 
         }
+
+        public DbSet<Post> Post { get; set; }
     }
 }

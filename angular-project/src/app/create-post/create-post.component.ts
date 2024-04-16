@@ -4,6 +4,8 @@ import {MatCardModule} from '@angular/material/card';
 import {HttpParams} from "@angular/common/http";
 import { HttpClient } from '@angular/common/http';
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {AuthenticationService} from "../api-authorization/authentication.service";
+import {DestroyRef} from "@angular/core";
 
 @Component({
   selector: 'app-create-post',
@@ -18,6 +20,8 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 export class CreatePostComponent {
   public CreatePostForm: FormGroup;
   private httpClient = inject(HttpClient);
+  authService = inject(AuthenticationService);
+  destroyRef = inject(DestroyRef);
 
 
   constructor(private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string) {
@@ -27,16 +31,19 @@ export class CreatePostComponent {
       code: ['']
     });
 
+
+
   }
   submitPost() {
     if (this.CreatePostForm.valid) {
       const postData = {
         title: this.CreatePostForm.value.title,
         description: this.CreatePostForm.value.description,
-        code: this.CreatePostForm.value.code
+        code: this.CreatePostForm.value.code,
+        authorId: this.authService.getCurrentId()
       };
-
-      this.httpClient.post(`${this.baseUrl}/forum/newPost`, postData);
+      console.log(postData);
+      this.httpClient.post(`${this.baseUrl}/forum/newPost`, postData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
     } else {
       console.error('Form is invalid. Cannot submit.');
     }

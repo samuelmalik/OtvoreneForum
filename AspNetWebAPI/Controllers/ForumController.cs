@@ -40,7 +40,7 @@ namespace AspNetCoreAPI.Controllers
         {
             Post newPost = new Post()
             {
-                UserId = "3b89e981-582f-4125-86f8-9a9820512b80",
+                UserId = createPost.AuthorId,
                 Title = createPost.Title,
                 Description = createPost.Description,
                 Date = DateTime.Now,
@@ -55,9 +55,6 @@ namespace AspNetCoreAPI.Controllers
         [HttpGet("getAllPosts")]
         public IEnumerable <PostInfoDto> GetAllPosts()
         {
-            //var allPosts = _context.Post
-            //    .Include(c => c.User).ToList();
-
             var posts = from p in _context.Post.Include(p => p.User)
                         select new PostInfoDto()
                         {
@@ -66,8 +63,7 @@ namespace AspNetCoreAPI.Controllers
                             Description = p.Description,
                             Date = p.Date.ToString("dd MMMM yyyy HH:mm"),
                         };
-            return posts;
-            
+            return posts;   
         }
 
 

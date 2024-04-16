@@ -1,4 +1,4 @@
-﻿namespace AspNetCoreAPI.Authentication.dto
+﻿namespace AspNetCoreAPI.dto
 {
     public class CreatePostDto
     {

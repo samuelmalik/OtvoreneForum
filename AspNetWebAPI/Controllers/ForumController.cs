@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using AspNetCoreAPI.Data;
 using System.Security.Claims;
-using AspNetCoreAPI.Authentication.dto;
+using AspNetCoreAPI.dto;
 
 namespace AspNetCoreAPI.Controllers
 {
@@ -35,20 +35,20 @@ namespace AspNetCoreAPI.Controllers
 
 
         [HttpPost("newPost")]
-        public CreatePostDto CreatePost( string title, string description)
+        public CreatePostDto CreatePost([FromBody] CreatePostDto createPost )
         {
             Post newPost = new Post()
             {
                 UserId = "3b89e981-582f-4125-86f8-9a9820512b80",
-                Title = title,
-                Description = description,
+                Title = createPost.Title,
+                Description = createPost.Description,
                 Date = DateTime.Now,
             };
 
             return new CreatePostDto { Description = newPost.Description, Title = newPost.Title };
 
-           // _context.Add(newPost);
-           // _context.SaveChanges();
+         _context.Add(newPost);
+         _context.SaveChanges();
 
             
                         

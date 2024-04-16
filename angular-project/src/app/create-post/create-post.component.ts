@@ -21,17 +21,24 @@ export class CreatePostComponent {
 
   constructor(private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string) {
     this.CreatePostForm = this.formBuilder.group({
-      title: ['', Validators.required, Validators.maxLength(50)],
-      description: ['', Validators.required, Validators.maxLength(500)],
-      code : ['']
+      title: ['', [Validators.required, Validators.maxLength(50)]],
+      description: ['', [Validators.required, Validators.maxLength(500)]],
+      code: ['']
     });
 
   }
   submitPost() {
-    let parameters = new HttpParams();
-    parameters = parameters.append("title", this.CreatePostForm.value.title);
-    parameters = parameters.append("description", this.CreatePostForm.value.description);
+    if (this.CreatePostForm.valid) {
+      const postData = {
+        title: this.CreatePostForm.value.title,
+        description: this.CreatePostForm.value.description,
+        code: this.CreatePostForm.value.code
+      };
 
-    this.httpClient.post(this.baseUrl + '/forum/newPost', {params: parameters}).subscribe();
+      this.httpClient.post(`${this.baseUrl}/forum/newPost`, postData).subscribe();
+    } else {
+      console.error('Form is invalid. Cannot submit.');
+    }
+
   }
 }

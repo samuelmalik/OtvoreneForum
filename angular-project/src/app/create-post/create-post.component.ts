@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {MatCardModule} from '@angular/material/card';
 import {HttpParams} from "@angular/common/http";
 import { HttpClient } from '@angular/common/http';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-create-post',
@@ -35,7 +36,7 @@ export class CreatePostComponent {
         code: this.CreatePostForm.value.code
       };
 
-      this.httpClient.post(`${this.baseUrl}/forum/newPost`, postData).subscribe();
+      this.httpClient.post(`${this.baseUrl}/forum/newPost`, postData);
     } else {
       console.error('Form is invalid. Cannot submit.');
     }

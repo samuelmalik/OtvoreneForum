@@ -29,6 +29,9 @@ mat-toolbar{
   grid-column-end: 2;
   grid-row-start: 1;
   grid-row-end: 2;
+  display: flex;
+  justify-content: left;
+  align-items: center;
 }
 .right {
   grid-column-start: 3;
@@ -37,4 +40,5 @@ mat-toolbar{
   grid-row-end: 2;
   display: flex;
   justify-content: right;
+  align-items: center;
 }

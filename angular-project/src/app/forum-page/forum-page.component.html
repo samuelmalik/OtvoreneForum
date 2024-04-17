@@ -4,9 +4,28 @@
   </div>
 
   <div class="div2">
+    <mat-list class="posts-list">
+      @for (post of postList; track post) {
+        <mat-list-item class="posts-item">
+          <h3 matListItemTitle>{{post.title}}</h3>
+          <p matListItemLine>{{post.description}}</p>
+          <p matListItemLine class="demo-2">{{post.author}}</p>
+          <p matListItemLine class="demo-2">{{post.date}}</p>
+        </mat-list-item>
+      }
+    </mat-list>
   </div>
 
   <div class="div3">
+    <h2 style="padding-left: 15px">Zoznam všetkých používateľov</h2>
+    <mat-list class="users-list">
+      @for (user of userList; track user) {
+        <mat-list-item class="users-item">
 
+          <h3 matListItemTitle><img style="width: 50px" src="assets/profilovka.jpeg"/>{{user.username}}</h3>
+
+        </mat-list-item>
+      }
+    </mat-list>
   </div>
 </div>

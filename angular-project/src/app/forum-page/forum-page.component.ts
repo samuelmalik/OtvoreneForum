@@ -5,12 +5,17 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {UserRegistration} from '../api-authorization/user-registration';
 import {AuthenticationService} from "../api-authorization/authentication.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {ForumService} from "../services/forum.service";
+import {ForumService, UserInterface} from "../services/forum.service";
+import {MatListModule} from '@angular/material/list';
+
 
 @Component({
   selector: 'app-forum-page',
   standalone: true,
-  imports: [],
+  imports: [
+    MatListModule,
+
+  ],
   templateUrl: './forum-page.component.html',
   styleUrl: './forum-page.component.css'
 })
@@ -18,14 +23,17 @@ export class ForumPageComponent {
   private httpClient = inject(HttpClient);
   private authServie :AuthenticationService = inject(AuthenticationService);
   private forumService :ForumService = inject(ForumService);
+  public postList: PostInterface[] = [];
+  public userList: UserInterface[] = [];
 
   constructor( @Inject('BASE_URL') private baseUrl: string) {
     this.forumService.getAllUsers().subscribe(data =>{
-      console.log(data[2].username);
+      this.userList = data;
     });
 
-    this.httpClient.get<PostInterface>(`${this.baseUrl}/forum/getAllPosts`).pipe(takeUntilDestroyed()).subscribe(data => {
-      console.log(data);
+    this.httpClient.get<PostInterface[]>(`${this.baseUrl}/forum/getAllPosts`).pipe(takeUntilDestroyed()).subscribe(data => {
+      this.postList = data;
+
     });
 
   }

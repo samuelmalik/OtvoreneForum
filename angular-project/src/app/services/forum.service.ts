@@ -18,18 +18,18 @@ export class ForumService {
   }
 
   getAllUsers(){
-    return this.httpClient.get<UserInterface>(this.baseUrl + '/forum/allUsers')
+    return this.httpClient.get<UserInterface[]>(this.baseUrl + '/forum/allUsers')
   }
 
 }
 
-interface PostInterface {
+ interface PostInterface {
   title: string;
   description: string;
   author: string;
   date: string;
 }
 
-interface UserInterface {
+export interface UserInterface {
   username: string;
 }

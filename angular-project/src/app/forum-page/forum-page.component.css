@@ -1,16 +1,20 @@
 
+*{
+  box-sizing: border-box;
+}
+
 .grid {
 
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 3fr  1fr;
   grid-template-rows: 0.20fr 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
 
-.div1 { grid-area: 1 / 1 / 2 / 3; display: flex; justify-content: center; }
+.div1 { grid-area: 1 / 1 / 2 / 3;   display: flex; justify-content: center; }
 .div2 { grid-area: 2 / 1 / 3 / 2;  }
-.div3 { grid-area: 2 / 2 / 3 / 3; }
+.div3 { grid-area: 2 / 2 / 3 / 3; border-left: #ccc 1px solid }
 
 .search {
   margin-top: 1%;
@@ -19,3 +23,17 @@
   border-radius: 5px;
   font-size: 20px;
 }
+
+.posts-list {
+  width: 100%;
+  padding: 0 50px;
+}
+
+.posts-item {
+  padding: 16px;
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+}
+  .users-list {
+    padding-left: 15px;
+  }

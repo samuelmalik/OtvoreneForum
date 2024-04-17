@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {AuthenticationService} from "../api-authorization/authentication.service";
 import {DestroyRef} from "@angular/core";
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-create-post',
@@ -13,6 +15,8 @@ import {DestroyRef} from "@angular/core";
   imports: [
     ReactiveFormsModule,
     MatCardModule,
+    MatSnackBarModule,
+
   ],
   templateUrl: './create-post.component.html',
   styleUrl: './create-post.component.css'
@@ -22,6 +26,8 @@ export class CreatePostComponent {
   private httpClient = inject(HttpClient);
   authService = inject(AuthenticationService);
   destroyRef = inject(DestroyRef);
+  private snackBar: MatSnackBarModule;
+  snackBarMessage: string = '';
 
 
   constructor(private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string) {
@@ -43,10 +49,15 @@ export class CreatePostComponent {
         authorId: this.authService.getCurrentId()
       };
       console.log(postData);
-      this.httpClient.post(`${this.baseUrl}/forum/newPost`, postData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
-    } else {
-      console.error('Form is invalid. Cannot submit.');
+      this.httpClient.post(`${this.baseUrl}/forum/newPost`, postData)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => {
+          this.CreatePostForm.reset();
+        }, (error) => {
+          console.error('Error creating post:', error);
+        });
+    }
     }
 
   }
-}
+

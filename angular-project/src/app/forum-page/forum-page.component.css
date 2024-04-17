@@ -7,7 +7,7 @@
 
   display: grid;
   grid-template-columns: 3fr  1fr;
-  grid-template-rows: 0.20fr 1fr;
+  grid-template-rows: 0.10fr 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }

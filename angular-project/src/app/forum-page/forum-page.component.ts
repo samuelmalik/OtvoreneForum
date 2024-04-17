@@ -5,6 +5,7 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {UserRegistration} from '../api-authorization/user-registration';
 import {AuthenticationService} from "../api-authorization/authentication.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {ForumService} from "../services/forum.service";
 
 @Component({
   selector: 'app-forum-page',
@@ -16,16 +17,12 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 export class ForumPageComponent {
   private httpClient = inject(HttpClient);
   private authServie :AuthenticationService = inject(AuthenticationService);
-  username :string;
-  id :string;
+  private forumService :ForumService = inject(ForumService);
 
   constructor( @Inject('BASE_URL') private baseUrl: string) {
-    this.httpClient.get(this.baseUrl + '/forum/allUsers').subscribe();
-
-    this.username = this.authServie.getCurrentUsername();
-    this.id = this.authServie.getCurrentId();
-    console.log(this.username);
-    console.log(this.id);
+    this.forumService.getAllUsers().subscribe(data =>{
+      console.log(data[2].username);
+    });
 
     this.httpClient.get<PostInterface>(`${this.baseUrl}/forum/getAllPosts`).pipe(takeUntilDestroyed()).subscribe(data => {
       console.log(data);
@@ -42,5 +39,7 @@ interface PostInterface {
   author: string;
   date: string;
 }
+
+
 
 

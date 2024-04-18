@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {AuthenticationService} from "../api-authorization/authentication.service";
 import {DestroyRef} from "@angular/core";
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 
 @Component({
@@ -15,7 +15,6 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
   imports: [
     ReactiveFormsModule,
     MatCardModule,
-    MatSnackBarModule,
 
   ],
   templateUrl: './create-post.component.html',
@@ -26,11 +25,10 @@ export class CreatePostComponent {
   private httpClient = inject(HttpClient);
   authService = inject(AuthenticationService);
   destroyRef = inject(DestroyRef);
-  private snackBar: MatSnackBarModule;
-  snackBarMessage: string = '';
+  snackBarMessage: string = "Príspevok úspešne pridaný";
 
 
-  constructor(private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string) {
+  constructor(private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string, private snackBar: MatSnackBar) {
     this.CreatePostForm = this.formBuilder.group({
       title: ['', [Validators.required, Validators.maxLength(50)]],
       description: ['', [Validators.required, Validators.maxLength(500)]],
@@ -41,6 +39,7 @@ export class CreatePostComponent {
 
   }
   submitPost() {
+
     if (this.CreatePostForm.valid) {
       const postData = {
         title: this.CreatePostForm.value.title,
@@ -56,8 +55,17 @@ export class CreatePostComponent {
         }, (error) => {
           console.error('Error creating post:', error);
         });
+      this.openSnackBar("Príspevok bol úspešne vytvorený");
+    } else{
+      this.openSnackBar("Zadali ste nesprávne informácie, príspevok sa nevytvoril")
     }
     }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, "", {
+      duration: 3000
+    });
+  }
 
   }
 

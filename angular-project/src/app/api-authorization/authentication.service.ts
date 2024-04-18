@@ -45,7 +45,7 @@ export class AuthenticationService {
     return this.isAuthenticated() ? localStorage.getItem('id') : null;
   }
 
-  private isAuthenticated() {
+   isAuthenticated() {
     const token = localStorage.getItem("token");
 
     return token && !this.jwtHelper.isTokenExpired(token);

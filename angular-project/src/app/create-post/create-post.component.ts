@@ -7,6 +7,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {AuthenticationService} from "../api-authorization/authentication.service";
 import {DestroyRef} from "@angular/core";
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -25,7 +26,7 @@ export class CreatePostComponent {
   private httpClient = inject(HttpClient);
   authService = inject(AuthenticationService);
   destroyRef = inject(DestroyRef);
-  snackBarMessage: string = "Príspevok úspešne pridaný";
+  private router = inject(Router);
 
 
   constructor(private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string, private snackBar: MatSnackBar) {
@@ -39,8 +40,11 @@ export class CreatePostComponent {
 
   }
   submitPost() {
+    if(!this.authService.isAuthenticated()){
+      this.router.navigate(['/login']);
+    }
 
-    if (this.CreatePostForm.valid) {
+    else if (this.CreatePostForm.valid) {
       const postData = {
         title: this.CreatePostForm.value.title,
         description: this.CreatePostForm.value.description,

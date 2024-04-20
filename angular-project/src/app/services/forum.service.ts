@@ -11,11 +11,11 @@ export class ForumService {
   constructor(@Inject('BASE_URL') private baseUrl: string) {}
 
   getAllUsers(){
-    return this.httpClient.get<UserInterface[]>(this.baseUrl + '/forum/allUsers')
+    return this.httpClient.get<UserDtoInterface[]>(this.baseUrl + '/forum/allUsers')
   }
 
   getAllPosts(){
-    return this.httpClient.get<PostInterface[]>(`${this.baseUrl}/forum/getAllPosts`)
+    return this.httpClient.get<PostDtoInterface[]>(`${this.baseUrl}/forum/getAllPosts`)
   }
 
   createPost(data :any) {
@@ -24,13 +24,14 @@ export class ForumService {
 
 }
 
- export interface PostInterface {
+ export interface PostDtoInterface {
   title: string;
   description: string;
+  code: string
   author: string;
   date: string;
 }
 
-export interface UserInterface {
+export interface UserDtoInterface {
   username: string;
 }

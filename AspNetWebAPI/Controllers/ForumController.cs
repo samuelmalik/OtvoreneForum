@@ -43,6 +43,7 @@ namespace AspNetCoreAPI.Controllers
                 UserId = createPost.AuthorId,
                 Title = createPost.Title,
                 Description = createPost.Description,
+                Code = createPost.Code,
                 Date = DateTime.Now,
             };
 
@@ -62,6 +63,7 @@ namespace AspNetCoreAPI.Controllers
                             Title = p.Title,
                             Description = p.Description,
                             Date = p.Date.ToString("dd MMMM yyyy HH:mm"),
+                            Code = p.Code,
                         };
             return posts;   
         }

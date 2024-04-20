@@ -43,7 +43,7 @@ bootstrapApplication(AppComponent, {
         { path: 'login', component: LoginComponent},
         { path: 'register', component: RegistrationComponent},
         { path: 'forum', component: ForumPageComponent,},
-        { path: 'create-post', component: CreatePostComponent},
+        { path: 'create-post', component: CreatePostComponent, canActivate: [authGuard]},
       ])
     ]
 })

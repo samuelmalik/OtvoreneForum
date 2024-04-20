@@ -10,11 +10,11 @@
     <div class="right">
       @if (authService.authenticated()) {
         <button class="right-button" mat-button (click)="logout()">Logout</button>
-        <button class="right-button" mat-button [routerLink]="['/create-post']" >Nový príspevok</button>
+        <button class="right-button" mat-button (click)="createPost()">Nový príspevok</button>
         <button class="right-button" mat-button >Nastavenia</button>
         <button class="right-button" mat-button >Profil</button>
       } @else {
-        <button class="right-button" mat-button [routerLink]="['/create-post']" >Nový príspevok</button>
+        <button class="right-button" mat-button (click)="createPost()" >Nový príspevok</button>
         <button class="right-button" mat-button [routerLink]="['/login']">Login</button>
         <button class="right-button" mat-button [routerLink]="['/register']">Registration</button>
       }

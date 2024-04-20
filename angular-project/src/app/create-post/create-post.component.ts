@@ -27,6 +27,7 @@ export class CreatePostComponent {
   authService = inject(AuthenticationService);
   destroyRef = inject(DestroyRef);
   private router = inject(Router);
+  private currentUserId :string;
 
 
   constructor(private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string, private snackBar: MatSnackBar) {
@@ -36,11 +37,12 @@ export class CreatePostComponent {
       code: ['']
     });
 
-
+    this.currentUserId = this.authService.getCurrentId();
 
   }
   submitPost() {
-    if(!this.authService.isAuthenticated()){
+
+    if(this.currentUserId == null){
       this.router.navigate(['/login']);
     }
 
@@ -49,7 +51,7 @@ export class CreatePostComponent {
         title: this.CreatePostForm.value.title,
         description: this.CreatePostForm.value.description,
         code: this.CreatePostForm.value.code,
-        authorId: this.authService.getCurrentId()
+        authorId: this.currentUserId,
       };
       console.log(postData);
       this.httpClient.post(`${this.baseUrl}/forum/newPost`, postData)

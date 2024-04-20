@@ -3,6 +3,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {ForumService, UserDtoInterface, PostDtoInterface} from "../services/forum.service";
 import {MatListModule} from '@angular/material/list';
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {RouterLink} from "@angular/router";
 
 
 @Component({
@@ -11,7 +12,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
   imports: [
     MatListModule,
     MatProgressSpinner,
-
+    RouterLink
   ],
   templateUrl: './forum-page.component.html',
   styleUrl: './forum-page.component.css'

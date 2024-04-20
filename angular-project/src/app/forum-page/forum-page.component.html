@@ -19,7 +19,10 @@
         <p>{{post.author}}</p>
         <div class="date-container">
           <p >{{post.date}}</p>
-          <p>Zobraziť viac</p>
+          <a
+            [routerLink]="['/post-details', post.id]">
+            Zobraziť viac
+          </a>
         </div>
       </div>
       }

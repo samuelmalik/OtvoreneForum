@@ -9,6 +9,7 @@ import {LoginComponent} from "./app/api-authorization/login/login.component";
 import { DashboardComponent } from './app/dashboard/dashboard.component';
 import {ForumPageComponent} from "./app/forum-page/forum-page.component";
 import { CreatePostComponent} from "./app/create-post/create-post.component";
+import {PostDetailsComponent} from "./app/post-details/post-details.component";
 import { JwtModule } from '@auth0/angular-jwt';
 import { errorHandlerInterceptor } from './app/api-authorization/error-handler.interceptor';
 import { authGuard } from './app/api-authorization/auth.guard';
@@ -44,6 +45,7 @@ bootstrapApplication(AppComponent, {
         { path: 'register', component: RegistrationComponent},
         { path: 'forum', component: ForumPageComponent,},
         { path: 'create-post', component: CreatePostComponent, canActivate: [authGuard]},
+        { path: 'post-details/:postId', component: PostDetailsComponent},
       ])
     ]
 })

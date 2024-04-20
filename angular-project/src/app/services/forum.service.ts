@@ -25,9 +25,9 @@ export class ForumService {
 }
 
  export interface PostDtoInterface {
+  id: number;
   title: string;
   description: string;
-  code: string
   author: string;
   date: string;
 }

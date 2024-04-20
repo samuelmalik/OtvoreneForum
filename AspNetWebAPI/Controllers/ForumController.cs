@@ -63,7 +63,7 @@ namespace AspNetCoreAPI.Controllers
                             Title = p.Title,
                             Description = p.Description,
                             Date = p.Date.ToString("dd MMMM yyyy HH:mm"),
-                            Code = p.Code,
+                            Id = p.Id
                         };
             return posts;   
         }

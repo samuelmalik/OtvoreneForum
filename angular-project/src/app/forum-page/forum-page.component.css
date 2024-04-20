@@ -52,3 +52,12 @@
   height: 4.5em;
   overflow: hidden;
 }
+
+a{
+  text-decoration: underline;
+  color: darkblue;
+}
+
+a:hover{
+  cursor: pointer;
+}

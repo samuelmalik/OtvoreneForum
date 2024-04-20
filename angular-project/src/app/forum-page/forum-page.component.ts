@@ -2,6 +2,7 @@ import {Component, DestroyRef, inject, Inject, OnInit} from '@angular/core';
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {ForumService, UserInterface, PostInterface} from "../services/forum.service";
 import {MatListModule} from '@angular/material/list';
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 
 @Component({
@@ -9,6 +10,7 @@ import {MatListModule} from '@angular/material/list';
   standalone: true,
   imports: [
     MatListModule,
+    MatProgressSpinner,
 
   ],
   templateUrl: './forum-page.component.html',
@@ -19,14 +21,18 @@ export class ForumPageComponent implements OnInit{
   private forumService :ForumService = inject(ForumService);
   public postList: PostInterface[] = [];
   public userList: UserInterface[] = [];
+  public showPostsLoader = true;
+  public showUsersLoader = true;
 
 
   ngOnInit() {
     this.forumService.getAllUsers().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{
       this.userList = data;
+      this.showUsersLoader = false;
     });
     this.forumService.getAllPosts().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
       this.postList = data;
+      this.showPostsLoader = false;
     });
   }
 }

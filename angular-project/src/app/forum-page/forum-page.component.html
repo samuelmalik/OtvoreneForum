@@ -4,28 +4,48 @@
   </div>
 
   <div class="div2">
-    <mat-list class="posts-list">
+    @if (showPostsLoader){
+      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 20px">
+        <mat-spinner [diameter]="50"></mat-spinner>
+        <p>Načítavam príspevky</p>
+      </div>
+
+    } @else {
+      <mat-list class="posts-list">
       @for (post of postList; track post) {
-        <mat-list-item class="posts-item">
-          <h3 matListItemTitle>{{post.title}}</h3>
-          <p matListItemLine>{{post.description}}</p>
-          <p matListItemLine class="demo-2">{{post.author}}</p>
-          <p matListItemLine class="demo-2">{{post.date}}</p>
-        </mat-list-item>
+      <div class="posts-item">
+        <h3>{{post.title}}</h3>
+        <p class="post-description">{{post.description}}</p>
+        <p>{{post.author}}</p>
+        <div class="date-container">
+          <p >{{post.date}}</p>
+          <p>Zobraziť viac</p>
+        </div>
+      </div>
       }
-    </mat-list>
+      </mat-list>
+    }
   </div>
 
   <div class="div3">
-    <h2 style="padding-left: 15px">Zoznam všetkých používateľov</h2>
-    <mat-list class="users-list">
-      @for (user of userList; track user) {
-        <mat-list-item class="users-item">
+    @if (showUsersLoader){
+      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 20px">
+        <mat-spinner [diameter]="50"></mat-spinner>
+        <p>Načítavam používateľov...</p>
+      </div>
 
-          <h3 matListItemTitle><img style="width: 50px" src="assets/profilovka.jpeg"/>{{user.username}}</h3>
+    } @else{
+      <h2 style="padding-left: 15px">Zoznam všetkých používateľov</h2>
+      <mat-list class="users-list">
+        @for (user of userList; track user) {
+          <mat-list-item class="users-item">
 
-        </mat-list-item>
-      }
-    </mat-list>
+            <h3 matListItemTitle><img style="width: 50px" src="assets/profilovka.jpeg"/>{{user.username}}</h3>
+
+          </mat-list-item>
+        }
+      </mat-list>
+    }
+
   </div>
 </div>

@@ -4,7 +4,6 @@
 }
 
 .grid {
-
   display: grid;
   grid-template-columns: 3fr  1fr;
   grid-template-rows: 0.10fr 1fr;
@@ -13,8 +12,8 @@
 }
 
 .div1 { grid-area: 1 / 1 / 2 / 3;   display: flex; justify-content: center; }
-.div2 { grid-area: 2 / 1 / 3 / 2;  }
-.div3 { grid-area: 2 / 2 / 3 / 3; border-left: #ccc 1px solid }
+.div2 { grid-area: 2 / 1 / 3 / 2; max-width: 75vw;}
+.div3 { grid-area: 2 / 2 / 3 / 3; border-left: #ccc 1px solid; }
 
 .search {
   margin-top: 1%;
@@ -25,8 +24,10 @@
 }
 
 .posts-list {
+  max-height: 85vh;
   width: 100%;
   padding: 0 50px;
+  overflow: scroll;
 }
 
 .posts-item {
@@ -36,4 +37,18 @@
 }
   .users-list {
     padding-left: 15px;
+    max-height: 85vh;
+    overflow: scroll;
   }
+
+  .date-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+  }
+
+.post-description{
+  line-height: 1.5em;
+  height: 4.5em;
+  overflow: hidden;
+}

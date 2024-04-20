@@ -47,7 +47,6 @@ export class MainNavComponent {
         ...this.configSuccess,
       });
     }
-
   }
 }
 
@@ -65,10 +64,10 @@ export class CreatePostNavSnackComponent {
     public snackBarRef: MatSnackBarRef<CreatePostNavSnackComponent>,
   ) {}
 
+
   onClick() {
     this.snackBarRef.dismiss()
     this.router.navigate(['/login'])
-
   }
 }
 

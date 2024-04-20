@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { MainNavComponent } from './main-nav/main-nav.component';
-import { RouterOutlet } from '@angular/router';
+import {Router, RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +9,11 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [MainNavComponent, RouterOutlet]
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'angular-project';
+  private router = inject(Router);
+
+  ngOnInit(){
+    this.router.navigate(['/forum'])
+  }
 }

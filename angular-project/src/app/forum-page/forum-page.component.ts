@@ -1,11 +1,6 @@
-import {Component, inject, Inject} from '@angular/core';
-import {HttpParams} from "@angular/common/http";
-import { HttpClient } from '@angular/common/http';
-import {FormBuilder, Validators} from "@angular/forms";
-import {UserRegistration} from '../api-authorization/user-registration';
-import {AuthenticationService} from "../api-authorization/authentication.service";
+import {Component, DestroyRef, inject, Inject, OnInit} from '@angular/core';
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {ForumService, UserInterface} from "../services/forum.service";
+import {ForumService, UserInterface, PostInterface} from "../services/forum.service";
 import {MatListModule} from '@angular/material/list';
 
 
@@ -19,33 +14,21 @@ import {MatListModule} from '@angular/material/list';
   templateUrl: './forum-page.component.html',
   styleUrl: './forum-page.component.css'
 })
-export class ForumPageComponent {
-  private httpClient = inject(HttpClient);
-  private authServie :AuthenticationService = inject(AuthenticationService);
+export class ForumPageComponent implements OnInit{
+  private destroyRef = inject(DestroyRef);
   private forumService :ForumService = inject(ForumService);
   public postList: PostInterface[] = [];
   public userList: UserInterface[] = [];
 
-  constructor( @Inject('BASE_URL') private baseUrl: string) {
-    this.forumService.getAllUsers().subscribe(data =>{
+
+  ngOnInit() {
+    this.forumService.getAllUsers().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{
       this.userList = data;
     });
-
-    this.httpClient.get<PostInterface[]>(`${this.baseUrl}/forum/getAllPosts`).pipe(takeUntilDestroyed()).subscribe(data => {
+    this.forumService.getAllPosts().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
       this.postList = data;
-
     });
-
   }
-
-
-}
-
-interface PostInterface {
-  title: string;
-  description: string;
-  author: string;
-  date: string;
 }
 
 

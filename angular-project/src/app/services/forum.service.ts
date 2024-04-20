@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
-import {Component, inject, Inject} from '@angular/core';
-import {HttpParams} from "@angular/common/http";
+import {inject, Inject} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {UserRegistration} from '../api-authorization/user-registration';
-import {AuthenticationService} from "../api-authorization/authentication.service";
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -13,17 +8,23 @@ import {Observable} from "rxjs";
 export class ForumService {
   private httpClient = inject(HttpClient);
 
-  constructor(@Inject('BASE_URL') private baseUrl: string) {
-
-  }
+  constructor(@Inject('BASE_URL') private baseUrl: string) {}
 
   getAllUsers(){
     return this.httpClient.get<UserInterface[]>(this.baseUrl + '/forum/allUsers')
   }
 
+  getAllPosts(){
+    return this.httpClient.get<PostInterface[]>(`${this.baseUrl}/forum/getAllPosts`)
+  }
+
+  createPost(data :any) {
+    return this.httpClient.post(`${this.baseUrl}/forum/newPost`, data)
+  }
+
 }
 
- interface PostInterface {
+ export interface PostInterface {
   title: string;
   description: string;
   author: string;

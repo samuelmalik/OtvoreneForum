@@ -1,13 +1,12 @@
-import {Component, inject, Inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
-import {HttpParams} from "@angular/common/http";
-import { HttpClient } from '@angular/common/http';
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {AuthenticationService} from "../api-authorization/authentication.service";
 import {DestroyRef} from "@angular/core";
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from "@angular/router";
+import {ForumService} from "../services/forum.service";
 
 
 @Component({
@@ -21,25 +20,27 @@ import {Router} from "@angular/router";
   templateUrl: './create-post.component.html',
   styleUrl: './create-post.component.css'
 })
-export class CreatePostComponent {
+export class CreatePostComponent implements OnInit{
   public CreatePostForm: FormGroup;
-  private httpClient = inject(HttpClient);
-  authService = inject(AuthenticationService);
-  destroyRef = inject(DestroyRef);
+  private authService = inject(AuthenticationService);
+  private destroyRef = inject(DestroyRef);
   private router = inject(Router);
+  private forumService :ForumService = inject(ForumService);
   private currentUserId :string;
 
 
-  constructor(private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string, private snackBar: MatSnackBar) {
+  constructor(private formBuilder: FormBuilder, private snackBar: MatSnackBar) {}
+
+  ngOnInit() {
+    this.currentUserId = this.authService.getCurrentId();
+
     this.CreatePostForm = this.formBuilder.group({
       title: ['', [Validators.required, Validators.maxLength(50)]],
       description: ['', [Validators.required, Validators.maxLength(500)]],
       code: ['']
     });
-
-    this.currentUserId = this.authService.getCurrentId();
-
   }
+
   submitPost() {
 
     if(this.currentUserId == null){
@@ -53,16 +54,15 @@ export class CreatePostComponent {
         code: this.CreatePostForm.value.code,
         authorId: this.currentUserId,
       };
-      console.log(postData);
-      this.httpClient.post(`${this.baseUrl}/forum/newPost`, postData)
+
+      this.forumService.createPost(postData)
         .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(() => {
-          this.CreatePostForm.reset();
-        }, (error) => {
-          console.error('Error creating post:', error);
-        });
+        .subscribe();
+
+      this.CreatePostForm.reset();
       this.openSnackBar("Príspevok bol úspešne vytvorený");
-    } else{
+
+    } else {
       this.openSnackBar("Zadali ste nesprávne informácie, príspevok sa nevytvoril")
     }
     }

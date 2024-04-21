@@ -68,6 +68,24 @@ namespace AspNetCoreAPI.Controllers
             return posts;   
         }
 
+        [HttpGet("getPostDetails")]
+        public PostDetailsDto GetPostDetails(
+             [FromQuery(Name = "id")] string id
+            )
+        {
+            var post = from p in _context.Post.Include(p => p.User)
+                       .Where(p => p.Id.ToString() == id)
+                        select new PostDetailsDto()
+                        {
+                            Author = p.User.UserName,
+                            Title = p.Title,
+                            Description = p.Description,
+                            Date = p.Date.ToString("dd MMMM yyyy HH:mm"),
+                            Code = p.Code,
+                        };
+            return post.FirstOrDefault();
+        }
+
 
 
 

@@ -1,6 +1,6 @@
 import {Component, DestroyRef, inject, Inject, OnInit} from '@angular/core';
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {ForumService, UserDtoInterface, PostDtoInterface} from "../services/forum.service";
+import {ForumService, UserDtoInterface, PostInfoDtoInterface} from "../services/forum.service";
 import {MatListModule} from '@angular/material/list';
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {RouterLink} from "@angular/router";
@@ -20,7 +20,7 @@ import {RouterLink} from "@angular/router";
 export class ForumPageComponent implements OnInit{
   private destroyRef = inject(DestroyRef);
   private forumService :ForumService = inject(ForumService);
-  public postList: PostDtoInterface[] = [];
+  public postList: PostInfoDtoInterface[] = [];
   public userList: UserDtoInterface[] = [];
   public showPostsLoader = true;
   public showUsersLoader = true;

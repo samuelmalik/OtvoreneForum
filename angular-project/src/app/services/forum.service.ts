@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {inject, Inject} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,13 @@ export class ForumService {
   }
 
   getAllPosts(){
-    return this.httpClient.get<PostDtoInterface[]>(`${this.baseUrl}/forum/getAllPosts`)
+    return this.httpClient.get<PostInfoDtoInterface[]>(`${this.baseUrl}/forum/getAllPosts`)
+  }
+
+  getPostDetails(id: number){
+    const options = id.toString() ?
+      { params: new HttpParams().set('id', id.toString()) } : {};
+    return this.httpClient.get<PostDetailsDtoInterface>(`${this.baseUrl}/forum/getPostDetails`, options)
   }
 
   createPost(data :any) {
@@ -24,12 +30,20 @@ export class ForumService {
 
 }
 
- export interface PostDtoInterface {
+ export interface PostInfoDtoInterface {
   id: number;
   title: string;
   description: string;
   author: string;
   date: string;
+}
+
+export interface PostDetailsDtoInterface {
+  title: string;
+  description: string;
+  author: string;
+  date: string;
+  code: string;
 }
 
 export interface UserDtoInterface {

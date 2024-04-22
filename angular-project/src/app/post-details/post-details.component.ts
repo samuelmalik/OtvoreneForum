@@ -2,11 +2,14 @@ import {Component, inject, OnInit, DestroyRef} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ForumService, PostDetailsDtoInterface} from "../services/forum.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {MatExpansionModule} from "@angular/material/expansion";
 
 @Component({
   selector: 'app-post-details',
   standalone: true,
-  imports: [],
+  imports: [
+    MatExpansionModule
+  ],
   templateUrl: './post-details.component.html',
   styleUrl: './post-details.component.css'
 })
@@ -22,9 +25,11 @@ export class PostDetailsComponent implements OnInit {
     const routeParams = this.route.snapshot.paramMap;
      this.id = Number(routeParams.get('postId'));
      this.forumService.getPostDetails(this.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{
-       console.log(data);
-       console.log("Oujesd");
-
+       this.postDetails = data;
      });
+  }
+
+  onCommentsOpened(){
+    console.log("Komentáre otvorené")
   }
 }

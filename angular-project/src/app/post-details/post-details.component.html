@@ -1,2 +1,41 @@
-<p>post-details works!</p>
-<p>toto je {{this.id}}</p>
+<div class="container">
+  <div class="post-info">
+    <h2>{{postDetails.title}}</h2>
+
+    <p style="margin-left: 10px">{{postDetails.date}}</p>
+    <div class="author">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 profile-picture">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+      </svg>
+      <p>{{postDetails.author}}</p>
+    </div>
+
+    <p class="description">{{postDetails.description}}</p>
+
+    <h3 style="margin-top: 30px">Zdrojový kód:</h3>
+    <pre class="code">
+      {{postDetails.code}}
+    </pre>
+  </div>
+
+  <div class="comments">
+        <mat-expansion-panel class="add-comment">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Pridať komentár
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>This is the primary content of the panel.</p>
+        </mat-expansion-panel>
+
+      <mat-expansion-panel class="comments-list"
+                           (opened)="onCommentsOpened()">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Zobraziť komentáre (0)
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p>This is the primary content of the panel.</p>
+      </mat-expansion-panel>
+  </div>
+</div>

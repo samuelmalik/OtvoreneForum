@@ -12,10 +12,9 @@
 
     <p class="description">{{postDetails.description}}</p>
 
-    <h3 style="margin-top: 30px">Zdrojový kód:</h3>
-    <pre class="code">
-      {{postDetails.code}}
-    </pre>
+    <h3 style="margin-top: 30px">Kód:</h3>
+    <pre class="code"><code [highlightAuto]="postDetails.code" lineNumbers></code></pre>
+
   </div>
 
   <div class="comments">

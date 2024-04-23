@@ -14,6 +14,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { errorHandlerInterceptor } from './app/api-authorization/error-handler.interceptor';
 import { authGuard } from './app/api-authorization/auth.guard';
 import { jwtInterceptor } from './app/api-authorization/jwt.interceptor';
+import {provideHighlightOptions} from "ngx-highlightjs";
 
 export function getBaseUrl() {
   return 'https://localhost:7186/api';
@@ -29,6 +30,9 @@ const providers = [
 
 bootstrapApplication(AppComponent, {
     providers: [
+      provideHighlightOptions({
+        fullLibraryLoader: () => import('highlight.js')
+      }),
       providers,
       importProvidersFrom(BrowserModule, JwtModule.forRoot({
         config: {

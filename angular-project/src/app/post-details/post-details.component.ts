@@ -3,15 +3,19 @@ import {ActivatedRoute} from "@angular/router";
 import {ForumService, PostDetailsDtoInterface} from "../services/forum.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {MatExpansionModule} from "@angular/material/expansion";
+import {HighlightAuto} from "ngx-highlightjs";
+import {HighlightLineNumbers} from "ngx-highlightjs/line-numbers";
 
 @Component({
   selector: 'app-post-details',
   standalone: true,
   imports: [
-    MatExpansionModule
+    MatExpansionModule,
+    HighlightAuto,
+    HighlightLineNumbers
   ],
   templateUrl: './post-details.component.html',
-  styleUrl: './post-details.component.css'
+  styleUrl: './post-details.component.css',
 })
 export class PostDetailsComponent implements OnInit {
   private forumService: ForumService = inject(ForumService);

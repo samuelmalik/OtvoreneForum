@@ -14,16 +14,19 @@
       <mat-list class="posts-list">
       @for (post of postList; track post) {
       <div class="posts-item">
+        <div class="creator">
+          <img class="pfp" src="assets/profilovka.jpeg"/>
+          <div class="c-info">
+            <p>{{post.author}}</p>
+            <p >{{post.date}}</p>
+          </div>
+        </div>
         <h2>{{post.title}}</h2>
         <p class="post-description">{{post.description}}</p>
-        <p>{{post.author}}</p>
-        <div class="date-container">
-          <p >{{post.date}}</p>
-          <a
-            [routerLink]="['/post-details', post.id]">
-            Zobraziť viac
-          </a>
-        </div>
+        <a
+          [routerLink]="['/post-details', post.id]">
+          Zobraziť viac
+        </a>
       </div>
       }
       </mat-list>

@@ -13,5 +13,6 @@ namespace AspNetCoreAPI.Data
         }
 
         public DbSet<Post> Post { get; set; }
+        public DbSet<Comment> Comment { get; set; }
     }
 }

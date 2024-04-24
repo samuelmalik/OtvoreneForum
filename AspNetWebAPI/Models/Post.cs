@@ -11,6 +11,7 @@ namespace AspNetCoreAPI.Models
         public string Description { get; set; }
         public string Code { get; set; }
         public DateTime Date { get; set; }
+        public ICollection<Comment> Comments { get; } = new List<Comment>();
 
     }
 }

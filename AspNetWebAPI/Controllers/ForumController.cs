@@ -86,6 +86,47 @@ namespace AspNetCoreAPI.Controllers
             return post.FirstOrDefault();
         }
 
+        [HttpPost("newComment")]
+        public CreateCommentDto CreateComment([FromBody] CreateCommentDto createComment)
+        {
+            Comment newComment = new Comment()
+            {
+                UserId = createComment.AuthorId,
+                PostId = createComment?.PostId,
+                Message = createComment.Message,
+                Code = createComment.Code,
+                Date = DateTime.Now,
+            };
+
+            _context.Add(newComment);
+            _context.SaveChanges();
+
+            return new CreateCommentDto { AuthorId = newComment.UserId, PostId = newComment.PostId, Message = newComment.Message, Code = newComment.Code };
+        }
+
+        [HttpGet("getCommentsByPost")]
+        public IEnumerable<CommentInfoDto> GetCommentsByPost(
+            [FromQuery(Name = "userId")] string userId,
+            [FromQuery(Name = "postId")] int postId)
+
+        {
+            var posts = from p in _context.Comment
+                        .Include(p => p.User)
+                        .Include(p => p.Post)
+                        .Where(p => p.User.Id == userId && p.PostId == postId)
+                        select new CommentInfoDto()
+                        {
+                            Id = p.Id,
+                            Author = p.User.UserName,
+                            Message = p.Message,
+                            Date = p.Date.ToString("dd MMMM yyyy HH:mm"),
+                            Code = p.Code
+                        };
+            return posts;
+        }
+
+
+
 
 
 

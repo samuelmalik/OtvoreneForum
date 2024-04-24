@@ -31,7 +31,8 @@ const providers = [
 bootstrapApplication(AppComponent, {
     providers: [
       provideHighlightOptions({
-        fullLibraryLoader: () => import('highlight.js')
+        fullLibraryLoader: () => import('highlight.js'),
+        lineNumbersLoader: () => import('ngx-highlightjs/line-numbers'),
       }),
       providers,
       importProvidersFrom(BrowserModule, JwtModule.forRoot({

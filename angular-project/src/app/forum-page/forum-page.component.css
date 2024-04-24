@@ -1,6 +1,7 @@
 
 *{
   box-sizing: border-box;
+
 }
 
 .grid {
@@ -27,18 +28,21 @@
   max-height: 85vh;
   width: 100%;
   padding: 0 50px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .posts-item {
-  padding: 16px;
-  border-bottom: 1px solid #ccc;
+
+  padding: 12px 0;
+  border-top: 1.5px solid #aaa ;
+
   width: 100%;
 }
   .users-list {
     padding-left: 15px;
     max-height: 85vh;
-    overflow: scroll;
+    overflow-y: scroll;
+
   }
 
   .date-container{
@@ -49,7 +53,7 @@
 
 .post-description{
   line-height: 1.5em;
-  height: 4.5em;
+  max-height: 3em;
   overflow: hidden;
 }
 
@@ -60,4 +64,36 @@ a{
 
 a:hover{
   cursor: pointer;
+}
+
+.creator {
+  display: flex;
+
+}
+
+.c-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 0.5%;
+}
+
+
+
+.pfp {
+  display: inline-block;
+  vertical-align: middle;
+
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+h2 {
+  margin: 10px 0;
 }

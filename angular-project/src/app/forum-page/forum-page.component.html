@@ -42,15 +42,20 @@
 
     } @else{
       <h2 style="padding-left: 15px">Zoznam všetkých používateľov</h2>
-      <mat-list class="users-list">
+      <div class="users-list">
+
         @for (user of userList; track user) {
-          <mat-list-item class="users-item">
-
-            <h3 matListItemTitle><img style="width: 50px" src="assets/profilovka.jpeg"/>{{user.username}}</h3>
-
-          </mat-list-item>
+          <div class="users-item">
+              <div class="user">
+                <img class="pfp" src="assets/profilovka.jpeg"/>
+                <div class="u-info">
+                  <p>{{user.username}}</p>
+                </div>
+              </div>
+          </div>
         }
-      </mat-list>
+
+        </div>
     }
 
   </div>

@@ -5,7 +5,7 @@ import { MatInput } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthenticationService } from '../authentication.service';
 import { AsyncPipe } from '@angular/common';
-import { Router } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
@@ -18,7 +18,8 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     MatLabel,
     ReactiveFormsModule,
     AsyncPipe,
-    MatProgressSpinner
+    MatProgressSpinner,
+    RouterLink
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'

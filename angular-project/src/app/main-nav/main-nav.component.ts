@@ -7,6 +7,8 @@ import { AuthenticationService } from '../api-authorization/authentication.servi
 import {NgIf, NgOptimizedImage} from '@angular/common';
 import {Inject} from "@angular/core";
 import {MatSnackBar, MatSnackBarConfig, MAT_SNACK_BAR_DATA, MatSnackBarRef} from "@angular/material/snack-bar";
+import {MatMenuModule} from '@angular/material/menu';
+
 
 @Component({
   selector: 'app-main-nav',
@@ -17,7 +19,8 @@ import {MatSnackBar, MatSnackBarConfig, MAT_SNACK_BAR_DATA, MatSnackBarRef} from
     MatButton,
     MatGridListModule,
     NgIf,
-    NgOptimizedImage
+    NgOptimizedImage,
+    MatMenuModule
   ],
   templateUrl: './main-nav.component.html',
   styleUrl: './main-nav.component.css'

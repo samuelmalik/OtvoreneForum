@@ -7,7 +7,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { HttpErrorResponse } from '@angular/common/http';
 import { equalValuesValidator, passwordStrengthValidator } from '../password-validators';
-import { Router } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
@@ -21,7 +21,8 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     MatIcon,
     MatIconButton,
     MatButton,
-    MatProgressSpinner
+    MatProgressSpinner,
+    RouterLink
   ],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.css'

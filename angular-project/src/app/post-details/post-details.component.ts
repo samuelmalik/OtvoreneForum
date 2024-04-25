@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, DestroyRef} from '@angular/core';
+import {Component, inject, OnInit, DestroyRef, Signal, signal} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
 import {ActivatedRoute} from "@angular/router";
@@ -37,6 +37,8 @@ export class PostDetailsComponent implements OnInit {
   public id: number;
   public postDetails: PostDetailsDtoInterface;
   public currentUserId :string;
+  //public commentList :CommentInfoInterface[] = [];
+  public commentList = signal<CommentInfoInterface[]>([]);
 
   constructor(private route: ActivatedRoute, private formBuilder: FormBuilder) { }
 
@@ -49,18 +51,18 @@ export class PostDetailsComponent implements OnInit {
        this.postDetails = data;
      });
 
+     // get comments
+    this.forumService.getCommentsByPost(this.currentUserId, this.id).subscribe(data => {
+    this.commentList = signal<CommentInfoInterface[]>(data);
+    })
+
+
     this.CreateCommentForm = this.formBuilder.group({
       message: ['', [Validators.required]],
       code: ['']
     });
   }
 
-  onCommentsOpened(){
-    console.log("Komentáre otvorené")
-    this.forumService.getCommentsByPost(this.currentUserId, this.id).subscribe(data => {
-      console.log(data)
-    })
-  }
 
   submitPost() {
 
@@ -78,8 +80,11 @@ export class PostDetailsComponent implements OnInit {
 
       this.forumService.createComment(commentData)
         .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe();
-      console.log(commentData)
+        .subscribe(data => {
+          this.commentList.update(items => [...items, data])
+
+        });
+
 
       this.CreateCommentForm.reset();
     }

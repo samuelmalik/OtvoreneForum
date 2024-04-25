@@ -19,17 +19,16 @@ export class ForumService {
   }
 
   getPostDetails(id: number){
-    const options = id.toString() ?
-      { params: new HttpParams().set('id', id.toString()) } : {};
-    return this.httpClient.get<PostDetailsDtoInterface>(`${this.baseUrl}/forum/getPostDetails`, options)
+    let params = new HttpParams();
+    params = params.append('id', id);
+    return this.httpClient.get<PostDetailsDtoInterface>(`${this.baseUrl}/forum/getPostDetails`, {params: params})
   }
 
   getCommentsByPost(userId: string, postId: number){
     let params = new HttpParams();
-    params = params.append('userId', userId);
     params = params.append('postId', postId);
 
-    return this.httpClient.get<CommentInfoInterface>(`${this.baseUrl}/forum/getCommentsByPost`, {params: params})
+    return this.httpClient.get<CommentInfoInterface[]>(`${this.baseUrl}/forum/getCommentsByPost`, {params: params})
   }
 
   createPost(data :any) {
@@ -37,7 +36,7 @@ export class ForumService {
   }
 
   createComment(data :any) {
-    return this.httpClient.post(`${this.baseUrl}/forum/newComment`, data)
+    return this.httpClient.post<CommentInfoInterface>(`${this.baseUrl}/forum/newComment`, data)
   }
 
 }

@@ -87,7 +87,7 @@ namespace AspNetCoreAPI.Controllers
         }
 
         [HttpPost("newComment")]
-        public CreateCommentDto CreateComment([FromBody] CreateCommentDto createComment)
+        public CommentInfoDto CreateComment([FromBody] CreateCommentDto createComment)
         {
             Comment newComment = new Comment()
             {
@@ -97,23 +97,28 @@ namespace AspNetCoreAPI.Controllers
                 Code = createComment.Code,
                 Date = DateTime.Now,
             };
+            var user = from u in _context.Users
+                       .Where(u => u.Id == createComment.AuthorId)
+                        select new User()
+                        {
+                            UserName = u.UserName,
+                        };
 
             _context.Add(newComment);
             _context.SaveChanges();
 
-            return new CreateCommentDto { AuthorId = newComment.UserId, PostId = newComment.PostId, Message = newComment.Message, Code = newComment.Code };
+            return new CommentInfoDto { Author = user.FirstOrDefault().UserName, Id = newComment.Id, Message = newComment.Message, Code = newComment.Code, Date = newComment.Date.ToString("dd MMMM yyyy HH:mm") };
         }
 
         [HttpGet("getCommentsByPost")]
         public IEnumerable<CommentInfoDto> GetCommentsByPost(
-            [FromQuery(Name = "userId")] string userId,
             [FromQuery(Name = "postId")] int postId)
 
         {
             var posts = from p in _context.Comment
                         .Include(p => p.User)
                         .Include(p => p.Post)
-                        .Where(p => p.User.Id == userId && p.PostId == postId)
+                        .Where(p => p.PostId == postId)
                         select new CommentInfoDto()
                         {
                             Id = p.Id,

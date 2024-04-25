@@ -16,14 +16,9 @@
     <pre class="code"><code [highlightAuto]="postDetails.code" lineNumbers></code></pre>
   </div>
 
-  <div class="comments">
-        <mat-expansion-panel class="add-comment">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Pridať komentár
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-
+  <div class="comments-section">
+        <div class="add-comment">
+          <h3>Pridajte komentár</h3>
           <form [formGroup]="CreateCommentForm">
             <div class="form-group">
               <label for="message">Komentár</label>
@@ -41,17 +36,23 @@
               <button (click)="submitPost()">Vytvoriť</button>
             }
           </form>
+        </div>
 
-        </mat-expansion-panel>
+    <div class="comments">
+      <h3 style="margin-top: 30px">Komentáre</h3>
+      @for (comment of this.commentList(); track comment){
+        <mat-card style="margin-bottom: 10px">
+          <mat-card-content>
+            <p>{{comment.author}}</p>
+            <p>{{comment.date}}</p>
+            <p>{{comment.message}}</p>
+            <pre class="code"><code [highlightAuto]="comment.code" lineNumbers></code></pre>
 
-      <mat-expansion-panel class="comments-list"
-                           (opened)="onCommentsOpened()">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Zobraziť komentáre (0)
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <p>This is the primary content of the panel.</p>
-      </mat-expansion-panel>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+
+
   </div>
 </div>

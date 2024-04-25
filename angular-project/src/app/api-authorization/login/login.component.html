@@ -2,9 +2,9 @@
   <h1>You're currently logged in.</h1>
 } @else {
   <h1 class="header">OpenForum</h1>
-  <h2 class="subheader">Chatuj a pomáhaj si s ostatnými OpenLabistami!</h2>
+  <h2 class="subheader">Prihlás sa a pomáhaj si s ostatnými OpenLabistami!</h2>
   <form [formGroup]="loginForm" (ngSubmit)="login()">
-    
+
     <mat-form-field>
       <mat-label>Zadajte váš e-mail</mat-label>
       <input matInput formControlName="email" required>

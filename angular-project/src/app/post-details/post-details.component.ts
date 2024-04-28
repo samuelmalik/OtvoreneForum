@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {MatCardModule} from '@angular/material/card';
 import {ActivatedRoute} from "@angular/router";
 import {
+  AddPostLikeInterface,
   CommentInfoInterface,
   CreateCommentInterface,
   ForumService,
@@ -14,6 +15,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {HighlightAuto} from "ngx-highlightjs";
 import {HighlightLineNumbers} from "ngx-highlightjs/line-numbers";
 import {MatButton} from "@angular/material/button";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-post-details',
@@ -24,7 +26,8 @@ import {MatButton} from "@angular/material/button";
     HighlightLineNumbers,
     ReactiveFormsModule,
     MatCardModule,
-    MatButton
+    MatButton,
+    MatProgressSpinner
   ],
   templateUrl: './post-details.component.html',
   styleUrl: './post-details.component.css',
@@ -37,8 +40,9 @@ export class PostDetailsComponent implements OnInit {
   public id: number;
   public postDetails: PostDetailsDtoInterface;
   public currentUserId :string;
-  //public commentList :CommentInfoInterface[] = [];
   public commentList = signal<CommentInfoInterface[]>([]);
+  public postLoading: boolean = true;
+  public commentsLoading: boolean = true;
 
   constructor(private route: ActivatedRoute, private formBuilder: FormBuilder) { }
 
@@ -47,13 +51,15 @@ export class PostDetailsComponent implements OnInit {
 
     const routeParams = this.route.snapshot.paramMap;
      this.id = Number(routeParams.get('postId'));
-     this.forumService.getPostDetails(this.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{
+     this.forumService.getPostDetails(this.id, this.currentUserId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{
        this.postDetails = data;
+       this.postLoading = false
      });
 
      // get comments
     this.forumService.getCommentsByPost(this.currentUserId, this.id).subscribe(data => {
     this.commentList = signal<CommentInfoInterface[]>(data);
+    this.commentsLoading = false
     })
 
 
@@ -76,6 +82,7 @@ export class PostDetailsComponent implements OnInit {
         code: this.CreateCommentForm.value.code,
         authorId: this.currentUserId,
         postId: this.id
+
       };
 
       this.forumService.createComment(commentData)
@@ -84,9 +91,30 @@ export class PostDetailsComponent implements OnInit {
           this.commentList.update(items => [...items, data])
 
         });
-
-
       this.CreateCommentForm.reset();
     }
+  }
+
+  onPostLike(){
+
+    const likeData: AddPostLikeInterface = {
+      userId: this.currentUserId,
+      postId: this.id
+    }
+
+    if(this.currentUserId == null){
+      console.log("Neprihlásený user");
+    }else if(this.postDetails.isLiked == false){
+
+      this.postDetails.isLiked = true
+      this.postDetails.likes += 1
+      this.forumService.addPostLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{})
+
+    } else if(this.postDetails.isLiked == true){
+      this.postDetails.isLiked = false
+      this.postDetails.likes -= 1
+      this.forumService.removePostLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{})
+    }
+
   }
 }

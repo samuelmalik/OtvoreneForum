@@ -1,58 +1,82 @@
 <div class="container">
-  <div class="post-info">
-    <h2>{{postDetails.title}}</h2>
+  @if(this.commentsLoading || this.postLoading){
+    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 20px">
+      <mat-spinner [diameter]="50"></mat-spinner>
+      <p>Načítavam príspevky</p>
+    </div>
+  } @else {
+    <div class="post-info">
+      <h2>{{postDetails.title}}</h2>
 
-    <p style="margin-left: 10px">{{postDetails.date}}</p>
-    <div class="author">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 profile-picture">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-      </svg>
-      <p>{{postDetails.author}}</p>
+      <p style="margin-left: 10px">{{postDetails.date}}</p>
+
+      <div class="likes-container">
+        @if (postDetails.isLiked){
+          <svg (click)="onPostLike()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 like-btn-liked like-btn">
+            <path d="M7.493 18.5c-.425 0-.82-.236-.975-.632A7.48 7.48 0 0 1 6 15.125c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75A.75.75 0 0 1 15 2a2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23h-.777ZM2.331 10.727a11.969 11.969 0 0 0-.831 4.398 12 12 0 0 0 .52 3.507C2.28 19.482 3.105 20 3.994 20H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 0 1-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227Z" />
+          </svg>
+        } @else {
+          <svg (click)="onPostLike()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 like-btn-unliked like-btn">
+            <path d="M7.493 18.5c-.425 0-.82-.236-.975-.632A7.48 7.48 0 0 1 6 15.125c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75A.75.75 0 0 1 15 2a2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23h-.777ZM2.331 10.727a11.969 11.969 0 0 0-.831 4.398 12 12 0 0 0 .52 3.507C2.28 19.482 3.105 20 3.994 20H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 0 1-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227Z" />
+          </svg>
+        }
+
+        <p>{{postDetails.likes }}</p>
+
+      </div>
+
+      <div class="author">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 profile-picture">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+        </svg>
+        <p>{{postDetails.author}}</p>
+      </div>
+
+      <p class="description">{{postDetails.description}}</p>
+
+      <h3 style="margin-top: 30px">Kód:</h3>
+      <pre class="code"><code [highlightAuto]="postDetails.code" lineNumbers></code></pre>
     </div>
 
-    <p class="description">{{postDetails.description}}</p>
+    <div class="comments-section">
+      <div class="add-comment">
+        <h3>Pridajte komentár</h3>
+        <form [formGroup]="CreateCommentForm">
+          <div class="form-group">
+            <label for="message">Komentár</label>
+            <textarea class="form-control" id="message" formControlName="message"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="code">Kód</label>
+            <textarea id="code" class="form-control" formControlName="code"></textarea>
+          </div>
 
-    <h3 style="margin-top: 30px">Kód:</h3>
-    <pre class="code"><code [highlightAuto]="postDetails.code" lineNumbers></code></pre>
-  </div>
+          @if(currentUserId == null){
+            <button class="disabled-btn">Vytvoriť</button>
+            <p style="color: red; margin-top: 5px">Pridávať komentáre môže iba prihlásený uživateľ</p>
+          } @else {
+            <button (click)="submitPost()">Vytvoriť</button>
+          }
+        </form>
+      </div>
 
-  <div class="comments-section">
-        <div class="add-comment">
-          <h3>Pridajte komentár</h3>
-          <form [formGroup]="CreateCommentForm">
-            <div class="form-group">
-              <label for="message">Komentár</label>
-              <textarea class="form-control" id="message" formControlName="message"></textarea>
-            </div>
-            <div class="form-group">
-              <label for="code">Kód</label>
-              <textarea id="code" class="form-control" formControlName="code"></textarea>
-            </div>
+      <div class="comments">
+        <h3 style="margin-top: 30px">Komentáre</h3>
+        @for (comment of this.commentList(); track comment){
+          <mat-card style="margin-bottom: 10px">
+            <mat-card-content>
+              <p>{{comment.author}}</p>
+              <p>{{comment.date}}</p>
+              <p>{{comment.message}}</p>
+              <pre class="code"><code [highlightAuto]="comment.code" lineNumbers></code></pre>
 
-            @if(currentUserId == null){
-              <button class="disabled-btn">Vytvoriť</button>
-              <p style="color: red; margin-top: 5px">Pridávať komentáre môže iba prihlásený uživateľ</p>
-            } @else {
-              <button (click)="submitPost()">Vytvoriť</button>
-            }
-          </form>
-        </div>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
 
-    <div class="comments">
-      <h3 style="margin-top: 30px">Komentáre</h3>
-      @for (comment of this.commentList(); track comment){
-        <mat-card style="margin-bottom: 10px">
-          <mat-card-content>
-            <p>{{comment.author}}</p>
-            <p>{{comment.date}}</p>
-            <p>{{comment.message}}</p>
-            <pre class="code"><code [highlightAuto]="comment.code" lineNumbers></code></pre>
 
-          </mat-card-content>
-        </mat-card>
-      }
     </div>
+  }
 
-
-  </div>
 </div>

@@ -54,8 +54,11 @@ namespace AspNetCoreAPI.Controllers
         }
 
         [HttpGet("getAllPosts")]
-        public IEnumerable <PostInfoDto> GetAllPosts()
+        public IEnumerable <PostInfoDto> GetAllPosts(
+            [FromQuery(Name = "currentUserId")] string currentUserId)
         {
+
+
             var posts = from p in _context.Post.Include(p => p.User)
                         select new PostInfoDto()
                         {
@@ -63,18 +66,27 @@ namespace AspNetCoreAPI.Controllers
                             Title = p.Title,
                             Description = p.Description,
                             Date = p.Date.ToString("dd MMMM yyyy HH:mm"),
-                            Id = p.Id
+                            Id = p.Id,
+                            Likes = _context.PostLikes
+                               .Include(l => l.User)
+                               .Include(l => l.Post)
+                               .Where(l => l.PostId == p.Id).Count(),
+                            IsLiked = _context.PostLikes
+                               .Include(l => l.User)
+                               .Include(l => l.Post)
+                               .Where(l => l.User.Id == currentUserId && l.PostId == p.Id).Count() > 0
                         };
             return posts;   
         }
 
         [HttpGet("getPostDetails")]
         public PostDetailsDto GetPostDetails(
-             [FromQuery(Name = "id")] string id
+             [FromQuery(Name = "postId")] string postId,
+             [FromQuery(Name = "currentUserId")] string currentUserId
             )
         {
             var post = from p in _context.Post.Include(p => p.User)
-                       .Where(p => p.Id.ToString() == id)
+                       .Where(p => p.Id.ToString() == postId)
                         select new PostDetailsDto()
                         {
                             Author = p.User.UserName,
@@ -82,6 +94,14 @@ namespace AspNetCoreAPI.Controllers
                             Description = p.Description,
                             Date = p.Date.ToString("dd MMMM yyyy HH:mm"),
                             Code = p.Code,
+                            Likes = _context.PostLikes
+                               .Include(l => l.User)
+                               .Include(l => l.Post)
+                               .Where(l => l.PostId == p.Id).Count(),
+                            IsLiked = _context.PostLikes
+                               .Include(l => l.User)
+                               .Include(l => l.Post)
+                               .Where(l => l.User.Id == currentUserId && l.PostId == p.Id).Count() > 0
                         };
             return post.FirstOrDefault();
         }
@@ -125,11 +145,41 @@ namespace AspNetCoreAPI.Controllers
                             Author = p.User.UserName,
                             Message = p.Message,
                             Date = p.Date.ToString("dd MMMM yyyy HH:mm"),
-                            Code = p.Code
+                            Code = p.Code,
+                            Likes = 36
                         };
             return posts;
         }
 
+        [HttpPost("addPostLike")]
+        public AddPostLikeDto AddPostLike([FromBody] AddPostLikeDto addLike)
+        {
+            PostLike newLike = new PostLike()
+            {
+                UserId = addLike.UserId,
+                PostId = addLike.PostId,
+            };
+           
+
+            _context.Add(newLike);
+            _context.SaveChanges();
+
+            return new AddPostLikeDto { UserId = newLike.UserId, PostId = newLike.PostId };
+        }
+
+        [HttpPost("removePostLike")]
+        public void RemovePostLike([FromBody] AddPostLikeDto removeLike)
+
+        {
+            foreach(var l in _context.PostLikes.Include(l => l.Post).Include(l => l.Post))
+            {
+                if(l.UserId == removeLike.UserId && l.PostId == removeLike.PostId)
+                {
+                    _context.Remove(l);
+                }
+            }
+            _context.SaveChanges();
+        }
 
 
 

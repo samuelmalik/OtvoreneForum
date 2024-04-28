@@ -12,6 +12,7 @@ namespace AspNetCoreAPI.Models
         public string Code { get; set; }
         public DateTime Date { get; set; }
         public ICollection<Comment> Comments { get; } = new List<Comment>();
+        public ICollection<PostLike> Likes { get; } = new List<PostLike>();
 
     }
 }

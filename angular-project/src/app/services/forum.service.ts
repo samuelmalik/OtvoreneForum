@@ -14,13 +14,16 @@ export class ForumService {
     return this.httpClient.get<UserDtoInterface[]>(this.baseUrl + '/forum/allUsers')
   }
 
-  getAllPosts(){
-    return this.httpClient.get<PostInfoDtoInterface[]>(`${this.baseUrl}/forum/getAllPosts`)
+  getAllPosts(userId: string){
+    let params = new HttpParams();
+    params = params.append('currentUserId', userId);
+    return this.httpClient.get<PostInfoDtoInterface[]>(`${this.baseUrl}/forum/getAllPosts`, {params: params})
   }
 
-  getPostDetails(id: number){
+  getPostDetails(postId: number, userId: string){
     let params = new HttpParams();
-    params = params.append('id', id);
+    params = params.append('postId', postId);
+    params = params.append('currentUserId', userId);
     return this.httpClient.get<PostDetailsDtoInterface>(`${this.baseUrl}/forum/getPostDetails`, {params: params})
   }
 
@@ -39,6 +42,14 @@ export class ForumService {
     return this.httpClient.post<CommentInfoInterface>(`${this.baseUrl}/forum/newComment`, data)
   }
 
+  addPostLike(data :any) {
+    return this.httpClient.post<AddPostLikeInterface>(`${this.baseUrl}/forum/addPostLike`, data)
+  }
+
+  removePostLike(data :any) {
+    return this.httpClient.post<AddPostLikeInterface>(`${this.baseUrl}/forum/removePostLike`, data)
+  }
+
 }
 
  export interface PostInfoDtoInterface {
@@ -47,6 +58,8 @@ export class ForumService {
   description: string;
   author: string;
   date: string;
+  likes: number;
+  isLiked: boolean;
 }
 
 export interface PostDetailsDtoInterface {
@@ -55,6 +68,8 @@ export interface PostDetailsDtoInterface {
   author: string;
   date: string;
   code: string;
+  likes: number;
+  isLiked: boolean;
 }
 
 export interface UserDtoInterface {
@@ -72,6 +87,12 @@ export interface CommentInfoInterface{
   message: string;
   code: string;
   author: string;
-  postId: number;
+  id: number;
   date: string;
+  likes: number;
+}
+
+export interface AddPostLikeInterface{
+  userId: string;
+  postId: number;
 }

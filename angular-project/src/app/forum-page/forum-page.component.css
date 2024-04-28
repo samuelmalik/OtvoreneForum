@@ -136,3 +136,17 @@ h2 {
   font-size: 1,5em;
   margin-left: 10px;
 }
+
+.like-btn{
+  width: 20px;
+  display: block;
+  margin-top: 5px;
+}
+
+.like-btn:hover{
+  cursor: pointer;
+}
+
+.like-btn-liked{
+  fill: green;
+}

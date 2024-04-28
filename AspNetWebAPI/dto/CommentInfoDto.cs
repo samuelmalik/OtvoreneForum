@@ -1,4 +1,6 @@
-﻿namespace AspNetCoreAPI.dto
+﻿using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+
+namespace AspNetCoreAPI.dto
 {
     public class CommentInfoDto
     {
@@ -7,5 +9,6 @@
         public string Message { get; set; }
         public string Date { get; set; }
         public string Code { get; set; }
+        public int Likes { get; set; }
     }
 }

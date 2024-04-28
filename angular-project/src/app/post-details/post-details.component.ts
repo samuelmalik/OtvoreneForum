@@ -40,7 +40,8 @@ export class PostDetailsComponent implements OnInit {
   public id: number;
   public postDetails: PostDetailsDtoInterface;
   public currentUserId :string;
-  public commentList = signal<CommentInfoInterface[]>([]);
+  //public commentList = signal<CommentInfoInterface[]>([]);
+  public commentArray :CommentInfoInterface[] = [];
   public postLoading: boolean = true;
   public commentsLoading: boolean = true;
 
@@ -58,7 +59,9 @@ export class PostDetailsComponent implements OnInit {
 
      // get comments
     this.forumService.getCommentsByPost(this.currentUserId, this.id).subscribe(data => {
-    this.commentList = signal<CommentInfoInterface[]>(data);
+    //this.commentList = signal<CommentInfoInterface[]>(data);
+    this.commentArray = data;
+
     this.commentsLoading = false
     })
 
@@ -82,14 +85,13 @@ export class PostDetailsComponent implements OnInit {
         code: this.CreateCommentForm.value.code,
         authorId: this.currentUserId,
         postId: this.id
-
       };
 
       this.forumService.createComment(commentData)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(data => {
-          this.commentList.update(items => [...items, data])
-
+          //this.commentList.update(items => [...items, data])
+          this.commentArray.push(data)
         });
       this.CreateCommentForm.reset();
     }

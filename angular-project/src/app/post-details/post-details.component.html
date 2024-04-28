@@ -62,7 +62,7 @@
 
       <div class="comments">
         <h3 style="margin-top: 30px">Komentáre</h3>
-        @for (comment of this.commentList(); track comment){
+        @for (comment of this.commentArray; track comment){
           <mat-card style="margin-bottom: 10px">
             <mat-card-content>
               <p>{{comment.author}}</p>

@@ -150,3 +150,14 @@ h2 {
 .like-btn-liked{
   fill: green;
 }
+
+.likes-container{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 0;
+}
+
+.likes-container svg,p{
+  margin: 0;
+}

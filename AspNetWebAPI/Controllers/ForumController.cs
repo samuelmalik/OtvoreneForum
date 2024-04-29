@@ -132,7 +132,8 @@ namespace AspNetCoreAPI.Controllers
 
         [HttpGet("getCommentsByPost")]
         public IEnumerable<CommentInfoDto> GetCommentsByPost(
-            [FromQuery(Name = "postId")] int postId)
+            [FromQuery(Name = "postId")] int postId,
+            [FromQuery(Name = "currentUserId")] string currentUserId)
 
         {
             var posts = from p in _context.Comment
@@ -146,7 +147,14 @@ namespace AspNetCoreAPI.Controllers
                             Message = p.Message,
                             Date = p.Date.ToString("dd MMMM yyyy HH:mm"),
                             Code = p.Code,
-                            Likes = 36
+                            Likes = _context.CommentLikes
+                               .Include(l => l.User)
+                               .Include(l => l.Comment)
+                               .Where(l => l.CommentId == p.Id).Count(),
+                            IsLiked = _context.CommentLikes
+                               .Include(l => l.User)
+                               .Include(l => l.Comment)
+                               .Where(l => l.User.Id == currentUserId && l.CommentId == p.Id).Count() > 0
                         };
             return posts;
         }
@@ -174,6 +182,36 @@ namespace AspNetCoreAPI.Controllers
             foreach(var l in _context.PostLikes.Include(l => l.Post).Include(l => l.Post))
             {
                 if(l.UserId == removeLike.UserId && l.PostId == removeLike.PostId)
+                {
+                    _context.Remove(l);
+                }
+            }
+            _context.SaveChanges();
+        }
+
+        [HttpPost("addCommentLike")]
+        public AddCommentLikeDto AddCommentLike([FromBody] AddCommentLikeDto addLike)
+        {
+            CommentLike newLike = new CommentLike()
+            {
+                UserId = addLike.UserId,
+                CommentId = addLike.CommentId,
+            };
+
+
+            _context.Add(newLike);
+            _context.SaveChanges();
+
+            return new AddCommentLikeDto { UserId = newLike.UserId, CommentId = newLike.CommentId };
+        }
+
+        [HttpPost("removeCommentLike")]
+        public void RemoveCommentLike([FromBody] AddCommentLikeDto removeLike)
+
+        {
+            foreach (var l in _context.CommentLikes.Include(l => l.Comment).Include(l => l.User))
+            {
+                if (l.UserId == removeLike.UserId && l.CommentId == removeLike.CommentId)
                 {
                     _context.Remove(l);
                 }

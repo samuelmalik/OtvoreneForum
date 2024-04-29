@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {MatCardModule} from '@angular/material/card';
 import {ActivatedRoute} from "@angular/router";
 import {
+  AddCommentLikeInterface,
   AddPostLikeInterface,
   CommentInfoInterface,
   CreateCommentInterface,
@@ -116,6 +117,29 @@ export class PostDetailsComponent implements OnInit {
       this.postDetails.isLiked = false
       this.postDetails.likes -= 1
       this.forumService.removePostLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{})
+    }
+
+  }
+
+  onCommentLike(commentId: number){
+    const index = this.commentArray.findIndex(comment => comment.id == commentId)
+    const likeData: AddCommentLikeInterface = {
+      userId: this.currentUserId,
+      commentId: commentId
+    }
+
+    if(this.currentUserId == null){
+      console.log("neprihlásený user");
+    }else if(this.commentArray[index].isLiked == false){
+
+      this.commentArray[index].isLiked = true
+      this.commentArray[index].likes += 1
+      this.forumService.addCommentLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{})
+
+    } else if(this.commentArray[index].isLiked == true){
+      this.commentArray[index].isLiked = false
+      this.commentArray[index].likes -= 1
+      this.forumService.removeCommentLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{})
     }
 
   }

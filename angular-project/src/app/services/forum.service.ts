@@ -30,6 +30,7 @@ export class ForumService {
   getCommentsByPost(userId: string, postId: number){
     let params = new HttpParams();
     params = params.append('postId', postId);
+    params = params.append('currentUserId', userId);
 
     return this.httpClient.get<CommentInfoInterface[]>(`${this.baseUrl}/forum/getCommentsByPost`, {params: params})
   }
@@ -48,6 +49,14 @@ export class ForumService {
 
   removePostLike(data :any) {
     return this.httpClient.post<AddPostLikeInterface>(`${this.baseUrl}/forum/removePostLike`, data)
+  }
+
+  addCommentLike(data :any) {
+    return this.httpClient.post<AddCommentLikeInterface>(`${this.baseUrl}/forum/addCommentLike`, data)
+  }
+
+  removeCommentLike(data :any) {
+    return this.httpClient.post<AddCommentLikeInterface>(`${this.baseUrl}/forum/removeCommentLike`, data)
   }
 
 }
@@ -90,9 +99,15 @@ export interface CommentInfoInterface{
   id: number;
   date: string;
   likes: number;
+  isLiked: boolean;
 }
 
 export interface AddPostLikeInterface{
   userId: string;
   postId: number;
+}
+
+export interface AddCommentLikeInterface{
+  userId: string;
+  commentId: number;
 }

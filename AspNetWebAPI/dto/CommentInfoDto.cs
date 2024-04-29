@@ -10,5 +10,6 @@ namespace AspNetCoreAPI.dto
         public string Date { get; set; }
         public string Code { get; set; }
         public int Likes { get; set; }
+        public bool IsLiked { get; set; }
     }
 }

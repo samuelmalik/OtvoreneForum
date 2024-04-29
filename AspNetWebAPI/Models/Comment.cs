@@ -10,5 +10,6 @@
         public string Message { get; set; }
         public string Code { get; set; }
         public DateTime Date { get; set; }
+        public ICollection<CommentLike> Likes { get; } = new List<CommentLike>();
     }
 }

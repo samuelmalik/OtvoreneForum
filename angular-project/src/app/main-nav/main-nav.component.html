@@ -11,8 +11,11 @@
       @if (authService.authenticated()) {
         <button class="right-button" mat-button (click)="logout()">Logout</button>
         <button class="right-button" mat-button (click)="createPost()">Nový príspevok</button>
-        <button class="right-button" mat-button >Nastavenia</button>
-        <button class="right-button" mat-button >Profil</button>
+        <button mat-button [matMenuTriggerFor]="menu">Profil</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item [routerLink]="['/notifications']"> Oznámenia </button>
+          <button mat-menu-item> Nastavenia </button>
+        </mat-menu>
       } @else {
         <button class="right-button" mat-button (click)="createPost()" >Nový príspevok</button>
         <button class="right-button" mat-button [routerLink]="['/login']">Login</button>

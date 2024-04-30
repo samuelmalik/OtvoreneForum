@@ -10,6 +10,7 @@
         public string Message { get; set; }
         public string Code { get; set; }
         public DateTime Date { get; set; }
+        public bool IsAuthorNotificated { get; set; } = false;
         public ICollection<CommentLike> Likes { get; } = new List<CommentLike>();
     }
 }

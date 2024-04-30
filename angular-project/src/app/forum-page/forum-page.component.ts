@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, Inject, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {ForumService, UserDtoInterface, PostInfoDtoInterface, AddPostLikeInterface} from "../services/forum.service";
 import {MatListModule} from '@angular/material/list';
@@ -63,6 +63,7 @@ export class ForumPageComponent implements OnInit{
     }
 
   }
+
 }
 
 

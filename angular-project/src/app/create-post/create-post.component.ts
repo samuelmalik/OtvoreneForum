@@ -72,6 +72,5 @@ export class CreatePostComponent implements OnInit{
       duration: 3000
     });
   }
-
-  }
+}
 

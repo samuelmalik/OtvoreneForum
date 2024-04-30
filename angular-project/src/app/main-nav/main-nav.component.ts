@@ -1,11 +1,10 @@
-import { Component, inject } from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { MatToolbar } from '@angular/material/toolbar';
 import {MatButton} from "@angular/material/button";
 import {MatGridListModule} from '@angular/material/grid-list';
 import { AuthenticationService } from '../api-authorization/authentication.service';
 import {NgIf, NgOptimizedImage} from '@angular/common';
-import {Inject} from "@angular/core";
 import {MatSnackBar, MatSnackBarConfig, MAT_SNACK_BAR_DATA, MatSnackBarRef} from "@angular/material/snack-bar";
 import {MatMenuModule} from '@angular/material/menu';
 
@@ -25,7 +24,7 @@ import {MatMenuModule} from '@angular/material/menu';
   templateUrl: './main-nav.component.html',
   styleUrl: './main-nav.component.css'
 })
-export class MainNavComponent {
+export class MainNavComponent{
   authService = inject(AuthenticationService);
   private router = inject(Router);
   configSuccess: MatSnackBarConfig = {
@@ -51,6 +50,7 @@ export class MainNavComponent {
       });
     }
   }
+
 }
 
 @Component({
@@ -72,5 +72,6 @@ export class CreatePostNavSnackComponent {
     this.snackBarRef.dismiss()
     this.router.navigate(['/login'])
   }
+
 }
 

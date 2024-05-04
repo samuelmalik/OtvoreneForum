@@ -8,5 +8,6 @@
         public int? CommentId { get; set; }
         public Comment Comment { get; set; }
         public bool IsAuthorNotificated { get; set; } = false;
+        public DateTime Date { get; set; }
     }
 }

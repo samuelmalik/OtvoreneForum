@@ -166,6 +166,7 @@ namespace AspNetCoreAPI.Controllers
             {
                 UserId = addLike.UserId,
                 PostId = addLike.PostId,
+                Date = DateTime.Now,
             };
            
 
@@ -196,6 +197,7 @@ namespace AspNetCoreAPI.Controllers
             {
                 UserId = addLike.UserId,
                 CommentId = addLike.CommentId,
+                Date = DateTime.Now,
             };
 
 
@@ -217,6 +219,54 @@ namespace AspNetCoreAPI.Controllers
                 }
             }
             _context.SaveChanges();
+        }
+
+        [HttpGet("getNotifications")]
+        public IEnumerable<NotificationDto> GetNotifications(
+            [FromQuery(Name = "currentUserId")] string currentUserId)
+        {
+            List<NotificationDto> notifications = new List<NotificationDto>();
+
+            foreach (var item in _context.Comment.Include(c => c.Post).Include(c => c.User).Where(c => c.Post.UserId == currentUserId && c.IsAuthorNotificated == false))
+            {
+                notifications.Add(new NotificationDto
+                {
+                    PostId = item.PostId,
+                    PostTitle = item.Post.Title,
+                    Type = "comment",
+                    AuthorUsername = item.User.UserName,
+                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm")
+                });
+            }
+
+            foreach (var item in _context.PostLikes.Include(p => p.Post).Include(p => p.User).Where(p => p.Post.UserId == currentUserId && p.IsAuthorNotificated == false))
+            {
+                notifications.Add(new NotificationDto
+                {
+                    PostId = item.PostId,
+                    PostTitle = item.Post.Title,
+                    Type = "postLike",
+                    AuthorUsername = item.User.UserName,
+                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm")
+                });
+            }
+
+            foreach (var item in _context.CommentLikes.Include(cl => cl.Comment.Post).Include(cl => cl.User).Where(cl => cl.Comment.UserId == currentUserId && cl.IsAuthorNotificated == false))
+            {
+                notifications.Add(new NotificationDto
+                {
+                    PostId = item.Comment.PostId,
+                    PostTitle = item.Comment.Post.Title,
+                    Type = "commentLike",
+                    AuthorUsername = item.User.UserName,
+                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm")
+                });
+            }
+
+            return notifications.OrderByDescending(n => DateTime.Parse(n.CreateTime));
+
+
+
         }
 
 

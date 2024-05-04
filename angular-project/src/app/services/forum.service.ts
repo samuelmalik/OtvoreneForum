@@ -59,6 +59,12 @@ export class ForumService {
     return this.httpClient.post<AddCommentLikeInterface>(`${this.baseUrl}/forum/removeCommentLike`, data)
   }
 
+  getNotifications(userId: string){
+    let params = new HttpParams();
+    params = params.append('currentUserId', userId);
+    return this.httpClient.get<NotificationInterface[]>(`${this.baseUrl}/forum/getNotifications`, {params: params})
+  }
+
 }
 
  export interface PostInfoDtoInterface {
@@ -110,4 +116,11 @@ export interface AddPostLikeInterface{
 export interface AddCommentLikeInterface{
   userId: string;
   commentId: number;
+}
+
+export interface NotificationInterface{
+  postId: number;
+  postTitle: string;
+  type: string;
+  authorUsername: string;
 }

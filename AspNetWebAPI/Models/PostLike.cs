@@ -8,5 +8,6 @@
         public int? PostId { get; set; }
         public Post Post { get; set; }
         public bool IsAuthorNotificated { get; set; } = false;
+        public DateTime Date { get; set; }
     }
 }

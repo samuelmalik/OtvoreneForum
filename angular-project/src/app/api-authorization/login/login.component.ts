@@ -7,6 +7,7 @@ import { AuthenticationService } from '../authentication.service';
 import { AsyncPipe } from '@angular/common';
 import {Router, RouterLink} from '@angular/router';
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {SharedService} from "../../services/shared.service";
 
 @Component({
   selector: 'app-login',
@@ -32,6 +33,10 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
 
+
+  constructor(private sharedService:SharedService) {
+  }
+
   ngOnInit(): void {
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.required]),
@@ -49,6 +54,7 @@ export class LoginComponent implements OnInit {
           if(response.isAuthSuccessful){
             this.authService.storeUserCredentials(response.token, response.username, response.id);
             this.showLoader = false;
+            this.sharedService.sendClickEvent();
             this.router.navigate(['/forum']);
           } else {
             this.showLoader = false;

@@ -14,3 +14,7 @@ mat-card{
 mat-card-title:nth-of-type(2){
   font-style: italic;
 }
+
+.card-header:hover{
+  cursor: pointer;
+}

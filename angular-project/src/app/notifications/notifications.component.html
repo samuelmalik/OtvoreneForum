@@ -1,7 +1,7 @@
 <div class="container">
   @for (notification of notifications; track notification) {
     <mat-card>
-      <div class="card-header">
+      <div class="card-header" (click)="navigateToDetails(notification.type, notification.itemId, notification.postId)">
         <p>{{notification.createTime}}</p>
           <mat-card-title>
             @if(notification.type == "comment"){

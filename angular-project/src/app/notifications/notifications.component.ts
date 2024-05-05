@@ -4,6 +4,7 @@ import {AuthenticationService} from "../api-authorization/authentication.service
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCardModule} from "@angular/material/card";
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-notifications',
@@ -17,6 +18,7 @@ import {MatCardModule} from "@angular/material/card";
 })
 export class NotificationsComponent implements OnInit{
   private currentUserId: string;
+  private router: Router = inject(Router)
   private forumService: ForumService = inject(ForumService);
   private authService: AuthenticationService = inject(AuthenticationService);
   private destroyRef: DestroyRef = inject(DestroyRef);
@@ -41,6 +43,11 @@ export class NotificationsComponent implements OnInit{
     } else if(type == "commentLike"){
       this.forumService.makeCommentLikeSeen(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe()
     }
+  }
+
+  navigateToDetails(type: string, itemId: number, postId: number){
+    this.onRemoveNotification(type, itemId)
+    this.router.navigate(['/post-details', postId])
   }
 
 }

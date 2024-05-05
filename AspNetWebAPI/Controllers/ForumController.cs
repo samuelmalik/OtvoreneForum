@@ -8,6 +8,7 @@ using AspNetCoreAPI.Data;
 using System.Security.Claims;
 using AspNetCoreAPI.dto;
 using Microsoft.EntityFrameworkCore;
+using AspNetCoreAPI.Authentication.dto;
 
 namespace AspNetCoreAPI.Controllers
 {
@@ -235,7 +236,8 @@ namespace AspNetCoreAPI.Controllers
                     PostTitle = item.Post.Title,
                     Type = "comment",
                     AuthorUsername = item.User.UserName,
-                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm")
+                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm"),
+                    ItemId = item.Id
                 });
             }
 
@@ -247,7 +249,8 @@ namespace AspNetCoreAPI.Controllers
                     PostTitle = item.Post.Title,
                     Type = "postLike",
                     AuthorUsername = item.User.UserName,
-                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm")
+                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm"),
+                    ItemId = item.Id
                 });
             }
 
@@ -259,7 +262,8 @@ namespace AspNetCoreAPI.Controllers
                     PostTitle = item.Comment.Post.Title,
                     Type = "commentLike",
                     AuthorUsername = item.User.UserName,
-                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm")
+                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm"),
+                    ItemId = item.Id
                 });
             }
 
@@ -267,6 +271,49 @@ namespace AspNetCoreAPI.Controllers
 
 
 
+        }
+
+        [HttpPut("makeCommentSeen")]
+        public void MakeCommentSeen([FromBody] int itemId)
+
+        {
+            foreach (var c in _context.Comment)
+            {
+                if (c.Id == itemId)
+                {
+                    c.IsAuthorNotificated = true;
+                    _context.Update(c);
+                }
+            }
+            _context.SaveChanges();
+        }
+        [HttpPut("makePostLikeSeen")]
+        public void MakePostLikeSeen([FromBody] int itemId)
+
+        {
+            foreach (var l in _context.PostLikes)
+            {
+                if (l.Id == itemId)
+                {
+                    l.IsAuthorNotificated = true;
+                    _context.Update(l);
+                }
+            }
+            _context.SaveChanges();
+        }
+        [HttpPut("makeCommentLikeSeen")]
+        public void MakeCommentLikeSeen([FromBody] int itemId)
+
+        {
+            foreach (var l in _context.CommentLikes)
+            {
+                if (l.Id == itemId)
+                {
+                    l.IsAuthorNotificated = true;
+                    _context.Update(l);
+                }
+            }
+            _context.SaveChanges();
         }
 
 

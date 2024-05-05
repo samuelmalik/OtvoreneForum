@@ -1,0 +1,16 @@
+.container{
+  padding: 100px;
+}
+
+mat-card{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+mat-card-title:nth-of-type(2){
+  font-style: italic;
+}

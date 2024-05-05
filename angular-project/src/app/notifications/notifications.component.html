@@ -1,1 +1,28 @@
-<p>notifications works!</p>
+<div class="container">
+  @for (notification of notifications; track notification) {
+    <mat-card>
+      <div class="card-header">
+        <p>{{notification.createTime}}</p>
+          <mat-card-title>
+            @if(notification.type == "comment"){
+              Používateľ {{notification.authorUsername}} komentoval Váš príspevok:
+            } @else if (notification.type == "postLike"){
+              Používateľovi {{notification.authorUsername}} sa páči Váš príspevok:
+            } @else if (notification.type == "commentLike"){
+              Používateľovi {{notification.authorUsername}} sa páči Váš komentár u príspevku:
+            }
+
+          </mat-card-title>
+          <mat-card-title>"{{notification.postTitle}}"</mat-card-title>
+      </div>
+
+      <mat-card-actions>
+        <button mat-button (click)="onRemoveNotification(notification.type, notification.itemId)">X</button>
+      </mat-card-actions>
+    </mat-card>
+
+  } @empty {
+    <p>Nemáte žiadne nové upozornenia</p>
+  }
+</div>
+

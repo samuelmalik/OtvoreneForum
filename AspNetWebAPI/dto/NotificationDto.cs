@@ -7,6 +7,7 @@
         public string Type { get; set; }
         public string AuthorUsername { get; set; }
         public string CreateTime { get; set; }
+        public int ItemId { get; set; }
         
     }
 }

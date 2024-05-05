@@ -65,6 +65,16 @@ export class ForumService {
     return this.httpClient.get<NotificationInterface[]>(`${this.baseUrl}/forum/getNotifications`, {params: params})
   }
 
+  makeCommentSeen(data :any) {
+    return this.httpClient.put(`${this.baseUrl}/forum/makeCommentSeen`, data)
+  }
+  makePostLikeSeen(data :any) {
+    return this.httpClient.put(`${this.baseUrl}/forum/makePostLikeSeen`, data)
+  }
+  makeCommentLikeSeen(data :any) {
+    return this.httpClient.put(`${this.baseUrl}/forum/makeCommentLikeSeen`, data)
+  }
+
 }
 
  export interface PostInfoDtoInterface {
@@ -123,4 +133,6 @@ export interface NotificationInterface{
   postTitle: string;
   type: string;
   authorUsername: string;
+  createTime: string;
+  itemId: number;
 }

@@ -273,6 +273,13 @@ namespace AspNetCoreAPI.Controllers
 
         }
 
+        [HttpGet("hasNotifications")]
+        public bool HasNotifications(
+            [FromQuery(Name = "currentUserId")] string currentUserId)
+        {
+            return GetNotifications(currentUserId).ToList().Count() != 0;
+        }
+
         [HttpPut("makeCommentSeen")]
         public void MakeCommentSeen([FromBody] int itemId)
 

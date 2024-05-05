@@ -65,6 +65,12 @@ export class ForumService {
     return this.httpClient.get<NotificationInterface[]>(`${this.baseUrl}/forum/getNotifications`, {params: params})
   }
 
+  hasNotifications(userId: string){
+    let params = new HttpParams();
+    params = params.append('currentUserId', userId);
+    return this.httpClient.get<boolean>(`${this.baseUrl}/forum/hasNotifications`, {params: params})
+  }
+
   makeCommentSeen(data :any) {
     return this.httpClient.put(`${this.baseUrl}/forum/makeCommentSeen`, data)
   }

@@ -11,9 +11,18 @@
       @if (authService.authenticated()) {
         <button class="right-button" mat-button (click)="logout()">Logout</button>
         <button class="right-button" mat-button (click)="createPost()">Nový príspevok</button>
-        <button mat-button [matMenuTriggerFor]="menu">Profil</button>
+        <button mat-button [matMenuTriggerFor]="menu">Profil
+          @if(hasNotifications){
+            <div class="nav-notifications-indicator notifications-indicator"></div>
+          }
+
+        </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item [routerLink]="['/notifications']"> Oznámenia </button>
+          <button mat-menu-item [routerLink]="['/notifications']"> Oznámenia
+            @if(hasNotifications){
+              <div class="menu-notifications-indicator notifications-indicator"></div>
+            }
+          </button>
           <button mat-menu-item> Nastavenia </button>
         </mat-menu>
       } @else {

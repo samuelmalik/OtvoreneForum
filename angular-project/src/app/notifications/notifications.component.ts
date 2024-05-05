@@ -24,7 +24,6 @@ export class NotificationsComponent implements OnInit{
 
 
   ngOnInit() {
-    console.log("funguje")
     this.currentUserId = this.authService.getCurrentId();
 
     this.forumService.getNotifications(this.currentUserId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{

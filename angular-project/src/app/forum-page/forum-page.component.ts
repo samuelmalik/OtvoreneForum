@@ -7,13 +7,18 @@ import {RouterLink} from "@angular/router";
 import {AuthenticationService} from "../api-authorization/authentication.service";
 
 
+
+
+
 @Component({
   selector: 'app-forum-page',
   standalone: true,
   imports: [
     MatListModule,
     MatProgressSpinner,
-    RouterLink
+    RouterLink,
+
+
   ],
   templateUrl: './forum-page.component.html',
   styleUrl: './forum-page.component.css'

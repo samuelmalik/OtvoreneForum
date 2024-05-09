@@ -3,11 +3,12 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {ForumService, UserDtoInterface, PostInfoDtoInterface, AddPostLikeInterface} from "../services/forum.service";
 import {MatListModule} from '@angular/material/list';
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {MatMenuModule} from "@angular/material/menu";
 import {RouterLink} from "@angular/router";
 import {AuthenticationService} from "../api-authorization/authentication.service";
 import {SearchPipe} from "../pipes/search.pipe";
 import {FormsModule} from "@angular/forms";
-import {UpperCasePipe} from "@angular/common";
+import {MatButtonModule} from "@angular/material/button";
 
 
 @Component({
@@ -19,8 +20,8 @@ import {UpperCasePipe} from "@angular/common";
     RouterLink,
     SearchPipe,
     FormsModule,
-    UpperCasePipe,
-
+    MatMenuModule,
+    MatButtonModule
 
   ],
   templateUrl: './forum-page.component.html',
@@ -35,7 +36,8 @@ export class ForumPageComponent implements OnInit{
   public userList: UserDtoInterface[] = [];
   public showPostsLoader = true;
   public showUsersLoader = true;
-  searchText: string;
+  public searchText: string;
+  public orderBy :string;
 
 
 
@@ -47,6 +49,8 @@ export class ForumPageComponent implements OnInit{
     });
     this.forumService.getAllPosts(this.currentUserId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
       this.postList = data;
+      this.orderBy = "Od najnovšieho"
+      this.postList.sort((a, b) => b.id - a.id)
       this.showPostsLoader = false;
     });
   }
@@ -72,6 +76,22 @@ export class ForumPageComponent implements OnInit{
       this.forumService.removePostLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{})
     }
 
+  }
+
+  changeOrder(order: string){
+    if (order == "newest"){
+      this.orderBy = "Od najnovšieho"
+      this.postList.sort((a, b) => b.id - a.id)
+    } else if(order == "oldest"){
+      this.orderBy = "Od najstaršieho"
+      this.postList.sort((a, b) => a.id - b.id)
+    } else if(order == "most-liked"){
+      this.orderBy = "Od najobľúbenejších"
+      this.postList.sort((a, b) => b.likes - a.likes)
+    } else if(order == "least-liked"){
+      this.orderBy = "Od najmenej obľúbených"
+      this.postList.sort((a, b) => a.likes - b.likes)
+    }
   }
 
 }

@@ -5,9 +5,9 @@ import {MatListModule} from '@angular/material/list';
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {RouterLink} from "@angular/router";
 import {AuthenticationService} from "../api-authorization/authentication.service";
-
-
-
+import {SearchPipe} from "../pipes/search.pipe";
+import {FormsModule} from "@angular/forms";
+import {UpperCasePipe} from "@angular/common";
 
 
 @Component({
@@ -17,6 +17,9 @@ import {AuthenticationService} from "../api-authorization/authentication.service
     MatListModule,
     MatProgressSpinner,
     RouterLink,
+    SearchPipe,
+    FormsModule,
+    UpperCasePipe,
 
 
   ],
@@ -32,6 +35,8 @@ export class ForumPageComponent implements OnInit{
   public userList: UserDtoInterface[] = [];
   public showPostsLoader = true;
   public showUsersLoader = true;
+  searchText: string;
+
 
 
   ngOnInit() {

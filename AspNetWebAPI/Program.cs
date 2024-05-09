@@ -1,5 +1,6 @@
 //using Microsoft.AspNetCore.Identity;
 using AspNetCoreAPI.Data;
+using AspNetCoreAPI.HubConfig;
 using AspNetCoreAPI.Models;
 using AspNetCoreAPI.Registration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,6 +37,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<JwtHandler>();
 
 // Add services to the container.
+builder.Services.AddSignalR();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
@@ -76,5 +78,6 @@ app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHub<NotificationHub>("/notification");
 
 app.Run();

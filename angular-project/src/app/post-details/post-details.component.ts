@@ -17,6 +17,9 @@ import {HighlightAuto} from "ngx-highlightjs";
 import {HighlightLineNumbers} from "ngx-highlightjs/line-numbers";
 import {MatButton} from "@angular/material/button";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {MatButtonModule} from "@angular/material/button";
+import {MatMenuModule} from "@angular/material/menu";
+
 
 @Component({
   selector: 'app-post-details',
@@ -28,7 +31,9 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     ReactiveFormsModule,
     MatCardModule,
     MatButton,
-    MatProgressSpinner
+    MatProgressSpinner,
+    MatMenuModule,
+    MatButtonModule
   ],
   templateUrl: './post-details.component.html',
   styleUrl: './post-details.component.css',
@@ -45,6 +50,7 @@ export class PostDetailsComponent implements OnInit {
   public commentArray :CommentInfoInterface[] = [];
   public postLoading: boolean = true;
   public commentsLoading: boolean = true;
+  public orderBy: string;
 
   constructor(private route: ActivatedRoute, private formBuilder: FormBuilder) { }
 
@@ -62,7 +68,8 @@ export class PostDetailsComponent implements OnInit {
     this.forumService.getCommentsByPost(this.currentUserId, this.id).subscribe(data => {
     //this.commentList = signal<CommentInfoInterface[]>(data);
     this.commentArray = data;
-
+    this.orderBy = "Od najnovšieho"
+    this.commentArray.sort((a, b) => b.id - a.id)
     this.commentsLoading = false
     })
 
@@ -71,6 +78,21 @@ export class PostDetailsComponent implements OnInit {
       message: ['', [Validators.required]],
       code: ['']
     });
+  }
+  changeOrder(order: string){
+    if (order == "newest"){
+      this.orderBy = "Od najnovšieho"
+      this.commentArray.sort((a, b) => b.id - a.id)
+    } else if(order == "oldest"){
+      this.orderBy = "Od najstaršieho"
+      this.commentArray.sort((a, b) => a.id - b.id)
+    } else if(order == "most-liked"){
+      this.orderBy = "Od najobľúbenejších"
+      this.commentArray.sort((a, b) => b.likes - a.likes)
+    } else if(order == "least-liked"){
+      this.orderBy = "Od najmenej obľúbených"
+      this.commentArray.sort((a, b) => a.likes - b.likes)
+    }
   }
 
 

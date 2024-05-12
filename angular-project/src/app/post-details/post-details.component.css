@@ -97,3 +97,14 @@ button {
   margin: 0;
 }
 
+
+.order-container{
+  align-self: center;
+  justify-self: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.order-container p{
+  margin: auto 0;
+}

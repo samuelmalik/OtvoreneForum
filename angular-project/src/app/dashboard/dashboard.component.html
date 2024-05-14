@@ -1,12 +1,22 @@
-<div>
-  <h2>Hello! You can only see this if you're logged in!</h2>
-  <table mat-table *ngIf="dataSource" [dataSource]="dataSource">
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let member"> {{ member }} </td>
-
-      <tr mat-header-row *matHeaderRowDef="['name',]"></tr>
-      <tr mat-row *matRowDef="let row; columns: ['name'];"></tr>
-    </ng-container>
-  </table>
+<form [formGroup]="PasswordForm">
+  <div class="form-group">
+    <label for="oldPassword">Zadajte staré heslo</label>
+    <input type="text" id="oldPassword" class="form-control" formControlName="oldPassword"/>
+  </div>
+  <div class="form-group">
+    <label for="newPassword">Zadajte nové heslo</label>
+    <input type="text" id="newPassword" class="form-control" formControlName="newPassword"/>
+  </div>
+  <div class="form-group">
+    <label for="confirmPassword">Znovu zadajte nové heslo</label>
+    <input type="text" id="confirmPassword" class="form-control" formControlName="confirmPassword"/>
+  </div>
+</form>
+<div class="text-red-400 text-sm" *ngIf="newPasswordFormField?.dirty">
+  <span class="block" [ngClass]="{'text-primary': newPasswordFormField?.errors?.['hasUpperCase']}">At least one uppercase letter.</span>
+  <span class="block" [ngClass]="{'text-primary': newPasswordFormField?.errors?.['hasLowerCase']}">At least one lowercase letter.</span>
+  <span class="block" [ngClass]="{'text-primary': newPasswordFormField?.errors?.['hasNumeric']}">At least one digit.</span>
+  <span class="block" [ngClass]="{'text-primary': newPasswordFormField?.errors?.['hasNonAlphanumeric']}">At least one special character.</span>
+  <span class="block" [ngClass]="{'text-primary': newPasswordFormField?.errors?.['' +
+   '']}">At least 8 characters long.</span>
 </div>

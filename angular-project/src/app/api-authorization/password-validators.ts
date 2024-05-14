@@ -17,6 +17,7 @@ export function passwordStrengthValidator(): ValidatorFn {
 
     return passwordValid ? null : { passwordStrength: true };
   }
+
 }
 
 export function equalValuesValidator(fieldToBeComparedWith: string): ValidatorFn {

@@ -9,6 +9,7 @@ import {passwordStrengthValidator} from "../api-authorization/password-validator
 import {equalValuesValidator} from "../api-authorization/password-validators";
  import {MatFormField, MatLabel} from "@angular/material/form-field";
  import {MatInput} from "@angular/material/input";
+ import {AuthenticationService, ChangePasswordInterface, ChangePasswordResponse} from "../api-authorization/authentication.service";
  import {HttpErrorResponse} from "@angular/common/http";
  import { CommonModule } from '@angular/common';
 
@@ -45,8 +46,12 @@ import {equalValuesValidator} from "../api-authorization/password-validators";
 export class DashboardComponent implements OnInit {
   private testService = inject(TestService);
   private destroyRef = inject(DestroyRef);
+  private authService :AuthenticationService = inject(AuthenticationService)
   public UsernameForm: FormGroup;
   public  PasswordForm: FormGroup;
+
+  private currentUserId :string;
+  public errorMessage ="";
 
 
 
@@ -60,8 +65,6 @@ export class DashboardComponent implements OnInit {
       confirmPassword: new FormControl('', equalValuesValidator('newPassword'))
     });
 
-
-
   }
    get newPasswordFormField()
    {
@@ -69,9 +72,25 @@ export class DashboardComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.testService.getNames()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(names => this.dataSource = new MatTableDataSource(names));
+    this.currentUserId = this.authService.getCurrentId();
+  }
+
+  submitPasswordForm(){
+    if(this.PasswordForm.value.newPassword == this.PasswordForm.value.confirmPassword){
+      let data :ChangePasswordInterface ={
+        id: this.currentUserId,
+        oldPassword: this.PasswordForm.value.oldPassword,
+        newPassword: this.PasswordForm.value.newPassword
+      }
+
+      this.authService.changePassword(data).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{
+        this.errorMessage = data.errorMessage;
+      });
+    } else {
+      this.errorMessage = "Heslá sa nezhodujú"
+    }
+
+
   }
 
 }

@@ -63,9 +63,20 @@ namespace AspNetCoreAPI.Registration
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
         {
             var user = _context.Users.Where(u => u.Id == changePasswordDto.Id).FirstOrDefault();
+            var passwordCorrect = await _userManager.CheckPasswordAsync(user, changePasswordDto.OldPassword);
 
             var result = await _userManager.ChangePasswordAsync(user, changePasswordDto.OldPassword, changePasswordDto.NewPassword);
-            return Ok(result.Errors);
+            
+            if (!passwordCorrect)
+            {
+                return Ok(new ChangePasswordRespone { ErrorMessage = "Zadali ste nesprávne heslo"});
+            } else if (!result.Succeeded)
+            {
+                return Ok(new ChangePasswordRespone { ErrorMessage = "Heslo musí mať aspoň 6 znakov, obsahovať číslo, malé a veľké písmeno a špeciálny znak"});
+            } else
+            {
+                return Ok(new ChangePasswordRespone { ErrorMessage = "Heslo úspešne zmenené"});
+            }
 
 
 

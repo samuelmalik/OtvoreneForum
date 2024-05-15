@@ -11,12 +11,14 @@
     <label for="confirmPassword">Znovu zadajte nové heslo</label>
     <input type="text" id="confirmPassword" class="form-control" formControlName="confirmPassword"/>
   </div>
+  <p style="color: red">{{errorMessage}}</p>
+  <button (click)="submitPasswordForm()" type="submit">Vytvoriť</button>
 </form>
-<div class="text-red-400 text-sm" *ngIf="newPasswordFormField?.dirty">
+<!-- <div class="text-red-400 text-sm" *ngIf="newPasswordFormField?.dirty">
   <span class="block" [ngClass]="{'text-primary': newPasswordFormField?.errors?.['hasUpperCase']}">At least one uppercase letter.</span>
   <span class="block" [ngClass]="{'text-primary': newPasswordFormField?.errors?.['hasLowerCase']}">At least one lowercase letter.</span>
   <span class="block" [ngClass]="{'text-primary': newPasswordFormField?.errors?.['hasNumeric']}">At least one digit.</span>
   <span class="block" [ngClass]="{'text-primary': newPasswordFormField?.errors?.['hasNonAlphanumeric']}">At least one special character.</span>
   <span class="block" [ngClass]="{'text-primary': newPasswordFormField?.errors?.['' +
    '']}">At least 8 characters long.</span>
-</div>
+</div> -->

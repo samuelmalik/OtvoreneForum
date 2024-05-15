@@ -30,6 +30,10 @@ export class AuthenticationService {
     this.authenticated.set(false);
   }
 
+  changePassword(data: ChangePasswordInterface){
+    return this.httpClient.post<ChangePasswordResponse>(`${this.baseUrl}/user/changePassword`, data)
+  }
+
   storeUserCredentials(token: string, username: string, id: string) {
     localStorage.setItem('token', token);
     localStorage.setItem('username', username);
@@ -50,4 +54,14 @@ export class AuthenticationService {
 
     return token && !this.jwtHelper.isTokenExpired(token);
   }
+}
+
+export interface ChangePasswordInterface{
+  id: string;
+  oldPassword: string;
+  newPassword: string
+}
+
+export interface ChangePasswordResponse{
+  errorMessage: string;
 }

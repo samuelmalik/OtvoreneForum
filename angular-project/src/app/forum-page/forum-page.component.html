@@ -1,9 +1,10 @@
 <div class="grid">
   <div class="div1">
-    <input type="text" class="searchTerm" placeholder="Prehľadávať" [(ngModel)]="searchText">
-    <button type="submit" class="searchButton">
-      <i style="color: white; font-size: 25px; display: flex; justify-content: center" class="bi bi-search"></i>
-    </button>
+      <input type="text" class="searchTerm" placeholder="Prehľadávať" [(ngModel)]="searchText">
+      <button type="submit" class="searchButton">
+        <i style="color: white; font-size: 25px; display: flex; justify-content: center" class="bi bi-search"></i>
+      </button>
+
 
     <div class="order-container">
       <p class="xd">Zoradiť podľa: {{ orderBy }}</p>
@@ -39,6 +40,9 @@
       <mat-list class="posts-list">
       @for (post of postList  | searchPipe: searchText; track post) {
       <div class="posts-item">
+        <div>
+
+        </div>
         <div class="creator">
           <img class="pfp" src="assets/profilovka.jpeg"/>
           <div class="c-info">
@@ -50,14 +54,14 @@
         <p class="post-description">{{post.description}}</p>
         <a
           [routerLink]="['/post-details', post.id]">
-          Zobraziť viac
+          Zobraziť viac...
         </a>
         <div class="likes-container">
           @if (post.isLiked){
 
-            <i (click)="onLike(post.id)" style="color: red" class="bi bi-hand-thumbs-up-fill"></i>
+            <i (click)="onLike(post.id)" style="color: red" class="bi bi-heart-fill"></i>
           } @else {
-            <i (click)="onLike(post.id)" class="bi bi-hand-thumbs-up"></i>
+            <i (click)="onLike(post.id)" class="bi bi-heart"></i>
           }
 
           <p>{{post.likes }}</p>

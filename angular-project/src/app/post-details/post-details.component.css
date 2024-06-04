@@ -1,28 +1,36 @@
 .container{
-  margin: 4em auto;
+  padding: 25px 10%;
   width: 80%;
-  padding-bottom: 200px;
+  background-color: #f9f6f7;
 }
 
 .author{
   display: flex;
   align-items: center;
   gap: 0.5em;
+  margin-bottom: 15px;
 }
 
-.profile-picture{
-  stroke: grey;
-  width: 2em;
+.author-info{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.author p{
-  margin: auto 0;
+.pfp {
+  display: inline-block;
+  vertical-align: middle;
+
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }
 
 .description{
   margin-top: 20px;
   padding: 5px;
-  background-color: #ccc;
+  color: #707070;
   word-break: break-word;
 }
 
@@ -35,7 +43,6 @@
 form {
   width: 500px;
   padding: 20px;
-  border: 1px solid #ddd;
 }
 
 label {
@@ -49,13 +56,22 @@ input, textarea {
   border: 1px solid #ddd;
   margin-bottom: 10px;
   margin-right: 10px;
+  resize: vertical;
+  max-height: 200px;
+  min-height: 32px;
+  border-radius: 5px;
 }
 
 textarea {
-  height: 100px;
+  height: 32px;
+  overflow: scroll;
 }
 
-button {
+textarea:focus  {
+  outline: none;
+}
+
+.submit-btn, .disabled-btn {
   width: 100px;
   padding: 10px;
   border: 1px solid #ddd;
@@ -72,26 +88,11 @@ button {
   margin-top: 20px;
 }
 
-.like-btn{
-  width: 20px;
-  display: block;
-  margin-top: 5px;
-}
 
 .like-btn:hover{
   cursor: pointer;
 }
 
-.like-btn-liked{
-  fill: green;
-}
-
-.likes-container{
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 10px 0;
-}
 
 .likes-container svg,p{
   margin: 0;
@@ -108,3 +109,52 @@ button {
 .order-container p{
   margin: auto 0;
 }
+
+.post-info{
+  padding: 20px;
+}
+
+.box{
+  box-shadow: 0 8px 5px #ccc;
+  border-radius: 15px;
+  background-color: #fff;
+}
+
+.add-comment{
+  padding: 20px;
+}
+
+.likes-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px;
+  background-color: #F9F6F7;
+  width: 35px;
+  border-radius: 20px;
+  margin-top: 10px;
+}
+
+.likes-container:hover{
+  background-color: #c4c4c4;
+  cursor: pointer;
+
+}
+
+.bi-heart-fill{
+  color: #CD1C1C;
+}
+
+
+
+.order-container{
+  align-self: center;
+  justify-self: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.order-container p{
+  margin: auto 0;
+}
+

@@ -1,6 +1,7 @@
 mat-toolbar{
   padding: 0;
   margin: 0;
+  background-color: #fff;
 }
 
 .container{
@@ -60,5 +61,20 @@ mat-toolbar{
   border-radius: 50%;
   background-color: red;
   position: absolute;
+}
+
+.create-btn{
+  border: 1px solid #ff4081;
+  border-radius: 5px;
+}
+
+.mdc-button_label{
+
+}
+
+.mat-mdc-button.mat-accent {
+  --mdc-text-button-label-text-color: #ff4081;
+  --mat-text-button-state-layer-color: #ff4081;
+  --mat-text-button-ripple-color: rgba(255, 64, 129, 0.1);
 }
 

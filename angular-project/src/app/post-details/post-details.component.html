@@ -5,40 +5,38 @@
       <p>Načítavam príspevky</p>
     </div>
   } @else {
-    <div class="post-info">
-      <h2>{{postDetails.title}}</h2>
-
-      <p style="margin-left: 10px">{{postDetails.date}}</p>
-
-      <div class="likes-container">
-        @if (postDetails.isLiked){
-          <i (click)="onPostLike()" style="color: red" class="bi bi-hand-thumbs-up-fill"></i>
-
-        } @else {
-          <i (click)="onPostLike()" class="bi bi-hand-thumbs-up"></i>
-
-        }
-
-        <p>{{postDetails.likes }}</p>
-
-      </div>
-
+    <div class="post-info box">
       <div class="author">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 profile-picture">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-        </svg>
-        <p>{{postDetails.author}}</p>
+        <img class="pfp" src="assets/profilovka.jpeg"/>
+        <div class="authot-info">
+          <p>{{postDetails.author}}</p>
+          <p>{{postDetails.date}}</p>
+        </div>
+
       </div>
+
+      <h2>{{postDetails.title}}</h2>
 
       <p class="description">{{postDetails.description}}</p>
 
       <h3 style="margin-top: 30px">Kód:</h3>
       <pre class="code"><code [highlightAuto]="postDetails.code" lineNumbers></code></pre>
+
+      <div class="likes-container" (click)="onPostLike()" >
+        @if (postDetails.isLiked){
+          <i  class="bi bi-heart-fill"></i>
+
+        } @else {
+          <i  class="bi bi-heart"></i>
+        }
+
+        <p>{{postDetails.likes }}</p>
+
+      </div>
     </div>
 
     <div class="comments-section">
-      <div class="add-comment">
-        <h3>Pridajte komentár</h3>
+      <div class="add-comment box">
         <form [formGroup]="CreateCommentForm">
           <div class="form-group">
             <label for="message">Komentár</label>
@@ -53,7 +51,7 @@
             <button class="disabled-btn">Vytvoriť</button>
             <p style="color: red; margin-top: 5px">Pridávať komentáre môže iba prihlásený uživateľ</p>
           } @else {
-            <button (click)="submitPost()">Vytvoriť</button>
+            <button class="submit-btn" (click)="submitPost()">Vytvoriť</button>
           }
         </form>
       </div>
@@ -77,22 +75,26 @@
       </mat-menu>
 
       <div class="comments">
-        <h3 style="margin-top: 30px">Komentáre</h3>
         @for (comment of this.commentArray; track comment){
-          <mat-card style="margin-bottom: 10px">
+          <mat-card style="margin-bottom: 10px" class="box">
             <mat-card-content>
-              <p>{{comment.author }}</p>
-              <p>{{comment.date}}</p>
+              <div class="author">
+                <img class="pfp" src="assets/profilovka.jpeg"/>
+                <div class="author-info">
+                  <p>{{comment.author }}</p>
+                  <p>{{comment.date}}</p>
+                </div>
+              </div>
+
+
               <p>{{comment.message}}</p>
               <pre class="code"><code [highlightAuto]="comment.code" lineNumbers></code></pre>
 
-              <div class="likes-container">
+              <div class="likes-container" (click)="onCommentLike(comment.id)">
                 @if (comment.isLiked){
-
-                  <i (click)="onCommentLike(comment.id)" style="color: red" class="bi bi-hand-thumbs-up-fill"></i>
-
+                  <i  class="bi bi-heart-fill"></i>
                 } @else {
-                  <i (click)="onCommentLike(comment.id)" class="bi bi-hand-thumbs-up"></i>
+                  <i  class="bi bi-heart"></i>
                 }
 
                 <p>{{comment.likes }}</p>

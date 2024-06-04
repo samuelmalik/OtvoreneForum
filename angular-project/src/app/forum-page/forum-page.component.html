@@ -1,11 +1,5 @@
 <div class="grid">
   <div class="div1">
-      <input type="text" class="searchTerm" placeholder="Prehľadávať" [(ngModel)]="searchText">
-      <button type="submit" class="searchButton">
-        <i style="color: white; font-size: 25px; display: flex; justify-content: center" class="bi bi-search"></i>
-      </button>
-
-
     <div class="order-container">
       <p class="xd">Zoradiť podľa: {{ orderBy }}</p>
       <button mat-button [matMenuTriggerFor]="menu">
@@ -24,6 +18,14 @@
         <i class="bi bi-arrow-up"></i>
       </button>
     </mat-menu>
+
+
+    <div class="search-container">
+      <input type="text" class="searchTerm" placeholder="Prehľadávať" [(ngModel)]="searchText">
+      <button type="submit" class="searchButton">
+        <i style="color: white; font-size: 25px; display: flex; justify-content: center" class="bi bi-search"></i>
+      </button>
+    </div>
 
   </div>
 
@@ -56,16 +58,14 @@
           [routerLink]="['/post-details', post.id]">
           Zobraziť viac...
         </a>
-        <div class="likes-container">
+        <div class="likes-container" (click)="onLike(post.id)">
+
           @if (post.isLiked){
-
-            <i (click)="onLike(post.id)" style="color: red" class="bi bi-heart-fill"></i>
+            <i  class="bi bi-heart-fill"></i>
           } @else {
-            <i (click)="onLike(post.id)" class="bi bi-heart"></i>
+            <i  class="bi bi-heart"></i>
           }
-
           <p>{{post.likes }}</p>
-
         </div>
 
 

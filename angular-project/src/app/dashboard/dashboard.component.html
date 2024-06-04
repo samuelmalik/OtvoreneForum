@@ -1,19 +1,28 @@
-<form [formGroup]="PasswordForm">
-  <div class="form-group">
-    <label for="oldPassword">Zadajte staré heslo</label>
-    <input type="text" id="oldPassword" class="form-control" formControlName="oldPassword"/>
+<div class="container">
+  <h3>Profile</h3>
+
+  <div class="profile-info">
+
   </div>
-  <div class="form-group">
-    <label for="newPassword">Zadajte nové heslo</label>
-    <input type="text" id="newPassword" class="form-control" formControlName="newPassword"/>
-  </div>
-  <div class="form-group">
-    <label for="confirmPassword">Znovu zadajte nové heslo</label>
-    <input type="text" id="confirmPassword" class="form-control" formControlName="confirmPassword"/>
-  </div>
-  <p style="color: red">{{errorMessage}}</p>
-  <button (click)="submitPasswordForm()" type="submit">Vytvoriť</button>
-</form>
+
+  <form class="password-form" [formGroup]="PasswordForm">
+    <div class="form-group">
+      <label for="oldPassword">Zadajte staré heslo</label>
+      <input type="text" id="oldPassword" class="form-control" formControlName="oldPassword"/>
+    </div>
+    <div class="form-group">
+      <label for="newPassword">Zadajte nové heslo</label>
+      <input type="text" id="newPassword" class="form-control" formControlName="newPassword"/>
+    </div>
+    <div class="form-group">
+      <label for="confirmPassword">Znovu zadajte nové heslo</label>
+      <input type="text" id="confirmPassword" class="form-control" formControlName="confirmPassword"/>
+    </div>
+    <p style="color: red">{{errorMessage}}</p>
+    <button (click)="submitPasswordForm()" type="submit">Vytvoriť</button>
+  </form>
+</div>
+
 <!-- <div class="text-red-400 text-sm" *ngIf="newPasswordFormField?.dirty">
   <span class="block" [ngClass]="{'text-primary': newPasswordFormField?.errors?.['hasUpperCase']}">At least one uppercase letter.</span>
   <span class="block" [ngClass]="{'text-primary': newPasswordFormField?.errors?.['hasLowerCase']}">At least one lowercase letter.</span>

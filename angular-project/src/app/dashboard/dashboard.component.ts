@@ -51,6 +51,7 @@ export class DashboardComponent implements OnInit {
   public  PasswordForm: FormGroup;
 
   private currentUserId :string;
+  public currentUserName
   public errorMessage ="";
 
 
@@ -73,6 +74,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUserId = this.authService.getCurrentId();
+    this.currentUserName = this.authService.getCurrentUsername();
   }
 
   submitPasswordForm(){

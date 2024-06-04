@@ -2,7 +2,6 @@
   <div class="container">
     <div class="left">
       <button mat-button [routerLink]="['/forum']">Domov</button>
-      <button mat-button [routerLink]="['/dashboard']">Dashboard</button>
     </div>
 
     <img class="logo" [routerLink]="['/forum']"  src="favicon.ico" alt="Favicon" />
@@ -22,7 +21,7 @@
               <div class="menu-notifications-indicator notifications-indicator"></div>
             }
           </button>
-          <button mat-menu-item> Nastavenia </button>
+          <button mat-menu-item [routerLink]="['/dashboard']">Dashboard</button>
           <button mat-menu-item (click)="logout()">Logout</button>
         </mat-menu>
       } @else {

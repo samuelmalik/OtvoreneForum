@@ -14,6 +14,5 @@ export class AppComponent implements OnInit{
   private router = inject(Router);
 
   ngOnInit(){
-    this.router.navigate(['/forum'])
   }
 }

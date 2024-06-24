@@ -12,6 +12,7 @@ import {equalValuesValidator} from "../api-authorization/password-validators";
  import {AuthenticationService, ChangePasswordInterface, ChangePasswordResponse} from "../api-authorization/authentication.service";
  import {HttpErrorResponse} from "@angular/common/http";
  import { CommonModule } from '@angular/common';
+ import {max, min} from "rxjs";
 
 
  @Component({
@@ -53,6 +54,7 @@ export class DashboardComponent implements OnInit {
   private currentUserId :string;
   public currentUserName
   public errorMessage ="";
+   public errorMessageName ="";
 
 
 
@@ -64,6 +66,10 @@ export class DashboardComponent implements OnInit {
       oldPassword: [''],
       newPassword: new FormControl('', passwordStrengthValidator()),
       confirmPassword: new FormControl('', equalValuesValidator('newPassword'))
+    });
+
+    this.UsernameForm = this.formBuilder.group({
+      newUsername: new FormControl('', Validators.minLength(6)),
     });
 
   }
@@ -91,8 +97,29 @@ export class DashboardComponent implements OnInit {
     } else {
       this.errorMessage = "Heslá sa nezhodujú"
     }
-
-
   }
+
+   submitUsernameForm(){
+     if(this.UsernameForm.valid && this.UsernameForm.value.newUsername.length >0){
+       let data :ChangePasswordInterface ={
+         id: this.currentUserId,
+         oldPassword: "",
+         newPassword: this.UsernameForm.value.newUsername
+       }
+
+       this.authService.changeUsername(data).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(output =>{
+         if (output == false){
+           this.errorMessageName = "Meno už existuje"
+         } else {
+           this.errorMessageName = "Meno úspešne zmenené"
+           this.currentUserName = data.newPassword
+           localStorage.setItem('username', data.newPassword);
+         }
+       });
+     }
+     else {
+       this.errorMessageName = "Meno musí mať aspoň 6 znakov"
+     }
+   }
 
 }

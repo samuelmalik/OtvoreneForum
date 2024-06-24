@@ -8,7 +8,7 @@
 
     <div class="right">
       @if (authService.authenticated()) {
-        <button class="right-button" mat-button color="accent" (click)="createPost()">Nový príspevok</button>
+        <button class="right-button create-btn" mat-button color="accent" (click)="createPost()">Nový príspevok</button>
         <button mat-button [matMenuTriggerFor]="menu">Profil
           @if(hasNotifications){
             <div class="nav-notifications-indicator notifications-indicator"></div>

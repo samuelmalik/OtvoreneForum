@@ -77,11 +77,18 @@ namespace AspNetCoreAPI.Registration
             {
                 return Ok(new ChangePasswordRespone { ErrorMessage = "Heslo úspešne zmenené"});
             }
+        }
 
+        [HttpPost("changeUsername")]
+        public async Task<IActionResult> ChangeUsername([FromBody] ChangePasswordDto changePasswordDto)
+        {
+            var user = _context.Users.Where(u => u.Id == changePasswordDto.Id).FirstOrDefault();
 
+            var result = await _userManager.SetUserNameAsync(user, changePasswordDto.NewPassword);
 
+            return Ok(result.Succeeded);
 
-
+            
         }
     }
 }

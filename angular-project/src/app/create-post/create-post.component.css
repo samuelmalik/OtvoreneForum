@@ -64,6 +64,10 @@ button {
   border-radius: 20px;
 }
 
+button:hover{
+  background-color: black;
+}
+
 textarea:focus, input:focus  {
   outline: none;
 }

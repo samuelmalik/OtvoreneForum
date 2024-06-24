@@ -110,6 +110,7 @@ textarea:focus  {
   justify-self: center;
   display: flex;
   flex-direction: row;
+  margin-top: 32px;
 }
 
 .order-container p{

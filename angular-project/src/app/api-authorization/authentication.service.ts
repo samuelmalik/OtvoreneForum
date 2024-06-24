@@ -34,6 +34,10 @@ export class AuthenticationService {
     return this.httpClient.post<ChangePasswordResponse>(`${this.baseUrl}/user/changePassword`, data)
   }
 
+  changeUsername(data: ChangePasswordInterface){
+    return this.httpClient.post<any>(`${this.baseUrl}/user/changeUsername`, data)
+  }
+
   storeUserCredentials(token: string, username: string, id: string) {
     localStorage.setItem('token', token);
     localStorage.setItem('username', username);

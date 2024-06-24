@@ -1,7 +1,6 @@
 
 *{
   box-sizing: border-box;
-
 }
 
 body{
@@ -254,5 +253,9 @@ h2 {
   align-items: center;
   justify-self: center;
   grid-column: 2;
+}
+
+.order-container{
+  margin-left: 50px;
 }
 

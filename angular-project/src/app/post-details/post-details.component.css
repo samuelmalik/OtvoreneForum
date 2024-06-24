@@ -14,7 +14,7 @@
 .author-info{
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
   justify-content: center;
 }
 
@@ -35,7 +35,7 @@
 }
 
 .code{
-  overflow: scroll;
+  overflow-y: scroll;
   background-color: #999;
   max-height: 60em;
 }
@@ -70,7 +70,8 @@ input, textarea {
 
 textarea {
   height: 32px;
-  overflow: scroll;
+  overflow-y: scroll;
+
 }
 
 textarea:focus  {

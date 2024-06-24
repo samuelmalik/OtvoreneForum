@@ -33,6 +33,7 @@ mat-toolbar{
   display: flex;
   justify-content: left;
   align-items: center;
+  margin-left: 15px;
 }
 .right {
   grid-column-start: 3;
@@ -42,6 +43,7 @@ mat-toolbar{
   display: flex;
   justify-content: right;
   align-items: center;
+  margin-right: 15px;
 }
 
 .nav-notifications-indicator{

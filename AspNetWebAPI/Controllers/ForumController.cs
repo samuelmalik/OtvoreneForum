@@ -336,6 +336,15 @@ namespace AspNetCoreAPI.Controllers
             return status.FirstOrDefault();
         }
 
+        [HttpPut("updateStatus")]
+        public void UpdateStatus([FromBody] UpdateStatusDto updateStatusDto)
+        {
+            var u = _context.Users.Where(u => u.Id == updateStatusDto.UserId).FirstOrDefault();
+                    u.Status = updateStatusDto.Status;
+                    _context.Update(u);
+            _context.SaveChanges();
+        }
+
 
 
 

@@ -87,6 +87,10 @@ export class ForumService {
     return  this.httpClient.get<CurrentUserDetailsInterface>(`${this.baseUrl}/forum/getStatus`, {params: params})
   }
 
+  updateStatus(data :UpdateStatusInterface) {
+    return this.httpClient.put(`${this.baseUrl}/forum/updateStatus`, data)
+  }
+
 }
 
  export interface PostInfoDtoInterface {
@@ -154,3 +158,7 @@ export interface CurrentUserDetailsInterface{
   status: string;
 }
 
+export interface UpdateStatusInterface{
+  userId: string;
+  status: string;
+}

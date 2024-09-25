@@ -10,6 +10,10 @@
         <input type="text" id="newStatus" class="form-control" formControlName="newStatus"/>
       </div>
       <button (click)="submitStatusForm()" type="submit">Uložiť</button>
+      @if (statusChangeIndicator){
+        <p style="color: green; font-size: 16px">Status úspešne zmenený</p>
+      }
+
     </form>
   </div>
 

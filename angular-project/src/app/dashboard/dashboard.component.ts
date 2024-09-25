@@ -13,7 +13,7 @@ import {equalValuesValidator} from "../api-authorization/password-validators";
  import {HttpErrorResponse} from "@angular/common/http";
  import { CommonModule } from '@angular/common';
  import {max, min} from "rxjs";
- import {ForumService} from "../services/forum.service";
+ import {ForumService, UpdateStatusInterface} from "../services/forum.service";
 
 
  @Component({
@@ -58,6 +58,7 @@ export class DashboardComponent implements OnInit {
   public currentUserName;
   public errorMessage ="";
   public errorMessageName ="";
+  public statusChangeIndicator: boolean = false;
 
 
 
@@ -133,7 +134,17 @@ export class DashboardComponent implements OnInit {
    }
 
    submitStatusForm(){
-     console.log(this.StatusForm.value)
+     console.log(this.StatusForm.value.newStatus)
+     let data: UpdateStatusInterface = {
+       userId: this.currentUserId,
+       status: this.StatusForm.value.newStatus
+     }
+     this.forumService.updateStatus(data).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{})
+
+     this.statusChangeIndicator = true;
+     setTimeout(() => {
+       this.statusChangeIndicator = false;
+     }, 3000)
    }
 
 }

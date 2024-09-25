@@ -13,6 +13,7 @@ import {equalValuesValidator} from "../api-authorization/password-validators";
  import {HttpErrorResponse} from "@angular/common/http";
  import { CommonModule } from '@angular/common';
  import {max, min} from "rxjs";
+ import {ForumService} from "../services/forum.service";
 
 
  @Component({
@@ -48,13 +49,15 @@ export class DashboardComponent implements OnInit {
   private testService = inject(TestService);
   private destroyRef = inject(DestroyRef);
   private authService :AuthenticationService = inject(AuthenticationService)
-  public UsernameForm: FormGroup;
+   private forumService :ForumService = inject(ForumService)
+   public UsernameForm: FormGroup;
   public  PasswordForm: FormGroup;
+   public  StatusForm: FormGroup;
 
   private currentUserId :string;
-  public currentUserName
+  public currentUserName;
   public errorMessage ="";
-   public errorMessageName ="";
+  public errorMessageName ="";
 
 
 
@@ -72,6 +75,10 @@ export class DashboardComponent implements OnInit {
       newUsername: new FormControl('', Validators.minLength(6)),
     });
 
+    this.StatusForm = this.formBuilder.group({
+      newStatus: new FormControl(''),
+    });
+
   }
    get newPasswordFormField()
    {
@@ -81,6 +88,9 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.currentUserId = this.authService.getCurrentId();
     this.currentUserName = this.authService.getCurrentUsername();
+    this.forumService.getStatus(this.currentUserId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{
+      this.StatusForm.get("newStatus")?.setValue(data.status)
+      });
   }
 
   submitPasswordForm(){
@@ -120,6 +130,10 @@ export class DashboardComponent implements OnInit {
      else {
        this.errorMessageName = "Meno musí mať aspoň 6 znakov"
      }
+   }
+
+   submitStatusForm(){
+     console.log(this.StatusForm.value)
    }
 
 }

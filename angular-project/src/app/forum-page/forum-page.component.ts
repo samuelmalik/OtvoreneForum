@@ -53,6 +53,7 @@ export class ForumPageComponent implements OnInit{
       this.postList.sort((a, b) => b.id - a.id)
       this.showPostsLoader = false;
     });
+
   }
 
   onLike(postId: number){

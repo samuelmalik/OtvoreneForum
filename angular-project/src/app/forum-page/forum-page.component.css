@@ -115,11 +115,16 @@ body{
   }
 
   .u-info{
-  display: flex;
-    align-items: center;
-    justify-content: center;
-
+    flex-direction: column;
+    display: flex;
+    align-items: start;
   }
+
+.u-info p{
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
 
   .user-img {
 

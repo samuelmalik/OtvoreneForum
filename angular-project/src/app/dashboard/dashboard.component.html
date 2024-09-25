@@ -4,6 +4,13 @@
   <div class="profile-info">
     <img class="pfp" src="assets/profilovka.jpeg"/>
     <p>{{currentUserName}}</p>
+    <form class="status-form" [formGroup]="StatusForm">
+      <h2>Status</h2>
+      <div class="form-group">
+        <input type="text" id="newStatus" class="form-control" formControlName="newStatus"/>
+      </div>
+      <button (click)="submitStatusForm()" type="submit">Uložiť</button>
+    </form>
   </div>
 
   <div class="forms">
@@ -11,7 +18,7 @@
       <h2>Uživateľské údaje</h2>
       <div class="form-group">
         <label for="newUsername">Meno</label>
-        <input type="text" id="newUsername" class="form-control" formControlName="newUsername"/>
+        <input type="text" id="newUsername" class="form-control" formControlName="newUsername" value="ok"/>
       </div>
       <p style="color: red">{{errorMessageName}}</p>
       <button (click)="submitUsernameForm()" type="submit">Uložiť</button>

@@ -30,6 +30,7 @@ namespace AspNetCoreAPI.Controllers
                         select new UserInfoDto()
                         {
                             Username = u.UserName,
+                            Status = u.Status
                         };
             return users;
         }
@@ -321,6 +322,18 @@ namespace AspNetCoreAPI.Controllers
                 }
             }
             _context.SaveChanges();
+        }
+
+        [HttpGet("getStatus")]
+        public CurrentUserDetailsDto GetStatus(
+            [FromQuery(Name = "currentUserId")] string currentUserId)
+        {
+            var status = from p in _context.Users.Where(u => u.Id == currentUserId)
+                         select new CurrentUserDetailsDto()
+                         {
+                             Status = p.Status,
+                         };
+            return status.FirstOrDefault();
         }
 
 

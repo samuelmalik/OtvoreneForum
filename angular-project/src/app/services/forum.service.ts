@@ -81,6 +81,12 @@ export class ForumService {
     return this.httpClient.put(`${this.baseUrl}/forum/makeCommentLikeSeen`, data)
   }
 
+  getStatus(userId: string){
+    let params = new HttpParams();
+    params = params.append('currentUserId', userId);
+    return  this.httpClient.get<CurrentUserDetailsInterface>(`${this.baseUrl}/forum/getStatus`, {params: params})
+  }
+
 }
 
  export interface PostInfoDtoInterface {
@@ -105,6 +111,7 @@ export interface PostDetailsDtoInterface {
 
 export interface UserDtoInterface {
   username: string;
+  status: string;
 }
 
 export interface CreateCommentInterface{
@@ -142,3 +149,8 @@ export interface NotificationInterface{
   createTime: string;
   itemId: number;
 }
+
+export interface CurrentUserDetailsInterface{
+  status: string;
+}
+

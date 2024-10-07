@@ -9,6 +9,9 @@ import {AuthenticationService} from "../api-authorization/authentication.service
 import {SearchPipe} from "../pipes/search.pipe";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
+import {MatDialogModule, MatDialog} from '@angular/material/dialog';
+import { UserInfoDialogComponent } from '../user-info-dialog/user-info-dialog.component';
+
 
 
 @Component({
@@ -21,29 +24,31 @@ import {MatButtonModule} from "@angular/material/button";
     SearchPipe,
     FormsModule,
     MatMenuModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDialogModule,
+
 
   ],
   templateUrl: './forum-page.component.html',
   styleUrl: './forum-page.component.css'
 })
-export class ForumPageComponent implements OnInit{
+export class ForumPageComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
-  private forumService :ForumService = inject(ForumService);
-  private authService :AuthenticationService = inject(AuthenticationService);
-  private currentUserId :string;
+  private forumService: ForumService = inject(ForumService);
+  private authService: AuthenticationService = inject(AuthenticationService);
+  private currentUserId: string;
   public postList: PostInfoDtoInterface[] = [];
   public userList: UserDtoInterface[] = [];
   public showPostsLoader = true;
   public showUsersLoader = true;
   public searchText: string;
-  public orderBy :string;
-
+  public orderBy: string;
+  private dialog = inject(MatDialog);
 
 
   ngOnInit() {
     this.currentUserId = this.authService.getCurrentId();
-    this.forumService.getAllUsers().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{
+    this.forumService.getAllUsers().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
       this.userList = data;
       this.showUsersLoader = false;
     });
@@ -56,45 +61,53 @@ export class ForumPageComponent implements OnInit{
 
   }
 
-  onLike(postId: number){
+  onLike(postId: number) {
     const index = this.postList.findIndex(post => post.id == postId)
     const likeData: AddPostLikeInterface = {
       userId: this.currentUserId,
       postId: postId
     }
 
-    if(this.currentUserId == null){
+    if (this.currentUserId == null) {
       console.log("neprihlásený user");
-    }else if(this.postList[index].isLiked == false){
+    } else if (this.postList[index].isLiked == false) {
 
       this.postList[index].isLiked = true
       this.postList[index].likes += 1
-      this.forumService.addPostLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{})
+      this.forumService.addPostLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
+      })
 
-    } else if(this.postList[index].isLiked == true){
+    } else if (this.postList[index].isLiked == true) {
       this.postList[index].isLiked = false
       this.postList[index].likes -= 1
-      this.forumService.removePostLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{})
+      this.forumService.removePostLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
+      })
     }
 
   }
 
-  changeOrder(order: string){
-    if (order == "newest"){
+  changeOrder(order: string) {
+    if (order == "newest") {
       this.orderBy = "Od najnovšieho"
       this.postList.sort((a, b) => b.id - a.id)
-    } else if(order == "oldest"){
+    } else if (order == "oldest") {
       this.orderBy = "Od najstaršieho"
       this.postList.sort((a, b) => a.id - b.id)
-    } else if(order == "most-liked"){
+    } else if (order == "most-liked") {
       this.orderBy = "Od najobľúbenejších"
       this.postList.sort((a, b) => b.likes - a.likes)
-    } else if(order == "least-liked"){
+    } else if (order == "least-liked") {
       this.orderBy = "Od najmenej obľúbených"
       this.postList.sort((a, b) => a.likes - b.likes)
     }
   }
 
+  openUserInfo(user: UserDtoInterface) {
+    this.dialog.open(UserInfoDialogComponent, {
+      data: user,  // Poslanie dát používateľa do dialógu
+      width: '400px' // Nastavenie šírky okna
+    });
+  }
 }
 
 

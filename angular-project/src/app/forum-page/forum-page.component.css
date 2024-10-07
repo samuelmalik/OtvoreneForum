@@ -187,7 +187,7 @@ h2 {
 }
 .user{
   display: flex;
-
+  cursor: pointer;
   justify-content: start;
 
 }

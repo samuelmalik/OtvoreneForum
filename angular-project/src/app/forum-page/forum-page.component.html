@@ -90,7 +90,7 @@
 
         @for (user of userList; track user) {
           <div class="users-item">
-              <div class="user">
+              <div class="user" (click)="openUserInfo(user)">
                 <img class="pfp" src="assets/profilovka.jpeg"/>
                 <div class="u-info">
                   <p>{{user.username}}</p>

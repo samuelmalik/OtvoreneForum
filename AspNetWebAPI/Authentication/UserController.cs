@@ -31,8 +31,9 @@ namespace AspNetCoreAPI.Registration
             if (userRegistrationDto == null || !ModelState.IsValid)
                 return BadRequest();
 
-            var user = new User { UserName = userRegistrationDto.Email,  Email = userRegistrationDto.Email };
+            var user = new User { UserName = userRegistrationDto.Email,  Email = userRegistrationDto.Email, Status = "" };
             var result = await _userManager.CreateAsync(user, userRegistrationDto.Password);
+            var claim = await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("role", "student"));
             if (!result.Succeeded)
             {
                 var errors = result.Errors.Select(e => e.Description);
@@ -47,6 +48,8 @@ namespace AspNetCoreAPI.Registration
         public async Task<IActionResult> AddClaim([FromBody] ClaimDto claimDto)
         {
             var user = await _userManager.FindByIdAsync(claimDto.userId);
+            var claims = await _userManager.GetClaimsAsync(user);
+            var deleted = await _userManager.RemoveClaimsAsync(user, claims);
             var result = await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim(claimDto.type, claimDto.value));
 
             return Ok(result.Succeeded);

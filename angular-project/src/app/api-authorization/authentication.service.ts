@@ -15,7 +15,7 @@ export class AuthenticationService {
 
   authenticated = signal(this.isAuthenticated());
 
-  role = signal("student");
+  role = signal(this.getRole());
 
   constructor(@Inject('BASE_URL') private baseUrl: string) {  }
 
@@ -64,8 +64,19 @@ export class AuthenticationService {
 
    isAuthenticated() {
     const token = localStorage.getItem("token");
-
     return token && !this.jwtHelper.isTokenExpired(token);
+  }
+
+  getRole(): string{
+    const token = localStorage.getItem("token");
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    if(this.isAuthenticated()){
+      return decodedToken['role']
+    } else{
+      return "student"
+    }
+
+
   }
 }
 

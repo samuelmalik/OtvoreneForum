@@ -61,7 +61,6 @@ export class ForumPageComponent implements OnInit {
       this.showPostsLoader = false;
     });
 
-    console.log(this.role())
   }
 
   onLike(postId: number) {
@@ -110,6 +109,8 @@ export class ForumPageComponent implements OnInit {
       data: user,  // Poslanie dát používateľa do dialógu
       width: '400px' // Nastavenie šírky okna
     });
+
+    console.log(this.role())
   }
 }
 

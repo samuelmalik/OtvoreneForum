@@ -15,6 +15,8 @@ export class AuthenticationService {
 
   authenticated = signal(this.isAuthenticated());
 
+  role = signal("student");
+
   constructor(@Inject('BASE_URL') private baseUrl: string) {  }
 
   registerUser(userData: UserRegistration): Observable<RegistrationResponse> {
@@ -43,6 +45,13 @@ export class AuthenticationService {
     localStorage.setItem('username', username);
     localStorage.setItem('id', id)
     this.authenticated.set(true);
+
+    this.role.set(this.roleInfo(token));
+  }
+
+    private roleInfo(token: string): string {
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    return decodedToken['role'];
   }
 
   getCurrentUsername(): string {

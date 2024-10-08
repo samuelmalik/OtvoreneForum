@@ -42,7 +42,19 @@ namespace AspNetCoreAPI.Registration
 
             return StatusCode(201);
         }
-         
+
+        [HttpPost("add-claim")]
+        public async Task<IActionResult> AddClaim([FromBody] ClaimDto claimDto)
+        {
+            var user = await _userManager.FindByIdAsync(claimDto.userId);
+            var result = await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim(claimDto.type, claimDto.value));
+
+            return Ok(result.Succeeded);
+        }
+
+
+
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto userLoginDto)
         {
@@ -53,6 +65,7 @@ namespace AspNetCoreAPI.Registration
 
             var signingCredentials = _jwtHandler.GetSigningCredentials();
             var claims = _jwtHandler.GetClaims(user);
+            claims.AddRange(await _userManager.GetClaimsAsync(user));
             var tokenOptions = _jwtHandler.GenerateTokenOptions(signingCredentials, claims);
             var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 

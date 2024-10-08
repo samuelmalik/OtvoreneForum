@@ -45,6 +45,8 @@ export class ForumPageComponent implements OnInit {
   public orderBy: string;
   private dialog = inject(MatDialog);
 
+  role = this.authService.role
+
 
   ngOnInit() {
     this.currentUserId = this.authService.getCurrentId();
@@ -59,6 +61,7 @@ export class ForumPageComponent implements OnInit {
       this.showPostsLoader = false;
     });
 
+    console.log(this.role())
   }
 
   onLike(postId: number) {

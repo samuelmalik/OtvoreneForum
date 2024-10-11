@@ -1,4 +1,5 @@
-import {Component, DestroyRef, inject, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit, OnDestroy} from '@angular/core';
+import {Subscription} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {ForumService, UserDtoInterface, PostInfoDtoInterface, AddPostLikeInterface} from "../services/forum.service";
 import {MatListModule} from '@angular/material/list';
@@ -6,6 +7,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatMenuModule} from "@angular/material/menu";
 import {RouterLink} from "@angular/router";
 import {AuthenticationService} from "../api-authorization/authentication.service";
+import {SharedService} from "../services/shared.service";
 import {SearchPipe} from "../pipes/search.pipe";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
@@ -36,6 +38,10 @@ export class ForumPageComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   private forumService: ForumService = inject(ForumService);
   private authService: AuthenticationService = inject(AuthenticationService);
+  private sharedService: SharedService = inject(SharedService);
+
+  subscription: Subscription;
+
   private currentUserId: string;
   public postList: PostInfoDtoInterface[] = [];
   public userList: UserDtoInterface[] = [];
@@ -60,6 +66,12 @@ export class ForumPageComponent implements OnInit {
       this.postList.sort((a, b) => b.id - a.id)
       this.showPostsLoader = false;
     });
+
+    this.subscription = this.sharedService.data$.subscribe(data => {
+      console.log(data);
+      this.updateRole(data.role, data.userId);
+    })
+
 
   }
 
@@ -105,12 +117,24 @@ export class ForumPageComponent implements OnInit {
   }
 
   openUserInfo(user: UserDtoInterface) {
+    //test
+    console.log(this.userList)
+
+    //open dialog
     this.dialog.open(UserInfoDialogComponent, {
       data: user,  // Poslanie dát používateľa do dialógu
       width: '400px' // Nastavenie šírky okna
     });
+  }
 
-    console.log(this.role())
+  updateRole(role: string, id: string){
+    for (let user of this.userList) {
+      if(id == user.id){
+        user.role = role;
+      }
+    }
+
+
   }
 }
 

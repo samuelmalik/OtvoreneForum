@@ -1,7 +1,33 @@
 <h1>Informácie o používateľovi</h1>
 <div>
   <p><strong>Užívateľské meno:</strong> {{data.username}}</p>
+  <p>{{data.role}}</p>
   <p><strong>Status:</strong> {{data.status}}</p>
   <!-- Pridaj ďalšie informácie, ktoré máš k dispozícii -->
+  @if (loggedRole() == "master"){
+    <p>Poznámka(poznámku vidíte len vy)</p>
+    <input>
+  } @else if (loggedRole() == "admin"){
+    <p>Poznámka(poznámku vidíte len vy)</p>
+    <input>
+
+    <div>
+      @if(data.role != "admin"){
+        <mat-form-field>
+          <mat-label>Select an option</mat-label>
+          <mat-select [(value)]="selected" (selectionChange)="changeRole(selected)">
+            <mat-option value="student">Student</mat-option>
+            <mat-option value="master">Master</mat-option>
+            <mat-option value="admin">Admin</mat-option>
+          </mat-select>
+        </mat-form-field>
+      }
+      @if (selected == "admin" && data.role != "admin"){
+        <p style="color: red">Nastavili ste rolu admina, po opustení tohto okna ju nebude možné odobrať</p>
+      }
+    </div>
+
+
+  }
 </div>
 

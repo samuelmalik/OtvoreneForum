@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace AspNetCoreAPI.Registration
 {
@@ -46,13 +47,28 @@ namespace AspNetCoreAPI.Registration
 
         [HttpPost("add-claim")]
         public async Task<IActionResult> AddClaim([FromBody] ClaimDto claimDto)
+            // role: student/master/admin
         {
+            //nahradit pomocou replace claim 
             var user = await _userManager.FindByIdAsync(claimDto.userId);
             var claims = await _userManager.GetClaimsAsync(user);
             var deleted = await _userManager.RemoveClaimsAsync(user, claims);
             var result = await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim(claimDto.type, claimDto.value));
 
             return Ok(result.Succeeded);
+        }
+
+        [HttpPost("changeRole")]
+        public async Task<IActionResult> ChangeRole([FromBody] ClaimDto claimDto)
+        {
+           await AddClaim(claimDto);
+            var user = _context.Users.Where(u => u.Id ==  claimDto.userId).FirstOrDefault();
+            user.Role = claimDto.value;
+            _context.Update(user);
+            _context.SaveChanges();
+            
+
+           return(Ok(claimDto));
         }
 
 
@@ -105,6 +121,22 @@ namespace AspNetCoreAPI.Registration
             return Ok(result.Succeeded);
 
             
+        }
+
+        [HttpGet("allUsers")]
+        public IEnumerable<UserInfoDto> GetAllUsers()
+        {
+            //var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+            var users = from u in _context.Users
+                        select new UserInfoDto()
+                        {
+                            Id = u.Id,
+                            Username = u.UserName,
+                            Status = u.Status,
+                            Role = u.Role
+
+                        };
+            return users;
         }
     }
 }

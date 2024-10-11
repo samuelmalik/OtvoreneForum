@@ -11,7 +11,7 @@ export class ForumService {
   constructor(@Inject('BASE_URL') private baseUrl: string) {}
 
   getAllUsers(){
-    return this.httpClient.get<UserDtoInterface[]>(this.baseUrl + '/forum/allUsers')
+    return this.httpClient.get<UserDtoInterface[]>(this.baseUrl + '/user/allUsers')
   }
 
   getAllPosts(userId: string){
@@ -114,8 +114,10 @@ export interface PostDetailsDtoInterface {
 }
 
 export interface UserDtoInterface {
+  id: string;
   username: string;
   status: string;
+  role: string;
 }
 
 export interface CreateCommentInterface{

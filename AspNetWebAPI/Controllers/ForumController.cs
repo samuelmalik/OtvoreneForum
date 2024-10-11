@@ -23,20 +23,7 @@ namespace AspNetCoreAPI.Controllers
             _context = context;
         }
 
-        [HttpGet("allUsers")]
-        public  IEnumerable<UserInfoDto> GetAllUsers()
-        {
-            var users = from u in _context.Users
-                        select new UserInfoDto()
-                        {
-                            Username = u.UserName,
-                            Status = u.Status
-                        };
-            return users;
-        }
-
-
-
+        
         [HttpPost("newPost")]
         public CreatePostDto CreatePost([FromBody] CreatePostDto createPost )
         {

@@ -67,6 +67,7 @@ export class AuthenticationService {
     return token && !this.jwtHelper.isTokenExpired(token);
   }
 
+  // getting role of current logged user
   getRole(): string{
     const token = localStorage.getItem("token");
     const decodedToken = this.jwtHelper.decodeToken(token);
@@ -75,8 +76,10 @@ export class AuthenticationService {
     } else{
       return "student"
     }
+  }
 
-
+  setRole(data: AddClaimInterface){
+    return this.httpClient.post<string>(`${this.baseUrl}/user/changeRole`, data)
   }
 }
 
@@ -88,4 +91,10 @@ export interface ChangePasswordInterface{
 
 export interface ChangePasswordResponse{
   errorMessage: string;
+}
+
+export interface AddClaimInterface{
+  userId: string;
+  type: string;
+  value: string;
 }

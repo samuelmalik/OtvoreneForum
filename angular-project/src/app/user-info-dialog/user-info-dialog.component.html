@@ -15,7 +15,7 @@
       @if(data.role != "admin"){
         <mat-form-field>
           <mat-label>Select an option</mat-label>
-          <mat-select [(value)]="selected" (selectionChange)="changeRole(selected)">
+          <mat-select [(value)]="selected" (selectionChange)="changeRole()">
             <mat-option value="student">Student</mat-option>
             <mat-option value="master">Master</mat-option>
             <mat-option value="admin">Admin</mat-option>

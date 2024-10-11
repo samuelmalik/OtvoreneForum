@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, Inject, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, Inject, OnInit, OnDestroy} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
 import {UserDtoInterface} from "../services/forum.service";
 import {AuthenticationService, AddClaimInterface} from "../api-authorization/authentication.service";
@@ -14,13 +14,19 @@ import {SharedService, roleInterface} from "../services/shared.service";
   templateUrl: './user-info-dialog.component.html',
   styleUrl: './user-info-dialog.component.css',
 })
-export class UserInfoDialogComponent implements OnInit{
+export class UserInfoDialogComponent implements OnInit, OnDestroy{
   private authService: AuthenticationService = inject(AuthenticationService);
   private destroyRef = inject(DestroyRef);
   private sharedService: SharedService = inject(SharedService);
 
   loggedRole = this.authService.role
   selected = "student"
+
+  claimData: AddClaimInterface ={
+    userId: "",
+    type: "",
+    value: ""
+  };
   constructor(@Inject(MAT_DIALOG_DATA) public data: UserDtoInterface) { }
 
   ngOnInit() {
@@ -28,23 +34,30 @@ export class UserInfoDialogComponent implements OnInit{
     console.log(this.selected)
   }
 
-  changeRole(newRole){
+  ngOnDestroy() {
+    console.log("dialog zniceny")
+    if (this.claimData.userId != null && this.claimData.value != null){
+      //prepísanie role v ForumPage user liste
+      let roleData: roleInterface = {
+        userId: this.claimData.userId,
+        role: this.claimData.value
+      }
+      this.sharedService.setData(roleData);
+    }
+  }
+
+  changeRole(){
 
       // kód na nastavenie rolí v databáze tabuľke userov
       console.log("menim rolu")
-      let claimData: AddClaimInterface ={
+      this.claimData ={
         userId : this.data.id,
         type : "role",
         value : this.selected
       }
-      this.authService.setRole(claimData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
+      this.authService.setRole(this.claimData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
       })
-    //prepísanie role v ForumPage user liste
-    let roleData: roleInterface = {
-        userId: claimData.userId,
-        role: claimData.value
-    }
-    this.sharedService.setData(roleData)
+
     }
   }
 

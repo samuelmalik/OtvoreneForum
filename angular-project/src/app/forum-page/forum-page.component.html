@@ -93,6 +93,13 @@
               <div class="user" (click)="openUserInfo(user)">
                 <img class="pfp" src="assets/profilovka.jpeg"/>
                 <div class="u-info">
+                  @if (user.role == "admin"){
+                    <i class="bi bi-person-gear"></i>
+                  } @else if(user.role == "master"){
+                    <i class="bi bi-mortarboard"></i>
+                  } @else {
+                    <i class="bi bi-backpack2"></i>
+                  }
                   <p>{{user.username}}</p>
                   <p style="font-style: italic">{{user.status}}</p>
                 </div>

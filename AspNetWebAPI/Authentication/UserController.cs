@@ -1,5 +1,6 @@
 ﻿using AspNetCoreAPI.Authentication.dto;
 using AspNetCoreAPI.Data;
+using AspNetCoreAPI.dto;
 using AspNetCoreAPI.Models;
 using AspNetCoreAPI.Registration.dto;
 using AutoMapper;
@@ -72,8 +73,6 @@ namespace AspNetCoreAPI.Registration
         }
 
 
-
-
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto userLoginDto)
         {
@@ -137,6 +136,42 @@ namespace AspNetCoreAPI.Registration
 
                         };
             return users;
+        }
+
+        [HttpGet("getNote")]
+        public string GetNote(
+            [FromQuery(Name = "creatorId")] string creatorId,
+            [FromQuery(Name = "addresserId")] string addresserId)
+        {
+            var note = _context.Notes.Where(n => n.CreatorId == creatorId && n.AddresserId == addresserId).FirstOrDefault();
+          
+            if(note == null)
+            {
+                return "";
+            }
+            return note.Text;
+        }
+
+        [HttpPut("setNote")]
+        public async Task<IActionResult> UpdateNote([FromBody] UpdateNoteDto updateNoteDto)
+        {
+            var note = _context.Notes.Where(n => n.CreatorId == updateNoteDto.CreatorId && n.AddresserId == updateNoteDto.AddresserId).FirstOrDefault();
+
+            if(note == null)
+            {
+                _context.Notes.Add(new Note
+                {
+                    CreatorId = updateNoteDto.CreatorId,
+                    AddresserId = updateNoteDto.AddresserId,
+                    Text = updateNoteDto.Text,
+                });
+            } else
+            {
+                note.Text = updateNoteDto.Text;
+            }
+
+            _context.SaveChangesAsync();
+            return Ok(updateNoteDto);
         }
     }
 }

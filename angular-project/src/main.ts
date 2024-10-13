@@ -18,7 +18,7 @@ import { jwtInterceptor } from './app/api-authorization/jwt.interceptor';
 import {provideHighlightOptions} from "ngx-highlightjs";
 
 export function getBaseUrl() {
-  return 'https://samko123.bsite.net/api';
+  return 'https://localhost:7186/api';
 }
 
 export function tokenGetter() {
@@ -39,7 +39,7 @@ bootstrapApplication(AppComponent, {
       importProvidersFrom(BrowserModule, JwtModule.forRoot({
         config: {
           tokenGetter: tokenGetter,
-          allowedDomains: ['https://samko123.bsite.net/'],
+          allowedDomains: ['https://https://localhost:7186/'],
           disallowedRoutes: [],
         },
       })),

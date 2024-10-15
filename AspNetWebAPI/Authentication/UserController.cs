@@ -139,7 +139,7 @@ namespace AspNetCoreAPI.Registration
         }
 
         [HttpGet("getNote")]
-        public string GetNote(
+        public NoteDto GetNote(
             [FromQuery(Name = "creatorId")] string creatorId,
             [FromQuery(Name = "addresserId")] string addresserId)
         {
@@ -147,10 +147,16 @@ namespace AspNetCoreAPI.Registration
           
             if(note == null)
             {
-                return "";
+                return new NoteDto
+                {
+                    Note = ""
+                };
             }
-            return note.Text;
-        }
+            return new NoteDto
+            {
+                Note = note.Text
+        };
+    }
 
         [HttpPut("setNote")]
         public async Task<IActionResult> UpdateNote([FromBody] UpdateNoteDto updateNoteDto)

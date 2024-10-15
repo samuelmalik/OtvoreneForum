@@ -81,6 +81,14 @@ export class AuthenticationService {
   setRole(data: AddClaimInterface){
     return this.httpClient.post<string>(`${this.baseUrl}/user/changeRole`, data)
   }
+
+  getNote(creatorId: string, addresserId: string){
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("creatorId",creatorId);
+    queryParams = queryParams.append("addresserId",addresserId);
+
+    return this.httpClient.get<NoteInterface>(`${this.baseUrl}/user/getNote`,{params:queryParams});
+  }
 }
 
 export interface ChangePasswordInterface{
@@ -97,4 +105,8 @@ export interface AddClaimInterface{
   userId: string;
   type: string;
   value: string;
+}
+
+export interface NoteInterface{
+  note: string;
 }

@@ -9,7 +9,7 @@
     <input>
   } @else if (loggedRole() == "admin"){
     <p>Poznámka(poznámku vidíte len vy)</p>
-    <input>
+    <input type="text" value="{{note}}"/>
 
     <div>
       @if(data.role != "admin"){

@@ -6,6 +6,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {SharedService, roleInterface} from "../services/shared.service";
+import {ForumService} from "../services/forum.service";
 
 @Component({
   selector: 'app-user-info-dialog',
@@ -18,9 +19,11 @@ export class UserInfoDialogComponent implements OnInit, OnDestroy{
   private authService: AuthenticationService = inject(AuthenticationService);
   private destroyRef = inject(DestroyRef);
   private sharedService: SharedService = inject(SharedService);
+  private forumService: ForumService = inject(ForumService);
 
   loggedRole = this.authService.role
   selected = "student"
+  note: string
 
   claimData: AddClaimInterface ={
     userId: "",
@@ -31,8 +34,10 @@ export class UserInfoDialogComponent implements OnInit, OnDestroy{
 
   ngOnInit() {
     this.selected = this.data.role
-    console.log(this.selected)
-  }
+    this.authService.getNote(this.authService.getCurrentId(), this.data.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
+      this.note = data.note;
+    })
+    }
 
   ngOnDestroy() {
     console.log("dialog zniceny")

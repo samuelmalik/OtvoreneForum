@@ -49,7 +49,7 @@ export class AuthenticationService {
     this.role.set(this.roleInfo(token));
   }
 
-    private roleInfo(token: string): string {
+  private roleInfo(token: string): string {
     const decodedToken = this.jwtHelper.decodeToken(token);
     return decodedToken['role'];
   }
@@ -62,7 +62,7 @@ export class AuthenticationService {
     return this.isAuthenticated() ? localStorage.getItem('id') : null;
   }
 
-   isAuthenticated() {
+  isAuthenticated() {
     const token = localStorage.getItem("token");
     return token && !this.jwtHelper.isTokenExpired(token);
   }
@@ -89,6 +89,10 @@ export class AuthenticationService {
 
     return this.httpClient.get<NoteInterface>(`${this.baseUrl}/user/getNote`,{params:queryParams});
   }
+
+  setNote(data: UpdateNoteInterface){
+    return this.httpClient.put<string>(`${this.baseUrl}/user/setNote`, data)
+  }
 }
 
 export interface ChangePasswordInterface{
@@ -109,4 +113,10 @@ export interface AddClaimInterface{
 
 export interface NoteInterface{
   note: string;
+}
+
+export interface UpdateNoteInterface{
+  creatorId: string;
+  addresserId: string;
+  text: string;
 }

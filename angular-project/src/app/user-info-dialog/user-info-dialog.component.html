@@ -4,12 +4,19 @@
   <p>{{data.role}}</p>
   <p><strong>Status:</strong> {{data.status}}</p>
   <!-- Pridaj ďalšie informácie, ktoré máš k dispozícii -->
-  @if (loggedRole() == "master"){
+  @if (loggedRole() == "master" || loggedRole() == "admin"){
     <p>Poznámka(poznámku vidíte len vy)</p>
-    <input>
-  } @else if (loggedRole() == "admin"){
-    <p>Poznámka(poznámku vidíte len vy)</p>
-    <input type="text" value="{{note}}"/>
+    <input type="text" [(ngModel)]="note"/>
+    @if(noteLoaded){
+      <button (click)="updateNote()">Uložiť poznámku</button>
+    }
+    @if(noteUpdated){
+      <i class="bi bi-check-lg"></i>
+    }
+
+
+  }
+  @if (loggedRole() == "admin"){
 
     <div>
       @if(data.role != "admin"){
@@ -30,4 +37,3 @@
 
   }
 </div>
-

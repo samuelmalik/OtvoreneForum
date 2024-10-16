@@ -51,6 +51,11 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("NotStudents", policy => policy.RequireClaim("role"));
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

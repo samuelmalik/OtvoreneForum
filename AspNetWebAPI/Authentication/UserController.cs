@@ -4,6 +4,7 @@ using AspNetCoreAPI.dto;
 using AspNetCoreAPI.Models;
 using AspNetCoreAPI.Registration.dto;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -138,7 +139,9 @@ namespace AspNetCoreAPI.Registration
             return users;
         }
 
+        
         [HttpGet("getNote")]
+        //[Authorize(Policy = "NotStudents")]
         public NoteDto GetNote(
             [FromQuery(Name = "creatorId")] string creatorId,
             [FromQuery(Name = "addresserId")] string addresserId)

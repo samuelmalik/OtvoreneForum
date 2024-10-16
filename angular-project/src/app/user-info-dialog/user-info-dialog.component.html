@@ -4,7 +4,7 @@
   <p>{{data.role}}</p>
   <p><strong>Status:</strong> {{data.status}}</p>
   <!-- Pridaj ďalšie informácie, ktoré máš k dispozícii -->
-  @if (loggedRole() == "master" || loggedRole() == "admin"){
+  @if ((loggedRole() == "master" || loggedRole() == "admin") && this.authService.isAuthenticated()){
     <p>Poznámka(poznámku vidíte len vy)</p>
     <input type="text" [(ngModel)]="note"/>
     @if(noteLoaded){
@@ -16,7 +16,7 @@
 
 
   }
-  @if (loggedRole() == "admin"){
+  @if (loggedRole() == "admin" && this.authService.isAuthenticated()){
 
     <div>
       @if(data.role != "admin"){

@@ -21,10 +21,9 @@ import {FormsModule} from "@angular/forms";
   styleUrl: './user-info-dialog.component.css',
 })
 export class UserInfoDialogComponent implements OnInit, OnDestroy{
-  private authService: AuthenticationService = inject(AuthenticationService);
+  public authService: AuthenticationService = inject(AuthenticationService);
   private destroyRef = inject(DestroyRef);
   private sharedService: SharedService = inject(SharedService);
-  private forumService: ForumService = inject(ForumService);
 
   loggedRole = this.authService.role
   selected = "student"

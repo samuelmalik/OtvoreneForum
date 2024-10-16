@@ -57,7 +57,7 @@ export class ForumPageComponent implements OnInit {
   ngOnInit() {
     this.currentUserId = this.authService.getCurrentId();
     this.forumService.getAllUsers().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
-      this.userList = data;
+      this.userList = data.sort((a, b) => a.role < b.role ? -1 : 1);
       this.showUsersLoader = false;
     });
     this.forumService.getAllPosts(this.currentUserId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
@@ -134,6 +134,7 @@ export class ForumPageComponent implements OnInit {
       }
     }
 
+    this.userList = this.userList.sort((a, b) => a.role < b.role ? -1 : 1);
 
   }
 }

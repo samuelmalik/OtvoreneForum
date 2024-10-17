@@ -13,7 +13,7 @@ import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatDialogModule, MatDialog} from '@angular/material/dialog';
 import { UserInfoDialogComponent } from '../user-info-dialog/user-info-dialog.component';
-
+import {SignalrService} from "../services/signalr.service";
 
 
 @Component({
@@ -39,6 +39,7 @@ export class ForumPageComponent implements OnInit {
   private forumService: ForumService = inject(ForumService);
   private authService: AuthenticationService = inject(AuthenticationService);
   private sharedService: SharedService = inject(SharedService);
+  private signalRService: SignalrService = inject(SignalrService)
 
   subscription: Subscription;
 
@@ -89,6 +90,7 @@ export class ForumPageComponent implements OnInit {
       this.postList[index].isLiked = true
       this.postList[index].likes += 1
       this.forumService.addPostLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
+        this.signalRService.newNotificationBroadcast();
       })
 
     } else if (this.postList[index].isLiked == true) {

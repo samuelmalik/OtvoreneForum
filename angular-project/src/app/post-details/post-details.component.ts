@@ -19,6 +19,7 @@ import {MatButton} from "@angular/material/button";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatButtonModule} from "@angular/material/button";
 import {MatMenuModule} from "@angular/material/menu";
+import {SignalrService} from "../services/signalr.service";
 
 
 @Component({
@@ -42,6 +43,7 @@ export class PostDetailsComponent implements OnInit {
   private authService = inject(AuthenticationService);
   private forumService: ForumService = inject(ForumService);
   private destroyRef: DestroyRef = inject(DestroyRef);
+  private signalRService: SignalrService = inject(SignalrService)
   public CreateCommentForm: FormGroup;
   public id: number;
   public postDetails: PostDetailsDtoInterface;
@@ -115,6 +117,7 @@ export class PostDetailsComponent implements OnInit {
         .subscribe(data => {
           //this.commentList.update(items => [...items, data])
           this.commentArray.push(data)
+          this.signalRService.newNotificationBroadcast();
         });
       this.CreateCommentForm.reset();
     }
@@ -133,7 +136,9 @@ export class PostDetailsComponent implements OnInit {
 
       this.postDetails.isLiked = true
       this.postDetails.likes += 1
-      this.forumService.addPostLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{})
+      this.forumService.addPostLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{
+        this.signalRService.newNotificationBroadcast();
+      })
 
     } else if(this.postDetails.isLiked == true){
       this.postDetails.isLiked = false
@@ -156,7 +161,9 @@ export class PostDetailsComponent implements OnInit {
 
       this.commentArray[index].isLiked = true
       this.commentArray[index].likes += 1
-      this.forumService.addCommentLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{})
+      this.forumService.addCommentLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{
+        this.signalRService.newNotificationBroadcast();
+      })
 
     } else if(this.commentArray[index].isLiked == true){
       this.commentArray[index].isLiked = false

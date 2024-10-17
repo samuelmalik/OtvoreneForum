@@ -15,6 +15,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {ForumService} from "../services/forum.service";
 import {SharedService} from "../services/shared.service";
 import { Subscription } from 'rxjs';
+import {SignalrService} from "../services/signalr.service";
 
 
 @Component({
@@ -50,7 +51,7 @@ export class MainNavComponent implements OnInit{
 
   };
 
-  constructor(private snackBar: MatSnackBar, private sharedService:SharedService) {
+  constructor(private snackBar: MatSnackBar, private sharedService:SharedService, private signalRService: SignalrService) {
     this.clickEventsubscription=    this.sharedService.getClickEvent().subscribe(()=>{
       this.checkForNotifications();
     })
@@ -61,8 +62,13 @@ export class MainNavComponent implements OnInit{
     this.forumService.hasNotifications(this.authService.getCurrentId()).subscribe(data =>{
       this.hasNotifications = data;
     })
-  }
 
+    //real time notifications subscribe method
+    this.signalRService.currentMessage.subscribe(data => {
+        this.checkForNotifications();
+        console.log("broadcast")
+    });
+  }
 
 
   logout() {
@@ -93,12 +99,6 @@ export class MainNavComponent implements OnInit{
   }
 
 }
-
-
-
-
-
-
 
 @Component({
   selector: 'main-nav-snack',

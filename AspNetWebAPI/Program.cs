@@ -84,6 +84,6 @@ app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.MapHub<NotificationHub>("/notification");
+app.MapHub<NotificationHub>("/notificationHub");
 
 app.Run();

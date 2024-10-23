@@ -118,12 +118,15 @@ body{
     flex-direction: column;
     display: flex;
     align-items: start;
+    justify-content: center;
+
   }
 
 .u-info p{
   text-align: center;
   margin: 0;
   padding: 0;
+  align-content: center;
 }
 
   .user-img {
@@ -189,6 +192,7 @@ h2 {
   display: flex;
   cursor: pointer;
   justify-content: start;
+  align-items: center;
 
 }
 

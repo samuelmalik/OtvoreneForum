@@ -124,8 +124,11 @@ export class ForumPageComponent implements OnInit {
 
     //open dialog
     this.dialog.open(UserInfoDialogComponent, {
-      data: user,  // Poslanie dát používateľa do dialógu
-      width: '400px' // Nastavenie šírky okna
+      data: user,  
+      width: '400px',
+      maxWidth: '500px',
+      maxHeight: '400px'
+
     });
   }
 

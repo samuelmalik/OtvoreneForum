@@ -1,24 +1,34 @@
-<h1>Informácie o používateľovi</h1>
-<div>
+<div class="parent">
+<div class="div1">
+  <h1>Informácie o používateľovi</h1>
+</div>
+  <div class="div2">
+    <img class="pfp" src="assets/profilovka.jpeg"/>
+  </div>
+  <div class="div3">
   <p><strong>Užívateľské meno:</strong> {{data.username}}</p>
-  <p>{{data.role}}</p>
+  <p><strong>Pozícia:</strong> {{data.role}}</p>
   <p><strong>Status:</strong> {{data.status}}</p>
-  <!-- Pridaj ďalšie informácie, ktoré máš k dispozícii -->
+  </div>
+
   @if ((loggedRole() == "master" || loggedRole() == "admin") && this.authService.isAuthenticated()){
+    <div class="div4">
     <p>Poznámka(poznámku vidíte len vy)</p>
-    <input type="text" [(ngModel)]="note"/>
+    <div class="note"> <input type="text" [(ngModel)]="note"/>
     @if(noteLoaded){
-      <button (click)="updateNote()">Uložiť poznámku</button>
+      <button class="save-btn" (click)="updateNote()">Uložiť poznámku</button>
     }
     @if(noteUpdated){
       <i class="bi bi-check-lg"></i>
     }
-
-
+    </div>
+    </div>
   }
+
   @if (loggedRole() == "admin" && this.authService.isAuthenticated()){
 
-    <div>
+    <div class="div5">
+      <p>Zmeniť rolu</p>
       @if(data.role != "admin"){
         <mat-form-field>
           <mat-label>Select an option</mat-label>
@@ -37,3 +47,4 @@
 
   }
 </div>
+

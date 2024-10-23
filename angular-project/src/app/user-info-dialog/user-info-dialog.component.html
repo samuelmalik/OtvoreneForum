@@ -1,3 +1,6 @@
+
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='user-info-dialog.component.css'>
+
 <div class="parent">
 <div class="div1">
   <h1>Informácie o používateľovi</h1>
@@ -13,10 +16,10 @@
 
   @if ((loggedRole() == "master" || loggedRole() == "admin") && this.authService.isAuthenticated()){
     <div class="div4">
-    <p>Poznámka(poznámku vidíte len vy)</p>
-    <div class="note"> <input type="text" [(ngModel)]="note"/>
+      <p><strong>Poznámka</strong>(poznámku vidíte len vy)</p>
+    <div class="note"> <input type="text" size="35" maxlength="35" [(ngModel)]="note"/>
     @if(noteLoaded){
-      <button class="save-btn" (click)="updateNote()">Uložiť poznámku</button>
+      <button class="save-btn" type="submit" (click)="updateNote()">Uložiť poznámku</button>
     }
     @if(noteUpdated){
       <i class="bi bi-check-lg"></i>
@@ -28,10 +31,10 @@
   @if (loggedRole() == "admin" && this.authService.isAuthenticated()){
 
     <div class="div5">
-      <p>Zmeniť rolu</p>
+      <p><strong>Zmeniť rolu</strong></p>
       @if(data.role != "admin"){
         <mat-form-field>
-          <mat-label>Select an option</mat-label>
+          <mat-label>Vyberte rolu</mat-label>
           <mat-select [(value)]="selected" (selectionChange)="changeRole()">
             <mat-option value="student">Student</mat-option>
             <mat-option value="master">Master</mat-option>

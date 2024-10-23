@@ -124,7 +124,7 @@ export class ForumPageComponent implements OnInit {
 
     //open dialog
     this.dialog.open(UserInfoDialogComponent, {
-      data: user,  
+      data: user,
       width: '400px',
       maxWidth: '500px',
       maxHeight: '400px'

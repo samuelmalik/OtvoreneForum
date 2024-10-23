@@ -5,9 +5,14 @@
   grid-column-gap: 0;
   grid-row-gap: 0;
   margin: 10px;
+  font-family: Montserrat, sans-serif ;
 }
 
-.div1 { grid-area: 1 / 1 / 2 / 6; }
+.div1 {
+  grid-area: 1 / 1 / 2 / 6;
+  display: flex;
+  justify-content: flex-start;
+}
 
 .div2 {
   grid-area: 2 / 1 / 4 / 3;
@@ -57,5 +62,14 @@
 }
 
 .save-btn {
-  margin-left: 5px
+  margin-left: 5px;
+  background-color: #808080;
+  color: #fff;
+  cursor: pointer;
+
 }
+
+h1 {
+  font-weight: bolder;
+}
+

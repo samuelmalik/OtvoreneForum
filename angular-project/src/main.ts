@@ -16,6 +16,7 @@ import { errorHandlerInterceptor } from './app/api-authorization/error-handler.i
 import { authGuard } from './app/api-authorization/auth.guard';
 import { jwtInterceptor } from './app/api-authorization/jwt.interceptor';
 import {provideHighlightOptions} from "ngx-highlightjs";
+import {MaterialPageComponent} from "./app/material-page/material-page.component";
 
 export function getBaseUrl() {
   return 'https://localhost:7186/api';
@@ -54,6 +55,7 @@ bootstrapApplication(AppComponent, {
         { path: 'create-post', component: CreatePostComponent, canActivate: [authGuard]},
         { path: 'notifications', component: NotificationsComponent, canActivate: [authGuard]},
         { path: 'post-details/:postId', component: PostDetailsComponent},
+        {path: 'material', component: MaterialPageComponent},
       ])
     ]
 })

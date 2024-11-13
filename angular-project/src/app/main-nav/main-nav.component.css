@@ -2,6 +2,7 @@ mat-toolbar{
   padding: 0;
   margin: 0;
   background-color: #fff;
+  height: 70px;
 }
 
 .container{
@@ -16,9 +17,10 @@ mat-toolbar{
   grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 2;
-  height: 80px;
+  height: 70px;
   justify-content: start;
-  margin-top: -30px;
+  margin-top: -25px;
+
 }
 
 .logo:hover {

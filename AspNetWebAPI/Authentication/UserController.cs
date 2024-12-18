@@ -34,8 +34,13 @@ namespace AspNetCoreAPI.Registration
             if (userRegistrationDto == null || !ModelState.IsValid)
                 return BadRequest();
 
-            var user = new User { UserName = userRegistrationDto.Email,  Email = userRegistrationDto.Email, Status = "" };
+            var user = new User { UserName = userRegistrationDto.Email,  Email = userRegistrationDto.Email, Status = "", Role = "student" };
             var result = await _userManager.CreateAsync(user, userRegistrationDto.Password);
+            if (result.Succeeded)
+            {
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                return Ok(new { message = $"Prosím overte svoju adresu {code}" });
+            }
             var claim = await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("role", "student"));
             if (!result.Succeeded)
             {
@@ -46,6 +51,26 @@ namespace AspNetCoreAPI.Registration
 
             return StatusCode(201);
         }
+
+        [HttpPost]
+        [Route("EmailVerification")]
+        public async Task<IActionResult> EmailVerification(string? email, string? code)
+            {
+                if (email == null || code == null)
+                    return BadRequest("Invalid Payload");
+
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                    return BadRequest("Invalid Payload");
+
+                var IsVerified = await _userManager.ConfirmEmailAsync(user, code);
+                if (IsVerified.Succeeded)
+                    return Ok(new
+                    {
+                        message = "email confirmed"
+                    });
+                return BadRequest("something went wrong");
+            }
 
         [HttpPost("add-claim")]
         public async Task<IActionResult> AddClaim([FromBody] ClaimDto claimDto)

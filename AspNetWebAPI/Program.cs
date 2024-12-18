@@ -1,4 +1,4 @@
-//using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using AspNetCoreAPI.Data;
 using AspNetCoreAPI.HubConfig;
 using AspNetCoreAPI.Models;
@@ -15,7 +15,12 @@ var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-builder.Services.AddDefaultIdentity<User>().AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.
+    AddDefaultIdentity<User>( options =>
+    {
+    options.SignIn.RequireConfirmedEmail = true;
+    })
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

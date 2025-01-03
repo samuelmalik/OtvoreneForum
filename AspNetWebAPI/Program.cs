@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AspNetCoreAPI;
+using AspNetCoreAPI.Service;
+using MailKit.Net.Smtp;
+using MailService = MailKit.MailService;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -15,12 +19,23 @@ var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.Configure<MailSetting>(builder.Configuration.GetSection("MailSettings"));  // zmena na "MailSettings"
+builder.Services.AddScoped<ICustomMailService, AspNetCoreAPI.Service.MailService>();
+
+
+
+
 builder.Services.
+
+
     AddDefaultIdentity<User>( options =>
     {
+        options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
     options.SignIn.RequireConfirmedEmail = true;
     })
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -62,6 +77,8 @@ builder.Services.AddAuthorization(options =>
 });
 
 var app = builder.Build();
+
+// email confirmation
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

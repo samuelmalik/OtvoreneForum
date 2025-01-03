@@ -1,17 +1,15 @@
-﻿using AspNetCoreAPI.Authentication.dto;
+﻿using System.IdentityModel.Tokens.Jwt;
+using AspNetCoreAPI.Authentication.dto;
 using AspNetCoreAPI.Data;
 using AspNetCoreAPI.dto;
 using AspNetCoreAPI.Models;
+using AspNetCoreAPI.Registration;
 using AspNetCoreAPI.Registration.dto;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+using AspNetCoreAPI.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
-namespace AspNetCoreAPI.Registration
+namespace AspNetCoreAPI.Authentication
 {
     [ApiController]
     [Route("[controller]")]
@@ -20,58 +18,86 @@ namespace AspNetCoreAPI.Registration
         private readonly UserManager<User> _userManager;
         private readonly JwtHandler _jwtHandler;
         private readonly ApplicationDbContext _context;
+        private readonly ICustomMailService _mailService;
 
-        public UserController(UserManager<User> userManager, JwtHandler jwtHandler, ApplicationDbContext context)
+        public UserController(UserManager<User> userManager, JwtHandler jwtHandler, ApplicationDbContext context, ICustomMailService mailService)
         {
             _userManager = userManager;
             _jwtHandler = jwtHandler;
             _context = context;
+            _mailService = mailService;
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto userRegistrationDto)
+        public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto? userRegistrationDto)
         {
             if (userRegistrationDto == null || !ModelState.IsValid)
                 return BadRequest();
 
-            var user = new User { UserName = userRegistrationDto.Email,  Email = userRegistrationDto.Email, Status = "", Role = "student" };
+            var user = new User
+            {
+                UserName = userRegistrationDto.Email,
+                Email = userRegistrationDto.Email,
+                Status = "",
+                Role = "student"
+            };
+
             var result = await _userManager.CreateAsync(user, userRegistrationDto.Password);
+
             if (result.Succeeded)
             {
+                // Vygeneruj email token
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                return Ok(new { message = $"Prosím overte svoju adresu {code}" });
-            }
-            var claim = await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("role", "student"));
-            if (!result.Succeeded)
-            {
-                var errors = result.Errors.Select(e => e.Description);
 
-                return BadRequest(new UserRegistrationResponseDto { Errors = errors });
+                // Vytvor overovací link
+
+                var confirmationLink = Url.Action(nameof(EmailVerification), "User",
+                    new { email = user.Email, code }, protocol: Request.Scheme);
+
+                // Priprav dáta na odoslanie emailu
+                var mailData = new MailData
+                {
+                    EmailToId = user.Email,
+                    EmailToName = user.UserName,
+                    EmailSubject = "Confirm Your Email",
+                    EmailBody = $"Please confirm your email by clicking on the link below:\n {confirmationLink}"
+                };
+
+                // Pošli email
+                var mailResult = _mailService.SendMail(mailData);
+
+                if (mailResult)
+                {
+                    return Ok(new { message = "Registration successful. Please check your email to confirm your account." });
+                }
+                else
+                {
+                    return StatusCode(500, "User created but email failed to send.");
+                }
             }
 
-            return StatusCode(201);
+            var errors = result.Errors.Select(e => e.Description);
+            return BadRequest(new UserRegistrationResponseDto { Errors = errors });
         }
 
-        [HttpPost]
-        [Route("EmailVerification")]
-        public async Task<IActionResult> EmailVerification(string? email, string? code)
-            {
-                if (email == null || code == null)
-                    return BadRequest("Invalid Payload");
+        [HttpGet("EmailVerification")]
+        public async Task<IActionResult> EmailVerification([FromQuery] string email, [FromQuery] string code)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(code))
+                return BadRequest("Invalid Payload");
 
-                var user = await _userManager.FindByEmailAsync(email);
-                if (user == null)
-                    return BadRequest("Invalid Payload");
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return BadRequest("Invalid Payload");
 
-                var IsVerified = await _userManager.ConfirmEmailAsync(user, code);
-                if (IsVerified.Succeeded)
-                    return Ok(new
-                    {
-                        message = "email confirmed"
-                    });
-                return BadRequest("something went wrong");
-            }
-
+            var IsVerified = await _userManager.ConfirmEmailAsync(user, code);
+            if (IsVerified.Succeeded)
+                return Ok(new
+                {
+                    message = "Email confirmed"
+                });
+            return BadRequest("Something went wrong");
+        }
         [HttpPost("add-claim")]
         public async Task<IActionResult> AddClaim([FromBody] ClaimDto claimDto)
             // role: student/master/admin
@@ -106,6 +132,9 @@ namespace AspNetCoreAPI.Registration
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, userLoginDto.Password))
                 return Ok(new UserLoginResponseDto { ErrorMessage = "Invalid Authentication", IsAuthSuccessful = false });
+            var checkConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+            if (checkConfirmed)
+                return Ok(new UserLoginResponseDto { ErrorMessage = "Email is not confirmed", IsAuthSuccessful = false });
 
             var signingCredentials = _jwtHandler.GetSigningCredentials();
             var claims = _jwtHandler.GetClaims(user);

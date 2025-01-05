@@ -9,6 +9,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { equalValuesValidator, passwordStrengthValidator } from '../password-validators';
 import {Router, RouterLink} from '@angular/router';
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';  // Import MatSnackBarModule
+
+
 
 @Component({
   selector: 'app-registration',
@@ -22,7 +25,9 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     MatIconButton,
     MatButton,
     MatProgressSpinner,
-    RouterLink
+    RouterLink,
+    MatSnackBarModule
+
   ],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.css'
@@ -31,6 +36,7 @@ export class RegistrationComponent implements OnInit {
   authService = inject(AuthenticationService);
   private router = inject(Router);
   showLoader :boolean = false;
+  snackBar = inject(MatSnackBar);
 
   registerForm: FormGroup;
 
@@ -43,18 +49,31 @@ export class RegistrationComponent implements OnInit {
   }
 
   register() {
-    if(this.registerForm.valid) {
+    if (this.registerForm.valid) {
       this.showLoader = true;
-      this.authService.registerUser({...this.registerForm.value}).subscribe({
+      this.authService.registerUser({ ...this.registerForm.value }).subscribe({
         next: () => {
-          console.log('Registration successful!');
           this.showLoader = false;
+          this.snackBar.open('Na váš email bol odoslaný overovací link.', 'OK', {
+            duration: 5000,
+            verticalPosition: 'bottom',
+            horizontalPosition: 'center',
+          });
           this.router.navigate(['/']);
         },
-        error: (err: HttpErrorResponse) => console.log('Oops, something went wrong!', err)
+        error: (err: HttpErrorResponse) => {
+          this.showLoader = false;
+          this.snackBar.open('Registrácia zlyhala. Skontrolujte údaje a skúste znova.', 'OK', {
+            duration: 5000,
+            verticalPosition: 'bottom',
+            horizontalPosition: 'center',
+          });
+          console.error('Oops, something went wrong!', err);
+        }
       });
     }
   }
+
 
 
 }

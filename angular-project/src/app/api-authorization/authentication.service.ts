@@ -93,6 +93,13 @@ export class AuthenticationService {
   setNote(data: UpdateNoteInterface){
     return this.httpClient.put<string>(`${this.baseUrl}/user/setNote`, data)
   }
+  verifyEmail(email: string, code: string): Observable<any> {
+    const params = new HttpParams()
+      .set('email', email)
+      .set('code', code);
+
+    return this.httpClient.get(`${this.baseUrl}/user/EmailVerification`, { params });
+  }
 }
 
 export interface ChangePasswordInterface{

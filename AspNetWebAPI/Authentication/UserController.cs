@@ -46,13 +46,14 @@ namespace AspNetCoreAPI.Authentication
 
             if (result.Succeeded)
             {
-                // Vygeneruj email token
+
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                // Vytvor overovací link
 
-                var confirmationLink = Url.Action(nameof(EmailVerification), "User",
-                    new { email = user.Email, code }, protocol: Request.Scheme);
+                var frontendUrl = "http://localhost:4200/email-verification";
+
+
+                var confirmationLink = $"http://localhost:4200/email-verification?email={user.Email}&code={code}";
 
                 // Priprav dáta na odoslanie emailu
                 var mailData = new MailData
@@ -60,7 +61,7 @@ namespace AspNetCoreAPI.Authentication
                     EmailToId = user.Email,
                     EmailToName = user.UserName,
                     EmailSubject = "Confirm Your Email",
-                    EmailBody = $"Please confirm your email by clicking on the link below:\n {confirmationLink}"
+                    EmailBody = $"Please confirm your email by clicking on the link below:\n <a href='{confirmationLink}'>Verify Email</a>"
                 };
 
                 // Pošli email

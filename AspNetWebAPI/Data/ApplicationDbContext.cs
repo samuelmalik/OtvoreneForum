@@ -17,5 +17,6 @@ namespace AspNetCoreAPI.Data
         public DbSet<PostLike> PostLikes { get; set; }
         public DbSet<CommentLike> CommentLikes { get; set; }
         public DbSet<Note> Notes { get; set; }
+        public DbSet<UploadedFile> Files { get; set; }
     }
 }

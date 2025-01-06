@@ -1,0 +1,95 @@
+
+  @if(isCreate){
+    <section class="create">
+      <h1>Upload File</h1>
+      <form>
+        <div class="mb-3">
+          <label for="name">Popis</label>
+          <input type="text" class="form-control" id="name" name="name"
+                 placeholder="Zadajte popis súboru" [(ngModel)]="description">
+        </div>
+
+        <app-upload (onUploadFinished)="uploadFinished($event)"></app-upload>
+
+        <div class="row">
+          <div class="offset-md-5 col-md-2">
+            <button type="button" class="btn btn-primary" (click)="onCreate()">Create </button>
+          </div>
+        </div>
+      </form>
+    </section>
+  }
+
+  @if(!isCreate){
+    <div class="container">
+      <div class="div1">
+        <h1>Zoznam materiálov k stiahnutiu</h1>
+      </div>
+      <div class="div2"></div>
+      <div class="div4">
+        <div class="table_component">
+          <table>
+            <thead>
+            <tr>
+              <th>Názov súboru</th>
+              <th>Typ súboru</th>
+              <th>Veľkosť súboru</th>
+              <th>Súbor pridal</th>
+              <th>Súbor pridal</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for(file of files; track  file.id){
+              <tr>
+                <td>{{file.name}}</td>
+                <td>{{file.extension}}</td>
+                <td>{{ file.size }}</td>
+                <td>{{ file.description }}</td>
+                <td>{{file.author}}</td>
+                <td><a href="#">Stiahnuť</a></td>
+              </tr>
+            }
+
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <div class="offset-md-10 col-md-2">
+            <button type="button" class="btn btn-primary" (click)="returnToCreate()">Pridať súbor</button>
+          </div>
+        </div>
+      </div>
+      <div class="div2"></div>
+
+    </div>
+
+
+
+
+  }
+
+
+
+
+<!--<table class="table table-striped">
+        <thead>
+        <tr>
+          <th scope="col">Názov</th>
+          <th scope="col">Popis</th>
+          <th scope="col">Typ súboru</th>
+          <th scope="col">Pridal</th>
+          <th scope="col">Stiahnuť</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for(file of files; track  file.id){
+          <tr>
+            <td>{{file.name}}</td>
+            <td>{{file.description}}</td>
+            <td>{{file.extension}}</td>
+            <td>{{file.author}}</td>
+            <td><a href="#">Stiahnuť</a></td>
+          </tr>
+        }
+        </tbody>
+      </table> -->

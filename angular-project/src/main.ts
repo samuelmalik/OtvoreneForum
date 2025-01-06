@@ -18,6 +18,8 @@ import { jwtInterceptor } from './app/api-authorization/jwt.interceptor';
 import {provideHighlightOptions} from "ngx-highlightjs";
 import {MaterialPageComponent} from "./app/material-page/material-page.component";
 import {EmailVerificationComponent} from "./email-verification/email-verification.component";
+import {DownloadComponent} from "./app/download/download.component";
+import {UploadComponent} from "./app/upload/upload.component";
 
 export function getBaseUrl() {
   return 'https://localhost:7186/api';
@@ -56,7 +58,7 @@ bootstrapApplication(AppComponent, {
         { path: 'create-post', component: CreatePostComponent, canActivate: [authGuard]},
         { path: 'notifications', component: NotificationsComponent, canActivate: [authGuard]},
         { path: 'post-details/:postId', component: PostDetailsComponent},
-        {path: 'material', component: MaterialPageComponent},
+        {path: 'material', component: DownloadComponent},
         { path: 'email-verification', component: EmailVerificationComponent },
 
       ])

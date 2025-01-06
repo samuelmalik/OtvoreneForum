@@ -11,6 +11,8 @@ using AspNetCoreAPI;
 using AspNetCoreAPI.Service;
 using MailKit.Net.Smtp;
 using MailService = MailKit.MailService;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -76,6 +78,13 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("NotStudents", policy => policy.RequireClaim("role"));
 });
 
+builder.Services.Configure<FormOptions>(o =>
+{
+    o.ValueLengthLimit = int.MaxValue;
+    o.MultipartBodyLengthLimit = int.MaxValue;
+    o.MemoryBufferThreshold = int.MaxValue;
+});
+// Add services before this line
 var app = builder.Build();
 
 // email confirmation
@@ -100,6 +109,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+    RequestPath = new PathString("/Resources")
+});
 app.UsePathBase("/api/");
 app.UseRouting();
 app.UseCors(MyAllowSpecificOrigins);

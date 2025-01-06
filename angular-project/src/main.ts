@@ -17,9 +17,9 @@ import { authGuard } from './app/api-authorization/auth.guard';
 import { jwtInterceptor } from './app/api-authorization/jwt.interceptor';
 import {provideHighlightOptions} from "ngx-highlightjs";
 import {MaterialPageComponent} from "./app/material-page/material-page.component";
-import {EmailVerificationComponent} from "./email-verification/email-verification.component";
 import {DownloadComponent} from "./app/download/download.component";
 import {UploadComponent} from "./app/upload/upload.component";
+import {EmailVerificationComponent} from "./app/email-verification/email-verification.component";
 
 export function getBaseUrl() {
   return 'https://localhost:7186/api';

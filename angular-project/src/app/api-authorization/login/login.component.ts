@@ -29,7 +29,8 @@ export class LoginComponent implements OnInit {
   authService = inject(AuthenticationService);
   private router = inject(Router);
   showLoader :boolean = false
-  errorMessage :boolean = false;
+  errorMessage: string;
+
 
   loginForm: FormGroup;
 
@@ -47,7 +48,6 @@ export class LoginComponent implements OnInit {
   login() {
     if (this.loginForm.valid) {
       this.showLoader = true;
-      this.errorMessage = false;
 
       this.authService.loginUser({...this.loginForm.value}).subscribe({
         next: (response) => {
@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/forum']);
           } else {
             this.showLoader = false;
-            this.errorMessage = true;
+            this.errorMessage  = response.errorMessage
           }
 
         },

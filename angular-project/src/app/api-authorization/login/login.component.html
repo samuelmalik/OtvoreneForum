@@ -22,8 +22,7 @@
       <mat-spinner [diameter]="50"></mat-spinner>
     }
 
-    @if(errorMessage == true){
-      <p style="color: #af0404; margin-top: 10px"> Wrong username or password, please try again </p>
-    }
+      <p style="color: red;">{{errorMessage}}</p>
+
   </form>
 }

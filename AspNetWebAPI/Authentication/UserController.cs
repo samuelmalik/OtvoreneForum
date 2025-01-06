@@ -132,9 +132,9 @@ namespace AspNetCoreAPI.Authentication
             var user = await _userManager.FindByEmailAsync(userLoginDto.Email);
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, userLoginDto.Password))
-                return Ok(new UserLoginResponseDto { ErrorMessage = "Invalid Authentication", IsAuthSuccessful = false });
+                return Ok(new UserLoginResponseDto { ErrorMessage = "Wrong username or password", IsAuthSuccessful = false });
             var checkConfirmed = await _userManager.IsEmailConfirmedAsync(user);
-            if (checkConfirmed)
+            if (!checkConfirmed)
                 return Ok(new UserLoginResponseDto { ErrorMessage = "Email is not confirmed", IsAuthSuccessful = false });
 
             var signingCredentials = _jwtHandler.GetSigningCredentials();

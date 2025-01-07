@@ -19,6 +19,7 @@ export class AuthenticationService {
 
   constructor(@Inject('BASE_URL') private baseUrl: string) {  }
 
+
   registerUser(userData: UserRegistration): Observable<RegistrationResponse> {
     return this.httpClient.post<RegistrationResponse>(this.baseUrl + '/user/register', userData);
   }
@@ -100,6 +101,15 @@ export class AuthenticationService {
 
     return this.httpClient.get(`${this.baseUrl}/user/EmailVerification`, { params });
   }
+
+
+  forgotPassword(data: { email: string }) {
+    return this.httpClient.post<ForgotPasswordResponse>(`${this.baseUrl}/user/forgot-password`, data);
+  }
+}
+
+export interface ForgotPasswordResponse {
+  message: string;
 }
 
 export interface ChangePasswordInterface{

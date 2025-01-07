@@ -20,6 +20,7 @@ import {MaterialPageComponent} from "./app/material-page/material-page.component
 import {DownloadComponent} from "./app/download/download.component";
 import {UploadComponent} from "./app/upload/upload.component";
 import {EmailVerificationComponent} from "./app/email-verification/email-verification.component";
+import {ForgotPasswordComponent} from "./app/forgot-password/forgot-password.component";
 
 export function getBaseUrl() {
   return 'https://localhost:7186/api';
@@ -60,6 +61,8 @@ bootstrapApplication(AppComponent, {
         { path: 'post-details/:postId', component: PostDetailsComponent},
         {path: 'material', component: DownloadComponent},
         { path: 'email-verification', component: EmailVerificationComponent },
+        { path: 'forgot-password', component: ForgotPasswordComponent },
+
 
       ])
     ]

@@ -145,6 +145,43 @@ namespace AspNetCoreAPI.Authentication
 
             return Ok(new UserLoginResponseDto { IsAuthSuccessful = true, Token = token, Username = user.UserName, Id = user.Id });
         }
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
+        {
+            if (string.IsNullOrEmpty(forgotPasswordDto.Email))
+                return BadRequest("Email je povinný.");
+
+            var user = await _userManager.FindByEmailAsync(forgotPasswordDto.Email);
+            if (user == null)
+                return NotFound("Používateľ s týmto emailom neexistuje.");
+
+            // Generovanie nového hesla
+            var random = new Random();
+            var newPassword = $"P{random.Next(100, 999)}a!{random.Next(10, 99)}";
+            var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, resetToken, newPassword);
+
+            if (result.Succeeded)
+            {
+                // Príprava a odoslanie emailu
+                var mailData = new MailData
+                {
+                    EmailToId = user.Email,
+                    EmailToName = user.UserName,
+                    EmailSubject = "Obnova hesla",
+                    EmailBody = $"Vaše nové heslo je: {newPassword}"
+                };
+
+                var mailResult = _mailService.SendMail(mailData);
+                if (mailResult)
+                {
+                    return Ok(new { message = "Nové heslo bolo odoslané na váš email." });
+                }
+                return StatusCode(500, "Nepodarilo sa odoslať email.");
+            }
+
+            return BadRequest("Obnova hesla zlyhala.");
+        }
 
         [HttpPost("changePassword")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)

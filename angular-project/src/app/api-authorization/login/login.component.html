@@ -18,6 +18,8 @@
     @if(showLoader == false){
       <button mat-raised-button color="primary" type="submit">Prihlásiť sa</button>
       <p>Ak ešte nemáte účet, <a [routerLink]="['/register']">zaregistrujte sa</a> </p>
+
+      <p><a [routerLink]="['/forgot-password']">Zabudnuté heslo?</a></p>
     } @else {
       <mat-spinner [diameter]="50"></mat-spinner>
     }

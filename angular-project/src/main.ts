@@ -59,7 +59,7 @@ bootstrapApplication(AppComponent, {
         { path: 'create-post', component: CreatePostComponent, canActivate: [authGuard]},
         { path: 'notifications', component: NotificationsComponent, canActivate: [authGuard]},
         { path: 'post-details/:postId', component: PostDetailsComponent},
-        {path: 'material', component: DownloadComponent},
+        {path: 'material', component: DownloadComponent, canActivate: [authGuard]},
         { path: 'email-verification', component: EmailVerificationComponent },
         { path: 'forgot-password', component: ForgotPasswordComponent },
 

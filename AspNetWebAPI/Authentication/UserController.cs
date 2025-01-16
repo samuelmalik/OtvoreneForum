@@ -50,10 +50,10 @@ namespace AspNetCoreAPI.Authentication
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
 
-                var frontendUrl = "http://localhost:4200/email-verification";
+                var frontendUrl = "https://open-forum-c4744.web.app/email-verification";
 
 
-                var confirmationLink = $"http://localhost:4200/email-verification?email={user.Email}&code={code}";
+                var confirmationLink = $"https://open-forum-c4744.web.app/email-verification?email={user.Email}&code={code}";
 
                 // Priprav dáta na odoslanie emailu
                 var mailData = new MailData

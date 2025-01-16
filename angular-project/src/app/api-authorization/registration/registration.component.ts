@@ -10,7 +10,7 @@ import { equalValuesValidator, passwordStrengthValidator } from '../password-val
 import {Router, RouterLink} from '@angular/router';
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';  // Import MatSnackBarModule
-
+import {RecaptchaModule} from "ng-recaptcha";
 
 
 @Component({
@@ -26,7 +26,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';  /
     MatButton,
     MatProgressSpinner,
     RouterLink,
-    MatSnackBarModule
+    MatSnackBarModule,
+    RecaptchaModule
 
   ],
   templateUrl: './registration.component.html',
@@ -38,6 +39,9 @@ export class RegistrationComponent implements OnInit {
   showLoader :boolean = false;
   snackBar = inject(MatSnackBar);
 
+  captcha: string;
+  isHuman: boolean;
+
   registerForm: FormGroup;
 
   ngOnInit(): void {
@@ -46,6 +50,9 @@ export class RegistrationComponent implements OnInit {
       password: new FormControl('', passwordStrengthValidator()),
       confirmPassword: new FormControl('', equalValuesValidator('password'))
     });
+
+    this.captcha = "";
+    this.isHuman = false;
   }
 
   register() {
@@ -72,6 +79,11 @@ export class RegistrationComponent implements OnInit {
         }
       });
     }
+  }
+
+  resolved(captchaResponse: string){
+    this.captcha = captchaResponse;
+    console.log(this.captcha)
   }
 
 

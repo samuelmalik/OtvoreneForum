@@ -2,10 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\AspNetWebAPI",
+    "\\AspNetWebAPI\\Authentication",
     "\\AspNetWebAPI\\Controllers",
-    "\\AspNetWebAPI\\Resources",
     "\\AspNetWebAPI\\Resources\\UploadedFiles"
   ],
-  "SelectedNode": "\\AspNetWebAPI\\AspNetWebAPI.sln",
+  "SelectedNode": "\\AspNetWebAPI\\Program.cs",
   "PreviewInSolutionExplorer": false
 }

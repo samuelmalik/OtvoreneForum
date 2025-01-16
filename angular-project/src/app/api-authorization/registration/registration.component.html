@@ -21,8 +21,13 @@
       </mat-form-field>
 
       @if(showLoader == false){
-        <button style="margin: 5px;" mat-raised-button color="primary" type="submit">Registrovať</button>
-        <p>Ak ste už zaregistrovaný, <a [routerLink]="['/login']">prihláste sa</a> </p>
+        @if(captcha == ""){
+          <re-captcha (resolved)="resolved($event)" siteKey="6LdESbkqAAAAABVOJnmG1cOyx5FGPD1e23TVUHur"></re-captcha>
+        } @else {
+          <button style="margin: 5px;" mat-raised-button color="primary" type="submit">Registrovať</button>
+          <p>Ak ste už zaregistrovaný, <a [routerLink]="['/login']">prihláste sa</a> </p>
+        }
+
       } @else {
         <mat-spinner [diameter]="50"></mat-spinner>
       }

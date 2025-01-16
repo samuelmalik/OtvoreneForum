@@ -68,7 +68,7 @@ builder.Services.AddCors(options =>
         name: MyAllowSpecificOrigins,
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200", "https://open-forum-c4744.web.app").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+            policy.WithOrigins("http://localhost:4200", "https://open-forum-c4744.web.app", "https://openforum.tech").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
 
         });
 });

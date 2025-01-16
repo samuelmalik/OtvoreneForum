@@ -1,13 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\angular-project\\src",
-    "\\angular-project\\src\\app",
-    "\\angular-project\\src\\app\\main-nav",
     "\\AspNetWebAPI",
-    "\\AspNetWebAPI\\Authentication",
-    "\\AspNetWebAPI\\Authentication\\dto",
-    "\\AspNetWebAPI\\Controllers"
+    "\\AspNetWebAPI\\Controllers",
+    "\\AspNetWebAPI\\Resources",
+    "\\AspNetWebAPI\\Resources\\UploadedFiles"
   ],
   "SelectedNode": "\\AspNetWebAPI\\AspNetWebAPI.sln",
   "PreviewInSolutionExplorer": false

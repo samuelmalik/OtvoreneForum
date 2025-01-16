@@ -68,7 +68,7 @@ builder.Services.AddCors(options =>
         name: MyAllowSpecificOrigins,
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+            policy.WithOrigins("http://localhost:4200", "https://open-forum-c4744.web.app").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
 
         });
 });
@@ -108,7 +108,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseStaticFiles();
+/*app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+    RequestPath = new PathString("/Resources")
+});*/
 app.UsePathBase("/api/");
 app.UseRouting();
 app.UseCors(MyAllowSpecificOrigins);

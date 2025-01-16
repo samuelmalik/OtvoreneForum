@@ -40,8 +40,11 @@ export class DownloadComponent {
       extension: this.response.extension,
       size: this.response.size,
       author: this.authService.getCurrentUsername()
+
     }
 
+    console.log(this.response)
+    debugger
     this.http.post(`${this.baseUrl}/download`, this.fileDetails)
       .subscribe({
         next: _ => {

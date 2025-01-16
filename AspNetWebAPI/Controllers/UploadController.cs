@@ -23,7 +23,7 @@ namespace AspNetCoreAPI.Controllers
             try
             {
                 var file = Request.Form.Files[0];
-                var folderName = Path.Combine("Resources", "UploadedFiles");
+                var folderName = Path.Combine("Resources", "UploadedFiles", file.FileName);
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 if (file.Length > 0)
                 {
@@ -44,7 +44,7 @@ namespace AspNetCoreAPI.Controllers
                     }
                     
 
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    using (var stream = new FileStream(folderName, FileMode.Create))
                     {
                         file.CopyTo(stream);
                     }

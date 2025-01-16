@@ -23,7 +23,7 @@ import {EmailVerificationComponent} from "./app/email-verification/email-verific
 import {ForgotPasswordComponent} from "./app/forgot-password/forgot-password.component";
 
 export function getBaseUrl() {
-  return 'https://localhost:7186/api';
+  return 'https://samko123.bsite.net/api';
 }
 
 export function tokenGetter() {
@@ -44,7 +44,7 @@ bootstrapApplication(AppComponent, {
       importProvidersFrom(BrowserModule, JwtModule.forRoot({
         config: {
           tokenGetter: tokenGetter,
-          allowedDomains: ['https://https://localhost:7186/'],
+          allowedDomains: ['https://samko123.bsite.net/'],
           disallowedRoutes: [],
         },
       })),

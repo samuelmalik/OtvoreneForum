@@ -12,7 +12,7 @@ export class SignalrService {
 
   constructor() {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:7186/notificationHub')
+      .withUrl('https://samko123.bsite.net/notificationHub')
       .build();
 
     this.hubConnection.start()

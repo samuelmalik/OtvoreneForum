@@ -1,62 +1,52 @@
 <div class="container">
   <h3>Profil</h3>
 
-  <div class="profile-info">
-    <img class="pfp" src="assets/profilovka.jpeg"/>
-    <p>{{currentUserName}}</p>
-    <form class="status-form" [formGroup]="StatusForm">
-      <h2>Status</h2>
-      <div class="form-group">
-        <input type="text" id="newStatus" class="form-control" formControlName="newStatus"/>
-      </div>
-      <button (click)="submitStatusForm()" type="submit">Uložiť</button>
-      @if (statusChangeIndicator){
-        <p style="color: green; font-size: 16px">Status úspešne zmenený</p>
-      }
-
-    </form>
-  </div>
-
-  <div class="forms">
-    <form class="username-form" [formGroup]="UsernameForm">
-      <h2>Uživateľské údaje</h2>
-      <div class="form-group">
-        <label for="newUsername">Meno</label>
-        <input type="text" id="newUsername" class="form-control" formControlName="newUsername" value="ok"/>
-      </div>
-      <p style="color: red">{{errorMessageName}}</p>
-      <button (click)="submitUsernameForm()" type="submit">Uložiť</button>
-    </form>
-
-    <form class="password-form" [formGroup]="PasswordForm">
-      <h2>Heslo</h2>
-      <div class="form-group">
-        <label for="oldPassword">Staré heslo</label>
-        <input  type="password" id="oldPassword" class="form-control" formControlName="oldPassword"/>
-      </div>
-      <div class="newPass">
+  <div class="content">
+    <div class="profile-info">
+      <img class="pfp" src="assets/profilovka.jpeg" alt="Profilová fotka" />
+      <p>{{currentUserName}}</p>
+      <form class="status-form" [formGroup]="StatusForm">
+        <h2>Status</h2>
         <div class="form-group">
-          <label for="newPassword">Nové heslo</label>
-          <input type="password" id="newPassword" class="form-control" formControlName="newPassword"/>
+          <input type="text" id="newStatus" class="form-control" formControlName="newStatus" placeholder="Napíšte svoj status" />
         </div>
+        <button (click)="submitStatusForm()" type="submit">Uložiť</button>
+        @if (statusChangeIndicator) {
+          <p class="success-message">Status úspešne zmenený</p>
+        }
+      </form>
+    </div>
+
+    <div class="forms">
+      <form class="username-form" [formGroup]="UsernameForm">
+        <h2>Užívateľské údaje</h2>
         <div class="form-group">
-          <label for="confirmPassword">Potvrďte nové heslo</label>
-          <input type="password" id="confirmPassword" class="form-control" formControlName="confirmPassword"/>
+          <label for="newUsername">Meno</label>
+          <input type="text" id="newUsername" class="form-control" formControlName="newUsername" placeholder="Vaše nové meno" />
         </div>
-      </div>
-      <p style="color: red">{{errorMessage}}</p>
-      <button (click)="submitPasswordForm()" type="submit">Uložiť</button>
-    </form>
+        <p class="error-message">{{errorMessageName}}</p>
+        <button (click)="submitUsernameForm()" type="submit">Uložiť</button>
+      </form>
+
+      <form class="password-form" [formGroup]="PasswordForm">
+        <h2>Zmena hesla</h2>
+        <div class="form-group">
+          <label for="oldPassword">Staré heslo</label>
+          <input type="password" id="oldPassword" class="form-control" formControlName="oldPassword" placeholder="Vaše staré heslo" />
+        </div>
+        <div class="newPass">
+          <div class="form-group">
+            <label for="newPassword">Nové heslo</label>
+            <input type="password" id="newPassword" class="form-control" formControlName="newPassword" placeholder="Vaše nové heslo" />
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Potvrďte nové heslo</label>
+            <input type="password" id="confirmPassword" class="form-control" formControlName="confirmPassword" placeholder="Potvrďte heslo" />
+          </div>
+        </div>
+        <p class="error-message">{{errorMessage}}</p>
+        <button (click)="submitPasswordForm()" type="submit">Uložiť</button>
+      </form>
+    </div>
   </div>
-
-
 </div>
-
-<!-- <div class="text-red-400 text-sm" *ngIf="newPasswordFormField?.dirty">
-  <span class="block" [ngClass]="{'text-primary': newPasswordFormField?.errors?.['hasUpperCase']}">At least one uppercase letter.</span>
-  <span class="block" [ngClass]="{'text-primary': newPasswordFormField?.errors?.['hasLowerCase']}">At least one lowercase letter.</span>
-  <span class="block" [ngClass]="{'text-primary': newPasswordFormField?.errors?.['hasNumeric']}">At least one digit.</span>
-  <span class="block" [ngClass]="{'text-primary': newPasswordFormField?.errors?.['hasNonAlphanumeric']}">At least one special character.</span>
-  <span class="block" [ngClass]="{'text-primary': newPasswordFormField?.errors?.['' +
-   '']}">At least 8 characters long.</span>
-</div> -->

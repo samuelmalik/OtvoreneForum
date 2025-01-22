@@ -55,7 +55,6 @@ body{
   grid-template-rows: 0.10fr 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  background-color: #f9f6f7;
 }
 
 .div1 { grid-area: 1 / 1 / 2 / 3; display: grid;

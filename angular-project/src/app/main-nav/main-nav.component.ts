@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { MatToolbar } from '@angular/material/toolbar';
-import {MatButton} from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatGridListModule} from '@angular/material/grid-list';
 import { AuthenticationService } from '../api-authorization/authentication.service';
 import {AsyncPipe, NgIf, NgOptimizedImage} from '@angular/common';
@@ -16,6 +16,11 @@ import {ForumService} from "../services/forum.service";
 import {SharedService} from "../services/shared.service";
 import { Subscription } from 'rxjs';
 import {SignalrService} from "../services/signalr.service";
+import { MatIconModule } from '@angular/material/icon';
+import {MatSidenavContainer} from "@angular/material/sidenav";
+import { MatSidenavModule } from '@angular/material/sidenav';
+
+
 
 
 @Component({
@@ -29,7 +34,11 @@ import {SignalrService} from "../services/signalr.service";
     NgIf,
     NgOptimizedImage,
     MatMenuModule,
-    AsyncPipe
+    MatIconModule,
+    AsyncPipe,
+    MatSidenavContainer,
+    MatSidenavModule,
+    MatIconButton,
   ],
   templateUrl: './main-nav.component.html',
   styleUrl: './main-nav.component.css'
@@ -51,7 +60,8 @@ export class MainNavComponent implements OnInit{
 
   };
 
-  constructor(private snackBar: MatSnackBar, private sharedService:SharedService, private signalRService: SignalrService) {
+
+  constructor(private snackBar: MatSnackBar, private sharedService:SharedService, private signalRService: SignalrService, ) {
     this.clickEventsubscription=    this.sharedService.getClickEvent().subscribe(()=>{
       this.checkForNotifications();
     })
@@ -68,6 +78,7 @@ export class MainNavComponent implements OnInit{
         this.checkForNotifications();
         console.log("broadcast")
     });
+
   }
 
 

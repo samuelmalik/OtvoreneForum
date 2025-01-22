@@ -1,36 +1,84 @@
 <mat-toolbar>
-  <div class="container">
-    <div class="left">
-      <button mat-button [routerLink]="['/forum']">Domov</button>
-      <button mat-button [routerLink]="['/material']">Materiály</button>
+  <div class="toolbar-container">
+    <button mat-icon-button class="hamburger-button-left" [matMenuTriggerFor]="leftMenu">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <div class="nav-left">
+      <button mat-button [routerLink]="['/forum']">
+        <mat-icon>forum</mat-icon> Fórum
+      </button>
+      <button mat-button [routerLink]="['/material']">
+        <mat-icon>book</mat-icon> Materiály
+      </button>
     </div>
 
-    <img class="logo" [routerLink]="['/forum']"  src="assets/logo.png" alt="Favicon" />
+    <img class="logo" [routerLink]="['/forum']" src="assets/logo.png" alt="Favicon" />
 
-    <div class="right">
+    <div class="nav-right">
       @if (authService.authenticated()) {
-        <button class="right-button create-btn" mat-button color="accent" (click)="createPost()">Nový príspevok</button>
-        <button mat-button [matMenuTriggerFor]="menu">Profil
-          @if(hasNotifications){
-            <div class="nav-notifications-indicator notifications-indicator"></div>
-          }
-
+        <button mat-button class="create-btn" color="accent" (click)="createPost()">
+          <mat-icon>add_circle</mat-icon> Nový príspevok
         </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="removeNotificationsAlert()" [routerLink]="['/notifications']"> Oznámenia
-            @if(hasNotifications){
-              <div class="menu-notifications-indicator notifications-indicator"></div>
-            }
+        <button mat-button [matMenuTriggerFor]="profileMenu">
+          <mat-icon>account_circle</mat-icon> Profil
+        </button>
+        <mat-menu #profileMenu="matMenu">
+          <button mat-menu-item (click)="removeNotificationsAlert()" [routerLink]="['/notifications']">
+            <mat-icon>notifications</mat-icon> Oznámenia
           </button>
-          <button mat-menu-item [routerLink]="['/dashboard']">Nastavenia</button>
-          <button mat-menu-item (click)="logout()">Odhlásiť sa</button>
+          <button mat-menu-item [routerLink]="['/dashboard']">
+            <mat-icon>settings</mat-icon> Nastavenia
+          </button>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon> Odhlásiť sa
+          </button>
         </mat-menu>
       } @else {
-        <button class="right-button create-btn" mat-button color="accent" (click)="createPost()" >Nový príspevok</button>
-        <button class="right-button" mat-button [routerLink]="['/login']">Login</button>
-        <button class="right-button" mat-button [routerLink]="['/register']">Registration</button>
+        <button mat-button [routerLink]="['/login']">
+          <mat-icon>login</mat-icon> Login
+        </button>
+        <button mat-button [routerLink]="['/register']">
+          <mat-icon>person_add</mat-icon> Registrácia
+        </button>
       }
     </div>
 
+    <button mat-icon-button class="hamburger-button-right" [matMenuTriggerFor]="rightMenu">
+      <mat-icon>menu</mat-icon>
+    </button>
   </div>
 </mat-toolbar>
+
+<mat-menu #leftMenu="matMenu">
+  <button mat-menu-item [routerLink]="['/forum']">
+    <mat-icon>forum</mat-icon> Fórum
+  </button>
+  <button mat-menu-item [routerLink]="['/material']">
+    <mat-icon>book</mat-icon> Materiály
+  </button>
+</mat-menu>
+
+<mat-menu #rightMenu="matMenu">
+  @if (authService.authenticated()) {
+    <button mat-menu-item class="create-btn" color="accent" (click)="createPost()">
+      <mat-icon>add_circle</mat-icon> Nový príspevok
+    </button>
+    <button mat-menu-item [routerLink]="['/notifications']">
+      <mat-icon>notifications</mat-icon> Oznámenia
+    </button>
+    <button mat-menu-item [routerLink]="['/dashboard']">
+      <mat-icon>settings</mat-icon> Nastavenia
+    </button>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>logout</mat-icon> Odhlásiť sa
+    </button>
+  } @else {
+    <button mat-menu-item [routerLink]="['/login']">
+      <mat-icon>login</mat-icon> Login
+    </button>
+    <button mat-menu-item [routerLink]="['/register']">
+      <mat-icon>person_add</mat-icon> Registrácia
+    </button>
+  }
+</mat-menu>

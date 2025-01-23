@@ -5,13 +5,15 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCardModule} from "@angular/material/card";
 import {Router, RouterLink} from "@angular/router";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-notifications',
   standalone: true,
   imports: [
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    MatIcon
   ],
   templateUrl: './notifications.component.html',
   styleUrl: './notifications.component.css'

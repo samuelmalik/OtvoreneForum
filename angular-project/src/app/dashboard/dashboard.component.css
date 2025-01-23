@@ -131,6 +131,9 @@ button:hover {
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
+.newPassBtn{
+  padding-top: 15px
+}
 
 @media (max-width: 900px) {
   .content {

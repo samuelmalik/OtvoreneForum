@@ -22,10 +22,14 @@
         </button>
         <button mat-button [matMenuTriggerFor]="profileMenu">
           <mat-icon>account_circle</mat-icon> Profil
+          @if(hasNotifications){
+            <div class="nav-notifications-indicator notifications-indicator"></div>
+          }
         </button>
         <mat-menu #profileMenu="matMenu">
           <button mat-menu-item (click)="removeNotificationsAlert()" [routerLink]="['/notifications']">
             <mat-icon>notifications</mat-icon> Oznámenia
+            <div class="menu-notifications-indicator notifications-indicator"></div>
           </button>
           <button mat-menu-item [routerLink]="['/dashboard']">
             <mat-icon>settings</mat-icon> Nastavenia
@@ -46,6 +50,7 @@
 
     <button mat-icon-button class="hamburger-button-right" [matMenuTriggerFor]="rightMenu">
       <mat-icon>menu</mat-icon>
+      <div class="menu-notifications-indicator notifications-indicator"></div>
     </button>
   </div>
 </mat-toolbar>
@@ -66,6 +71,9 @@
     </button>
     <button mat-menu-item [routerLink]="['/notifications']">
       <mat-icon>notifications</mat-icon> Oznámenia
+      @if(hasNotifications){
+        <div class="menu-notifications-indicator notifications-indicator"></div>
+      }
     </button>
     <button mat-menu-item [routerLink]="['/dashboard']">
       <mat-icon>settings</mat-icon> Nastavenia

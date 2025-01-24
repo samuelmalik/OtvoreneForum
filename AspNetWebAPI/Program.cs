@@ -23,7 +23,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.Configure<MailSetting>(builder.Configuration.GetSection("MailSettings"));  // zmena na "MailSettings"
 builder.Services.AddScoped<ICustomMailService, AspNetCoreAPI.Service.MailService>();
-
+builder.Services.AddHttpClient();
+builder.Services.Configure<IConfiguration>(builder.Configuration);
 
 
 

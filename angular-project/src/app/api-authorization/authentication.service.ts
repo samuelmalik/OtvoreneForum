@@ -20,8 +20,9 @@ export class AuthenticationService {
   constructor(@Inject('BASE_URL') private baseUrl: string) {  }
 
 
+
   registerUser(userData: UserRegistration): Observable<RegistrationResponse> {
-    return this.httpClient.post<RegistrationResponse>(this.baseUrl + '/user/register', userData);
+    return this.httpClient.post<RegistrationResponse>(`${this.baseUrl}/user/register`, userData);
   }
 
   loginUser(userData: UserLogin): Observable<UserLoginResponse> {
@@ -106,6 +107,7 @@ export class AuthenticationService {
   forgotPassword(data: { email: string }) {
     return this.httpClient.post<ForgotPasswordResponse>(`${this.baseUrl}/user/forgot-password`, data);
   }
+
 }
 
 export interface ForgotPasswordResponse {

@@ -3,20 +3,21 @@
     <h1>Vytvor príspevok</h1>
   </header>
   <main>
-    <form [formGroup]="CreatePostForm">
+    <form [formGroup]="CreatePostForm" class="form-container">
       <div class="form-group">
         <label for="title">Názov</label>
-        <input type="text" id="title" class="form-control" formControlName="title"/>
+        <input type="text" id="title" class="form-control" formControlName="title" placeholder="Sem zadajte názov" />
       </div>
       <div class="form-group">
         <label for="description">Popis</label>
-        <textarea class="form-control" id="description" formControlName="description"></textarea>
+        <textarea id="description" class="form-control" formControlName="description" placeholder="Sem zadajte popis"></textarea>
       </div>
       <div class="form-group">
         <label for="code">Kód</label>
-        <textarea id="code" class="form-control" formControlName="code"></textarea>
+        <textarea id="code" class="form-control" formControlName="code" placeholder="Sem zadajte kód"></textarea>
       </div>
       <button (click)="submitPost()" type="submit">Vytvoriť</button>
     </form>
   </main>
 </div>
+

@@ -3,9 +3,8 @@
     "",
     "\\AspNetWebAPI",
     "\\AspNetWebAPI\\Authentication",
-    "\\AspNetWebAPI\\Controllers",
-    "\\AspNetWebAPI\\Resources\\UploadedFiles"
+    "\\AspNetWebAPI\\Controllers"
   ],
-  "SelectedNode": "\\AspNetWebAPI\\Program.cs",
+  "SelectedNode": "\\AspNetWebAPI\\appsettings.json",
   "PreviewInSolutionExplorer": false
 }

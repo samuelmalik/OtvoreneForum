@@ -1,5 +1,6 @@
 import { HttpClient, HttpEventType, HttpErrorResponse } from '@angular/common/http';
 import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
+import {FileService} from "../services/file.service";
 
 @Component({
   selector: 'app-upload',
@@ -13,7 +14,7 @@ export class UploadComponent {
   message: string;
   @Output() public onUploadFinished = new EventEmitter();
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private fileService: FileService) { }
   ngOnInit() {
   }
   uploadFile = (files) => {
@@ -24,7 +25,7 @@ export class UploadComponent {
     const formData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
 
-    this.http.post(`${this.baseUrl}/upload`, formData, {reportProgress: true, observe: 'events'})
+    this.fileService.upload(formData)
       .subscribe({
         next: (event) => {
           if (event.type === HttpEventType.UploadProgress)

@@ -46,7 +46,23 @@
                 <td>{{ file.size }}</td>
                 <td>{{ file.description }}</td>
                 <td>{{file.author}}</td>
-                <td><a href="#">Stiahnuť</a></td>
+                <!--<td><a href="#">Stiahnuť</a></td> -->
+                <td>
+                  <!-- download -->
+                  <div class="row mb-3 mt-3">
+                    <div class="col-md-3">
+                      <button type="button" class="btn btn-success" (click)="download(file.path)">Download File</button>
+                    </div>
+                    <div class="col-md-4">
+
+                      @if(progress > 0){
+                        <span class="download">
+                        {{progress}}%
+                      </span>
+                      }
+                    </div>
+                  </div>
+                </td>
               </tr>
             }
 
@@ -62,6 +78,8 @@
       <div class="div2"></div>
 
     </div>
+
+
 
 
 

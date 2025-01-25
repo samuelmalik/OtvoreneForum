@@ -1,9 +1,10 @@
 
 import {Component, inject, Inject, OnInit} from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpEventType, HttpResponse} from '@angular/common/http';
 import {FormsModule} from "@angular/forms";
 import {UploadComponent} from "../upload/upload.component";
 import {AuthenticationService} from "../api-authorization/authentication.service";
+import {FileService} from "../services/file.service";
 
 @Component({
   selector: 'app-download',
@@ -24,8 +25,10 @@ export class DownloadComponent {
   files: File[] = [];
   public response: {dbPath: "", fileName: "", extension: "", size: ""}
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string){}
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private fileService: FileService){}
 
+  message: string;
+  progress: number;
   ngOnInit(){
     this.isCreate = false;
     this.description = ""
@@ -44,7 +47,6 @@ export class DownloadComponent {
     }
 
     console.log(this.response)
-    debugger
     this.http.post(`${this.baseUrl}/download`, this.fileDetails)
       .subscribe({
         next: _ => {
@@ -70,6 +72,33 @@ export class DownloadComponent {
 
   public uploadFinished = (event) => {
     this.response = event
+  }
+
+  // download logic
+  download = (path: string) => {
+    this.fileService.download(path)
+      .subscribe((event) => {
+        if (event.type === HttpEventType.UploadProgress)
+          this.progress = Math.round((100 * event.loaded) / event.total);
+        else if (event.type === HttpEventType.Response) {
+          this.message = 'Download success.';
+          this.downloadFile(event, path);
+        }
+      });
+
+    console.log(path);
+  }
+
+  private downloadFile = (data: HttpResponse<Blob>, path: string) => {
+    const downloadedFile = new Blob([data.body], { type: data.body.type });
+    const a = document.createElement('a');
+    a.setAttribute('style', 'display:none;');
+    document.body.appendChild(a);
+    a.download = path.slice(path.lastIndexOf('\\') + 19);
+    a.href = URL.createObjectURL(downloadedFile);
+    a.target = '_blank';
+    a.click();
+    document.body.removeChild(a);
   }
 
 }

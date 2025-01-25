@@ -8,10 +8,7 @@ using AspNetCoreAPI.Registration.dto;
 using AspNetCoreAPI.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+
 
 namespace AspNetCoreAPI.Authentication
 {
@@ -23,90 +20,71 @@ namespace AspNetCoreAPI.Authentication
         private readonly JwtHandler _jwtHandler;
         private readonly ApplicationDbContext _context;
         private readonly ICustomMailService _mailService;
-        private readonly IConfiguration _configuration;
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly CaptchaValidationService _captchaValidationService;
 
 
-        public UserController(UserManager<User> userManager, JwtHandler jwtHandler, ApplicationDbContext context, ICustomMailService mailService, IConfiguration configuration, IHttpClientFactory httpClientFactory)
+        public UserController(UserManager<User> userManager, JwtHandler jwtHandler, ApplicationDbContext context, ICustomMailService mailService,  CaptchaValidationService captchaValidationService)
         {
             _userManager = userManager;
             _jwtHandler = jwtHandler;
             _context = context;
             _mailService = mailService;
-            _configuration = configuration;
-            _httpClientFactory = httpClientFactory;
+            _captchaValidationService = captchaValidationService;
+
         }
 
        [HttpPost("register")]
-        public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto userRegistrationDto)
-
+       public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto userRegistrationDto)
         {
-            //  Validácia požiadavky
-            if (userRegistrationDto == null || !ModelState.IsValid)
-                return BadRequest(new { success = false, message = "Invalid registration data." });
+        // Validácia požiadavky
+        if (userRegistrationDto == null || !ModelState.IsValid)
+            return BadRequest(new { success = false, message = "Invalid registration data." });
 
-            // Overenie CAPTCHA tokenu
-            if (string.IsNullOrEmpty(userRegistrationDto.CaptchaToken))
-                return BadRequest(new { success = false, message = "Captcha token is required." });
+        // Overenie CAPTCHA tokenu
+        var isCaptchaValid = await _captchaValidationService.ValidateCaptchaToken(userRegistrationDto.CaptchaToken);
+        if (!isCaptchaValid)
+        {
+            return BadRequest(new { success = false, message = "Invalid reCAPTCHA token." });
+        }
 
-            var secretKey = _configuration["GoogleReCAPTCHA:SecretKey"];
-            using var httpClient = new HttpClient();
-            var response = await httpClient.PostAsync(
-                $"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={userRegistrationDto.CaptchaToken}",
-                null
-            );
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var captchaResponse = JsonSerializer.Deserialize<ReCaptchaResponse>(
-                responseContent,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
-            );
-            if (captchaResponse == null)
-            {
-                return BadRequest(new { success = false, message = "Failed to validate reCAPTCHA." });
-            }
-            if (!captchaResponse.Success)
-            {
-                return BadRequest(new { success = false, message = "Invalid reCAPTCHA token." });
-            }
+        // Registrácia používateľa
+        var user = new User
+        {
+            UserName = userRegistrationDto.Email,
+            Email = userRegistrationDto.Email,
+            Status = "",
+            Role = "student"
+        };
 
-            //  Registrácia
-            var user = new User
+        var result = await _userManager.CreateAsync(user, userRegistrationDto.Password);
+
+        if (result.Succeeded)
+        {
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var confirmationLink = $"https://open-forum-c4744.web.app/email-verification?email={user.Email}&code={code}";
+
+            var mailData = new MailData
             {
-                UserName = userRegistrationDto.Email,
-                Email = userRegistrationDto.Email,
-                Status = "",
-                Role = "student"
+                EmailToId = user.Email,
+                EmailToName = user.UserName,
+                EmailSubject = "Confirm Your Email",
+                EmailBody = $"Please confirm your email by clicking on the link below:\n <a href='{confirmationLink}'>Verify Email</a>"
             };
 
-            var result = await _userManager.CreateAsync(user, userRegistrationDto.Password);
+            var mailResult = _mailService.SendMail(mailData);
 
-            if (result.Succeeded)
+            if (mailResult)
             {
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var confirmationLink = $"https://open-forum-c4744.web.app/email-verification?email={user.Email}&code={code}";
-
-                var mailData = new MailData
-                {
-                    EmailToId = user.Email,
-                    EmailToName = user.UserName,
-                    EmailSubject = "Confirm Your Email",
-                    EmailBody = $"Please confirm your email by clicking on the link below:\n <a href='{confirmationLink}'>Verify Email</a>"
-                };
-
-                var mailResult = _mailService.SendMail(mailData);
-
-                if (mailResult)
-                {
-                    return Ok(new { message = "Registration successful. Please check your email to confirm your account." });
-                }
-                else
-                {
-                    return StatusCode(500, "User created but email failed to send.");
-                }
+                return Ok(new { message = "Registration successful. Please check your email to confirm your account." });
             }
+            else
+            {
+                return StatusCode(500, "User created but email failed to send.");
+            }
+        }
 
-            var errors = result.Errors.Select(e => e.Description);
-            return BadRequest(new { success = false, errors });
+        var errors = result.Errors.Select(e => e.Description);
+        return BadRequest(new { success = false, errors });
         }
 
 
@@ -179,11 +157,21 @@ namespace AspNetCoreAPI.Authentication
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
         {
             if (string.IsNullOrEmpty(forgotPasswordDto.Email))
-                return BadRequest("Email je povinný.");
+                return BadRequest(new { message = "Email je povinný." });
+
+            if (string.IsNullOrEmpty(forgotPasswordDto.CaptchaToken))
+                return BadRequest(new { message = "Captcha token is required." });
+
+            // Validácia reCAPTCHA tokenu
+            var isCaptchaValid = await _captchaValidationService.ValidateCaptchaToken(forgotPasswordDto.CaptchaToken);
+            if (!isCaptchaValid)
+            {
+                return BadRequest(new { message = "Invalid reCAPTCHA token." });
+            }
 
             var user = await _userManager.FindByEmailAsync(forgotPasswordDto.Email);
             if (user == null)
-                return NotFound("Používateľ s týmto emailom neexistuje.");
+                return NotFound(new { message = "Používateľ s týmto emailom neexistuje." });
 
             // Generovanie nového hesla
             var random = new Random();
@@ -210,7 +198,7 @@ namespace AspNetCoreAPI.Authentication
                 return StatusCode(500, "Nepodarilo sa odoslať email.");
             }
 
-            return BadRequest("Obnova hesla zlyhala.");
+            return BadRequest(new { message = "Obnova hesla zlyhala." });
         }
 
         [HttpPost("changePassword")]

@@ -104,7 +104,7 @@ export class AuthenticationService {
   }
 
 
-  forgotPassword(data: { email: string }) {
+  forgotPassword(data: { captchaToken: string; email: string }) {
     return this.httpClient.post<ForgotPasswordResponse>(`${this.baseUrl}/user/forgot-password`, data);
   }
 

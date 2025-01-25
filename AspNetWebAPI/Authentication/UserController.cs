@@ -8,6 +8,10 @@ using AspNetCoreAPI.Registration.dto;
 using AspNetCoreAPI.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace AspNetCoreAPI.Authentication
 {
@@ -19,21 +23,53 @@ namespace AspNetCoreAPI.Authentication
         private readonly JwtHandler _jwtHandler;
         private readonly ApplicationDbContext _context;
         private readonly ICustomMailService _mailService;
+        private readonly IConfiguration _configuration;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public UserController(UserManager<User> userManager, JwtHandler jwtHandler, ApplicationDbContext context, ICustomMailService mailService)
+
+        public UserController(UserManager<User> userManager, JwtHandler jwtHandler, ApplicationDbContext context, ICustomMailService mailService, IConfiguration configuration, IHttpClientFactory httpClientFactory)
         {
             _userManager = userManager;
             _jwtHandler = jwtHandler;
             _context = context;
             _mailService = mailService;
+            _configuration = configuration;
+            _httpClientFactory = httpClientFactory;
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto? userRegistrationDto)
-        {
-            if (userRegistrationDto == null || !ModelState.IsValid)
-                return BadRequest();
+       [HttpPost("register")]
+        public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto userRegistrationDto)
 
+        {
+            //  Validácia požiadavky
+            if (userRegistrationDto == null || !ModelState.IsValid)
+                return BadRequest(new { success = false, message = "Invalid registration data." });
+
+            // Overenie CAPTCHA tokenu
+            if (string.IsNullOrEmpty(userRegistrationDto.CaptchaToken))
+                return BadRequest(new { success = false, message = "Captcha token is required." });
+
+            var secretKey = _configuration["GoogleReCAPTCHA:SecretKey"];
+            using var httpClient = new HttpClient();
+            var response = await httpClient.PostAsync(
+                $"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={userRegistrationDto.CaptchaToken}",
+                null
+            );
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var captchaResponse = JsonSerializer.Deserialize<ReCaptchaResponse>(
+                responseContent,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+            );
+            if (captchaResponse == null)
+            {
+                return BadRequest(new { success = false, message = "Failed to validate reCAPTCHA." });
+            }
+            if (!captchaResponse.Success)
+            {
+                return BadRequest(new { success = false, message = "Invalid reCAPTCHA token." });
+            }
+
+            //  Registrácia
             var user = new User
             {
                 UserName = userRegistrationDto.Email,
@@ -46,16 +82,9 @@ namespace AspNetCoreAPI.Authentication
 
             if (result.Succeeded)
             {
-
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-
-                var frontendUrl = "https://open-forum-c4744.web.app/email-verification";
-
-
                 var confirmationLink = $"https://open-forum-c4744.web.app/email-verification?email={user.Email}&code={code}";
 
-                // Priprav dáta na odoslanie emailu
                 var mailData = new MailData
                 {
                     EmailToId = user.Email,
@@ -64,7 +93,6 @@ namespace AspNetCoreAPI.Authentication
                     EmailBody = $"Please confirm your email by clicking on the link below:\n <a href='{confirmationLink}'>Verify Email</a>"
                 };
 
-                // Pošli email
                 var mailResult = _mailService.SendMail(mailData);
 
                 if (mailResult)
@@ -78,8 +106,10 @@ namespace AspNetCoreAPI.Authentication
             }
 
             var errors = result.Errors.Select(e => e.Description);
-            return BadRequest(new UserRegistrationResponseDto { Errors = errors });
+            return BadRequest(new { success = false, errors });
         }
+
+
 
         [HttpGet("EmailVerification")]
         public async Task<IActionResult> EmailVerification([FromQuery] string email, [FromQuery] string code)
@@ -274,5 +304,12 @@ namespace AspNetCoreAPI.Authentication
             _context.SaveChangesAsync();
             return Ok(updateNoteDto);
         }
+    }
+    public class ReCaptchaResponse
+    {
+        public bool Success { get; set; }
+        public string ChallengeTs { get; set; }
+        public string Hostname { get; set; }
+        public string[] ErrorCodes { get; set; }
     }
 }

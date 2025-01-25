@@ -2,6 +2,7 @@ export interface UserRegistration {
   email: string,
   password: string,
   confirmPassword: string
+  captchaToken: string;
 }
 
 export interface RegistrationResponse {

@@ -1,37 +1,39 @@
-@if (authService.authenticated()) {
+<div *ngIf="authService.authenticated(); else registrationForm">
   <h1>You're currently logged in.</h1>
-} @else {
+</div>
+
+<ng-template #registrationForm>
   <h1 class="header">OpenForum</h1>
   <h2 class="subheader">Zaregistruj sa a pomáhaj si s ostatnými OpenLabistami!</h2>
 
-    <form [formGroup]="registerForm" (ngSubmit)="register()">
-      <mat-form-field>
-        <mat-label>Zadajte váš e-mail</mat-label>
-        <input matInput formControlName="email" required>
-      </mat-form-field>
+  <form [formGroup]="registerForm" (ngSubmit)="register()" class="registration-form">
+    <mat-form-field>
+      <mat-label>Zadajte váš e-mail</mat-label>
+      <input matInput formControlName="email" required />
+    </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Zadajte vaše heslo</mat-label>
-        <input matInput [type]="'password'" formControlName="password">
-      </mat-form-field>
+    <mat-form-field>
+      <mat-label>Zadajte vaše heslo</mat-label>
+      <input matInput [type]="'password'" formControlName="password" required />
+    </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Potvrďte vaše heslo</mat-label>
-        <input matInput [type]="'password'" formControlName="confirmPassword">
-      </mat-form-field>
+    <mat-form-field>
+      <mat-label>Potvrďte vaše heslo</mat-label>
+      <input matInput [type]="'password'" formControlName="confirmPassword" required />
+    </mat-form-field>
 
-      @if(showLoader == false){
-        @if(captcha == ""){
-          <re-captcha (resolved)="resolved($event)" siteKey="6LdESbkqAAAAABVOJnmG1cOyx5FGPD1e23TVUHur"></re-captcha>
-        } @else {
-          <button style="margin: 5px;" mat-raised-button color="primary" type="submit">Registrovať</button>
-          <p>Ak ste už zaregistrovaný, <a [routerLink]="['/login']">prihláste sa</a> </p>
-        }
+    <div *ngIf="!showLoader">
+      <div *ngIf="captcha === ''">
+        <re-captcha (resolved)="resolved($event)" siteKey="6LdESbkqAAAAABVOJnmG1cOyx5FGPD1e23TVUHur"></re-captcha>
+      </div>
+      <div *ngIf="captcha !== ''">
+        <button mat-raised-button color="primary" type="submit" style="margin: 5px;">
+          Registrovať
+        </button>
+        <p>Ak ste už zaregistrovaný, <a [routerLink]="['/login']">prihláste sa</a></p>
+      </div>
+    </div>
 
-      } @else {
-        <mat-spinner [diameter]="50"></mat-spinner>
-      }
-    </form>
-
-
-}
+    <mat-spinner *ngIf="showLoader" [diameter]="50"></mat-spinner>
+  </form>
+</ng-template>

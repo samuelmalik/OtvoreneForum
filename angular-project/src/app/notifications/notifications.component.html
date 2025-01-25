@@ -1,28 +1,26 @@
 <div class="container">
   @for (notification of notifications; track notification) {
-    <mat-card>
+    <div class="notification-card">
       <div class="card-header" (click)="navigateToDetails(notification.type, notification.itemId, notification.postId)">
-        <p>{{notification.createTime}}</p>
-          <mat-card-title>
-            @if(notification.type == "comment"){
-              Používateľ {{notification.authorUsername}} komentoval Váš príspevok:
-            } @else if (notification.type == "postLike"){
-              Používateľovi {{notification.authorUsername}} sa páči Váš príspevok:
-            } @else if (notification.type == "commentLike"){
-              Používateľovi {{notification.authorUsername}} sa páči Váš komentár u príspevku:
-            }
-
-          </mat-card-title>
-          <mat-card-title>"{{notification.postTitle}}"</mat-card-title>
+        <p class="timestamp">{{ notification.createTime }}</p>
+        <mat-card-title>
+          @if(notification.type == "comment") {
+            Používateľ {{ notification.authorUsername }} komentoval Váš príspevok:
+          } @else if (notification.type == "postLike") {
+            Používateľovi {{ notification.authorUsername }} sa páči Váš príspevok:
+          } @else if (notification.type == "commentLike") {
+            Používateľovi {{ notification.authorUsername }} sa páči Váš komentár u príspevku:
+          }
+        </mat-card-title>
+        <mat-card-title class="post-title">"{{ notification.postTitle }}"</mat-card-title>
       </div>
-
       <mat-card-actions>
-        <button mat-button (click)="onRemoveNotification(notification.type, notification.itemId)">X</button>
+        <button mat-icon-button (click)="onRemoveNotification(notification.type, notification.itemId)">
+          <mat-icon>delete</mat-icon>
+        </button>
       </mat-card-actions>
-    </mat-card>
-
+    </div>
   } @empty {
-    <p>Nemáte žiadne nové upozornenia</p>
+    <p class="no-notifications">Nemáte žiadne nové upozornenia</p>
   }
 </div>
-

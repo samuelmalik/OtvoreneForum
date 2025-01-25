@@ -47,6 +47,24 @@ mat-toolbar {
   display: none;
 }
 
+.nav-notifications-indicator{
+  top: 0px;
+  right: -10px;
+}
+
+
+.menu-notifications-indicator{
+  top: 5px;
+  right: 10px;
+}
+
+.notifications-indicator{
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background-color: red;
+  position: absolute;
+}
 
 @media (max-width: 775px) {
   .toolbar-container {

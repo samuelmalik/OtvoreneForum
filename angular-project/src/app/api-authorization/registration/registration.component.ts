@@ -1,4 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { AuthenticationService } from '../authentication.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
@@ -7,17 +8,18 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { HttpErrorResponse } from '@angular/common/http';
 import { equalValuesValidator, passwordStrengthValidator } from '../password-validators';
-import {Router, RouterLink} from '@angular/router';
-import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';  // Import MatSnackBarModule
-import {RecaptchaModule} from "ng-recaptcha";
-
+import { Router, RouterLink } from '@angular/router';
+import { MatProgressSpinner } from "@angular/material/progress-spinner";
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { RecaptchaModule } from "ng-recaptcha";
+import { UserRegistration } from '../user-registration';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
   imports: [
     ReactiveFormsModule,
+    CommonModule,
     MatFormField,
     MatLabel,
     MatInput,
@@ -27,38 +29,40 @@ import {RecaptchaModule} from "ng-recaptcha";
     MatProgressSpinner,
     RouterLink,
     MatSnackBarModule,
-    RecaptchaModule
-
+    RecaptchaModule,
   ],
   templateUrl: './registration.component.html',
-  styleUrl: './registration.component.css'
+  styleUrl: './registration.component.css',
 })
 export class RegistrationComponent implements OnInit {
   authService = inject(AuthenticationService);
   private router = inject(Router);
-  showLoader :boolean = false;
+  showLoader: boolean = false;
   snackBar = inject(MatSnackBar);
 
-  captcha: string;
-  isHuman: boolean;
-
+  captcha: string = '';
   registerForm: FormGroup;
 
   ngOnInit(): void {
     this.registerForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', passwordStrengthValidator()),
-      confirmPassword: new FormControl('', equalValuesValidator('password'))
+      confirmPassword: new FormControl('', equalValuesValidator('password')),
     });
-
-    this.captcha = "";
-    this.isHuman = false;
   }
 
   register() {
-    if (this.registerForm.valid) {
+    if (this.registerForm.valid && this.captcha) {
       this.showLoader = true;
-      this.authService.registerUser({ ...this.registerForm.value }).subscribe({
+
+
+      const registrationData: UserRegistration = {
+        ...this.registerForm.value,
+        captchaToken: this.captcha,
+      };
+
+      // Volanie služby na registráciu
+      this.authService.registerUser(registrationData).subscribe({
         next: () => {
           this.showLoader = false;
           this.snackBar.open('Na váš email bol odoslaný overovací link.', 'OK', {
@@ -76,16 +80,21 @@ export class RegistrationComponent implements OnInit {
             horizontalPosition: 'center',
           });
           console.error('Oops, something went wrong!', err);
-        }
+        },
+      });
+    } else if (!this.captcha) {
+      this.snackBar.open('Prosím overte, že ste človek pomocou reCAPTCHA.', 'OK', {
+        duration: 5000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
       });
     }
   }
 
-  resolved(captchaResponse: string){
+  resolved(captchaResponse: string) {
     this.captcha = captchaResponse;
-    console.log(this.captcha)
+    console.log('reCAPTCHA resolved, token:', this.captcha);
   }
-
-
-
 }
+
+

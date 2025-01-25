@@ -20,7 +20,7 @@ export class FileService {
     let params = new HttpParams();
     params = params.append('fileUrl', fileUrl);
     return this.http.get(`${this.baseUrl}/file/download`, {
-      //params: params,
+      params: params,
       reportProgress: true,
       observe: 'events',
       responseType: 'blob',

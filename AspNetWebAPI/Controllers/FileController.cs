@@ -65,20 +65,19 @@ namespace AspNetCoreAPI.Controllers
 
         [HttpGet, DisableRequestSizeLimit]
         [Route("download")]
-        public async Task<IActionResult> Download(/*[FromQuery(Name = "fileUrl")] string fileUrl*/)
+        public async Task<IActionResult> Download([FromQuery(Name = "fileUrl")] string fileUrl)
         {
-            /*string fileUrl = "Resources\\UploadedFiles\\202501171024128770sietova_karta (1).pptx";
+            //string fileUrl = "Resources\\UploadedFiles\\202501230949487656ELS_Cvicenie1_Juris_4AI.pptx";
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), fileUrl);
             if (!System.IO.File.Exists(filePath))
-                return NotFound();
+                return NotFound(filePath);
             var memory = new MemoryStream();
             await using (var stream = new FileStream(filePath, FileMode.Open))
             {
                 await stream.CopyToAsync(memory);
             }
             memory.Position = 0;
-            return File(memory, GetContentType(filePath), "nazov_suboru");*/
-            return Ok();
+            return File(memory, GetContentType(filePath), filePath);
         }
 
         private string GetContentType(string path)

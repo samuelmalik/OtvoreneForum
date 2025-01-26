@@ -8,7 +8,7 @@
     <div class="post-info box">
       <div class="author">
         <img class="pfp" src="assets/profilovka.jpeg"/>
-        <div class="authot-info">
+        <div class="author-info">
           <p>{{postDetails.author}}</p>
           <p>{{postDetails.date}}</p>
         </div>
@@ -20,8 +20,11 @@
       <p class="description">{{postDetails.description}}</p>
 
       <h3 style="margin-top: 30px">Kód:</h3>
-      <pre class="code"><code [highlightAuto]="postDetails.code" lineNumbers></code></pre>
-
+      @if (postDetails.code && postDetails.code.trim()) {
+        <pre class="code">
+      <code [highlightAuto]="postDetails.code" lineNumbers></code>
+    </pre>
+      }
       <div class="likes-container" (click)="onPostLike()" >
         @if (postDetails.isLiked){
           <i  class="bi bi-heart-fill"></i>
@@ -30,7 +33,7 @@
           <i  class="bi bi-heart"></i>
         }
 
-        <p>{{postDetails.likes }}</p>
+        <p class="like-count">{{postDetails.likes }}</p>
 
       </div>
     </div>
@@ -88,7 +91,11 @@
 
 
               <p>{{comment.message}}</p>
-              <pre class="code"><code [highlightAuto]="comment.code" lineNumbers></code></pre>
+              @if (comment.code && comment.code.trim()) {
+                <pre class="code">
+            <code [highlightAuto]="comment.code" lineNumbers></code>
+                </pre>
+              }
 
               <div class="likes-container" (click)="onCommentLike(comment.id)">
                 @if (comment.isLiked){
@@ -97,7 +104,7 @@
                   <i  class="bi bi-heart"></i>
                 }
 
-                <p>{{comment.likes }}</p>
+                <p class="like-count" >{{comment.likes }}</p>
 
               </div>
 

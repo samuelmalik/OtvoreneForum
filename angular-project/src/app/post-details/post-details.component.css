@@ -132,6 +132,11 @@ button {
   transform: scale(1.01);
 }
 
+.submit-btn:active {
+    transform: scale(0.95);
+
+}
+
 .disabled-btn {
   background-color: #ccc;
   color: #888;

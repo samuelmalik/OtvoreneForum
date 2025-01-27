@@ -37,6 +37,7 @@ export class ForgotPasswordComponent {
   snackBar = inject(MatSnackBar);
 
   captcha: string = '';
+  loading: boolean = false;
 
   forgotPasswordForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -48,6 +49,7 @@ export class ForgotPasswordComponent {
   }
 
   submit() {
+    this.loading = true;
     if (this.forgotPasswordForm.valid && this.captcha) {
       const email = this.forgotPasswordForm.get('email')?.value;
 
@@ -55,6 +57,7 @@ export class ForgotPasswordComponent {
         this.authService.forgotPassword({ email, captchaToken: this.captcha }).subscribe({
           next: (response: ForgotPasswordResponse) => {
             this.snackBar.open(response.message, 'OK', { duration: 5000 });
+            this.loading = false;
           },
           error: () => {
             this.snackBar.open('Nepodarilo sa obnoviť heslo.', 'OK', { duration: 5000 });

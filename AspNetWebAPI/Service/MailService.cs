@@ -27,7 +27,7 @@ namespace AspNetCoreAPI.Service
 
                 var bodyBuilder = new BodyBuilder
                 {
-                    TextBody = mailData.EmailBody
+                    HtmlBody = mailData.EmailBody
                 };
                 emailMessage.Body = bodyBuilder.ToMessageBody();
 

@@ -31,7 +31,7 @@ export class EmailVerificationComponent implements OnInit {
         next: () => {
           this.snackBar.open('Email bol úspešne overený!', 'OK', { duration: 5000 });
           this.loading = false;
-          this.router.navigate(['/']);
+          this.router.navigate(['/login']);
         },
         error: () => {
           this.snackBar.open('Overenie zlyhalo. Skontrolujte link a skúste znova.', 'OK', { duration: 5000 });

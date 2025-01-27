@@ -8,6 +8,7 @@ using AspNetCoreAPI.Registration.dto;
 using AspNetCoreAPI.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
 
 
 namespace AspNetCoreAPI.Authentication
@@ -61,14 +62,15 @@ namespace AspNetCoreAPI.Authentication
         if (result.Succeeded)
         {
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var confirmationLink = $"https://open-forum-c4744.web.app/email-verification?email={user.Email}&code={code}";
+            var confirmationLink = $"https://openforum.tech/email-verification?email={user.Email}&code={code}";
 
             var mailData = new MailData
             {
                 EmailToId = user.Email,
                 EmailToName = user.UserName,
                 EmailSubject = "Confirm Your Email",
-                EmailBody = $"Please confirm your email by clicking on the link below:\n <a href='{confirmationLink}'>Verify Email</a>"
+                EmailBody = "<h2>Please confirm your email by clicking on the link below:</h2>" +
+                            $"<a href='{confirmationLink}'>Verify Email</a>"
             };
 
             var mailResult = _mailService.SendMail(mailData);

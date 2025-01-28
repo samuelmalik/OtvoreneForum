@@ -111,7 +111,7 @@ namespace AspNetCoreAPI.Authentication
         }
         [HttpPost("add-claim")]
         public async Task<IActionResult> AddClaim([FromBody] ClaimDto claimDto)
-            // role: student/master/admin
+            // role: student/master/admin/root
         {
             //nahradit pomocou replace claim 
             var user = await _userManager.FindByIdAsync(claimDto.userId);

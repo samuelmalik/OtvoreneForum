@@ -28,22 +28,22 @@
     </div>
   }
 
-  @if (loggedRole() == "admin" && this.authService.isAuthenticated()){
+  @if ((loggedRole() == "root" || loggedRole() == "admin")  && this.authService.isAuthenticated()){
 
     <div class="div5">
-      <p><strong>Zmeniť rolu</strong></p>
-      @if(data.role != "admin"){
+
+      @if(data.role != "admin" || loggedRole() == "root"){
+        <p><strong>Zmeniť rolu</strong></p>
         <mat-form-field>
           <mat-label>Vyberte rolu</mat-label>
           <mat-select [(value)]="selected" (selectionChange)="changeRole()">
             <mat-option value="student">Student</mat-option>
             <mat-option value="master">Master</mat-option>
-            <mat-option value="admin">Admin</mat-option>
+            @if(loggedRole() == "root"){
+              <mat-option value="admin">Admin</mat-option>
+            }
           </mat-select>
         </mat-form-field>
-      }
-      @if (selected == "admin" && data.role != "admin"){
-        <p style="color: red">Nastavili ste rolu admina, po opustení tohto okna ju nebude možné odobrať</p>
       }
     </div>
 

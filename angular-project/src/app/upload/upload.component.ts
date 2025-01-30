@@ -17,6 +17,7 @@ export class UploadComponent {
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private fileService: FileService) { }
   ngOnInit() {
   }
+
   uploadFile = (files) => {
     if (files.length === 0) {
       return;
@@ -38,4 +39,5 @@ export class UploadComponent {
         error: (err: HttpErrorResponse) => console.log(err)
       });
   }
+  protected readonly event = event;
 }

@@ -1,78 +1,72 @@
-
-  @if(isCreate){
-    <section class="create">
-      <h1>Upload File</h1>
-      <form>
-        <div class="mb-3">
-          <label for="name">Popis</label>
-          <input type="text" class="form-control" id="name" name="name"
-                 placeholder="Zadajte popis súboru" [(ngModel)]="description">
-        </div>
-
-        <app-upload (onUploadFinished)="uploadFinished($event)"></app-upload>
-
-        <div class="row">
-          <div class="offset-md-5 col-md-2">
-            <button type="button" class="btn btn-primary" (click)="onCreate()">Create </button>
-          </div>
-        </div>
-      </form>
-    </section>
-  }
-
-  @if(!isCreate){
-    <div class="container">
+ <div class="container">
       <div class="div1">
         <h1>Zoznam materiálov k stiahnutiu</h1>
       </div>
       <div class="div2"></div>
       <div class="div4">
+
+        <!-- upload section -->
+        @if(loggedRole != "student"  ){
+          <section class="create">
+            <h2>Upload File</h2>
+            <form>
+              <div class="mb-3">
+                <label for="name">Popis</label>
+                <input type="text" class="form-control" id="name" name="name"
+                       placeholder="Zadajte popis súboru" [(ngModel)]="description">
+              </div>
+              <app-upload (onUploadFinished)="uploadFinished($event)"></app-upload>
+              <div class="row">
+                <div class="offset-md-5 col-md-2">
+                  <button type="button" class="btn btn-primary" (click)="onCreate()">Create </button>
+                </div>
+              </div>
+            </form>
+          </section>
+        }
+
+
+
+        <!-- List of files -->
+
         <div class="table_component">
-          <table>
-            <thead>
-            <tr>
-              <th>Názov súboru</th>
-              <th>Typ súboru</th>
-              <th>Veľkosť súboru</th>
-              <th>Popis súboru</th>
-              <th>Súbor pridal</th>
-            </tr>
-            </thead>
-            <tbody>
-            @for(file of files; track  file.id){
-              <tr>
-                <td>{{file.name}}</td>
-                <td>{{file.extension}}</td>
-                <td>{{ file.size }}</td>
-                <td>{{ file.description }}</td>
-                <td>{{file.author}}</td>
-                <!--<td><a href="#">Stiahnuť</a></td> -->
-                <td>
-                  <!-- download -->
-                  <div class="row mb-3 mt-3">
-                    <div class="col-md-3">
-                      <button type="button" class="btn btn-success" (click)="download(file.path)">Download File</button>
-                    </div>
-                    <div class="col-md-4">
+          @for(file of files; track  file.id){
+            <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+              <mat-expansion-panel-header>
+                <span class="material-icons">
+                  description
+                </span>
+                <p>{{ file.name }}</p>
 
-                      @if(progress > 0){
-                        <span class="download">
-                        {{progress}}%
-                      </span>
-                      }
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            }
+              </mat-expansion-panel-header>
+            <div class="file-container">
+              <div class="file-details">
+                <div class="file-property">
+                  <h4>Popis:</h4>
+                  <p>{{file.description}}</p>
+                </div>
 
-            </tbody>
-          </table>
-        </div>
-        <div class="row">
-          <div class="offset-md-10 col-md-2">
-            <button type="button" class="btn btn-primary" (click)="returnToCreate()">Pridať súbor</button>
-          </div>
+                <div class="file-property">
+                  <h4>Typ súboru:</h4>
+                  <p>{{file.extension}}</p>
+                </div>
+
+                <div class="file-property">
+                  <h4>Veľkosť:</h4>
+                  <p>{{file.size}}</p>
+                </div>
+
+                <div class="file-property">
+                  <h4>Pridal:</h4>
+                  <p>{{file.author}}</p>
+                </div>
+              </div>
+              <span class="material-icons" (click)="download(file.path)">
+                file_download
+              </span>
+            </div>
+            </mat-expansion-panel>
+          }
         </div>
       </div>
       <div class="div2"></div>
@@ -84,7 +78,7 @@
 
 
 
-  }
+
 
 
 

@@ -1,17 +1,22 @@
 
-import {Component, inject, Inject, OnInit} from '@angular/core';
+import {Component, inject, Inject, OnInit, ChangeDetectionStrategy, signal} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpEventType, HttpResponse} from '@angular/common/http';
 import {FormsModule} from "@angular/forms";
 import {UploadComponent} from "../upload/upload.component";
 import {AuthenticationService} from "../api-authorization/authentication.service";
 import {FileService} from "../services/file.service";
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatButton} from "@angular/material/button";
+
 
 @Component({
   selector: 'app-download',
   standalone: true,
   imports: [
     FormsModule,
-    UploadComponent
+    UploadComponent,
+    MatExpansionModule,
+    MatButton
   ],
   templateUrl: './download.component.html',
   styleUrl: './download.component.css'
@@ -25,6 +30,9 @@ export class DownloadComponent {
   files: File[] = [];
   public response: {dbPath: "", fileName: "", extension: "", size: ""}
 
+  readonly panelOpenState = signal(false);
+  loggedRole: string;
+
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private fileService: FileService){}
 
   message: string;
@@ -33,6 +41,7 @@ export class DownloadComponent {
     this.isCreate = false;
     this.description = ""
     this.getFiles()
+    this.loggedRole = this.authService.getRole();
   }
 
   onCreate = () => {

@@ -5,6 +5,11 @@ mat-toolbar {
   background-color: white;
   height: 80px;
   padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
 .toolbar-container {
@@ -13,7 +18,10 @@ mat-toolbar {
   align-items: center;
   width: 100%;
   padding: 0 20px;
+  box-shadow: 0 2px 4px rgba(31, 30, 30, 0.2);
+
 }
+
 
 .logo {
   justify-self: center;

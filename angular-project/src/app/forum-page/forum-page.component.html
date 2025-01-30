@@ -1,93 +1,106 @@
-<div class="grid">
-  <div class="div1">
-
-
-
-    <div class="search-container">
-      <input type="text" class="searchTerm" placeholder="Prehľadávať" [(ngModel)]="searchText">
-      <button type="submit" class="searchButton">
-        <i style="color: white; font-size: 25px; display: flex; justify-content: center" class="bi bi-search"></i>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sideNav mode="side" position="end" class="sidenav">
+    <div class="sidenav-header">
+      <h2 class="sidenav-users-header">Používatelia <i class="bi bi-people"></i></h2>
+      <button class="close-sidenav-btn" mat-button (click)="toggleSideNav()">
+        <i class="bi bi-x-circle"></i> Zavrieť
       </button>
     </div>
-
-  </div>
-
-
-
-  <div class="div2">
-    @if (showPostsLoader){
-      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 20px">
-        <mat-spinner [diameter]="50"></mat-spinner>
-        <p>Načítavam príspevky</p>
-      </div>
-
-    } @else {
-      <div class="order-container">
-        <p class="xd">Zoradiť podľa: {{ orderBy }}</p>
-        <button mat-button [matMenuTriggerFor]="menu">
-          <i class="bi bi-chevron-down"></i>
-        </button>
-      </div>
-      <mat-menu #menu="matMenu">
-        <button (click)="changeOrder('newest')" mat-menu-item> Od najnovšieho </button>
-        <button (click)="changeOrder('oldest')" mat-menu-item> Od najstaršieho </button>
-        <button (click)="changeOrder('most-liked')" mat-menu-item>
-          Lajky
-          <i class="bi bi-arrow-down"></i>
-        </button>
-        <button (click)="changeOrder('least-liked')" mat-menu-item>
-          Lajky
-          <i class="bi bi-arrow-up"></i>
-        </button>
-      </mat-menu>
-
-      <mat-list class="posts-list">
-      @for (post of postList  | searchPipe: searchText; track post) {
-      <div class="posts-item">
-        <div>
-
-        </div>
-        <div class="creator">
-          <img class="pfp" src="assets/profilovka.jpeg"/>
-          <div class="c-info">
-            <p>{{post.author}}</p>
-            <p >{{post.date}}</p>
+    <div  class="users-list">
+      @for (user of userList; track user) {
+        <div (click)="openUserInfo(user)" class="users-item" [ngClass]="{
+          'admin': user.role == 'admin',
+          'master': user.role == 'master',
+          'default': user.role != 'admin' && user.role != 'master'
+        }">
+          <div class="user" >
+            <img class="pfp" src="assets/profilovka.jpeg"/>
+            <div class="u-info">
+              <p>{{user.username}}
+                @if (user.role == "admin"){
+                  <i class="bi bi-person-gear"></i>
+                } @else if(user.role == "master"){
+                  <i class="bi bi-mortarboard"></i>
+                } @else {
+                  <i class="bi bi-backpack2"></i>
+                }</p>
+              <p>{{user.status}}</p>
+            </div>
           </div>
         </div>
-        <h2>{{post.title}}</h2>
-        <p class="post-description">{{post.description}}</p>
-        <a
-          [routerLink]="['/post-details', post.id]">
-          Zobraziť viac...
-        </a>
-        <div class="likes-container" (click)="onLike(post.id)">
+      }
+    </div>
+  </mat-sidenav>
 
-          @if (post.isLiked){
-            <i  class="bi bi-heart-fill"></i>
-          } @else {
-            <i  class="bi bi-heart"></i>
-          }
-          <p>{{post.likes }}</p>
+  <mat-sidenav-content>
+    <div class="grid">
+      <div class="div1">
+        <div class="search-container">
+          <input type="text" class="searchTerm" placeholder="Prehľadávať" [(ngModel)]="searchText">
+          <button disabled type="submit" class="searchButton">
+            <i style="color: white; font-size: 25px; display: flex; justify-content: center" class="bi bi-search"></i>
+          </button>
         </div>
 
 
       </div>
-      }
-      </mat-list>
-    }
-  </div>
+      <div class="div3">
+        <div class="order-container">
+          <p class="xd">Zoradiť podľa: {{ orderBy }}</p>
+          <button class="menubtn" mat-button [matMenuTriggerFor]="menu">
+            <i class="bi bi-chevron-down"></i>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button (click)="changeOrder('newest')" mat-menu-item> Od najnovšieho </button>
+            <button (click)="changeOrder('oldest')" mat-menu-item> Od najstaršieho </button>
+            <button (click)="changeOrder('most-liked')" mat-menu-item>
+              Lajky <i class="bi bi-arrow-down"></i>
+            </button>
+            <button (click)="changeOrder('least-liked')" mat-menu-item>
+              Lajky <i class="bi bi-arrow-up"></i>
+            </button>
+          </mat-menu>
+        </div>
 
-  <div class="div3">
-    @if (showUsersLoader){
-      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 20px">
-        <mat-spinner [diameter]="50"></mat-spinner>
-        <p>Načítavam používateľov...</p>
+        <button class="sidenav-btn" mat-button (click)="toggleSideNav()">
+          Zobraziť používateľov <i class="bi bi-people"></i>
+        </button>
       </div>
 
-    } @else{
-      <h2 style="padding-left: 15px">Zoznam všetkých používateľov</h2>
-      <div class="users-list">
+      <div class="central">
+      <div class="div2">
 
+
+        @if (showPostsLoader){
+          <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 20px">
+            <mat-spinner [diameter]="50"></mat-spinner>
+            <p>Načítavam príspevky</p>
+          </div>
+        } @else {
+          <mat-list class="posts-list">
+            @for (post of postList  | searchPipe: searchText; track post) {
+              <div class="posts-item">
+                <div class="creator">
+                  <img class="pfp" src="assets/profilovka.jpeg"/>
+                  <div class="c-info">
+                    <p>{{post.author}}</p>
+                    <p >{{post.date}}</p>
+                  </div>
+                </div>
+                <h2 class="title">{{post.title}}</h2>
+                <p class="post-description">{{post.description}}</p>
+                <a [routerLink]="['/post-details', post.id]">Zobraziť viac...</a>
+                <div class="likes-container" (click)="onLike(post.id)">
+                  @if (post.isLiked){
+                    <i  class="bi bi-heart-fill"></i>
+                  } @else {
+                    <i  class="bi bi-heart"></i>
+                  }
+                  <p class="p-like">{{post.likes }}</p>
+                </div>
+              </div>
+            }
+          </mat-list>
         @for (user of userList; track user) {
           @if(user.role != "root"){
             <div class="users-item">
@@ -107,13 +120,3 @@
               </div>
             </div>
           }
-
-        }
-
-        </div>
-    }
-
-  </div>
-</div>
-
-

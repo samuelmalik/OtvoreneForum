@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, OnInit, OnDestroy} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {ForumService, UserDtoInterface, PostInfoDtoInterface, AddPostLikeInterface} from "../services/forum.service";
@@ -14,7 +14,10 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatDialogModule, MatDialog} from '@angular/material/dialog';
 import { UserInfoDialogComponent } from '../user-info-dialog/user-info-dialog.component';
 import {SignalrService} from "../services/signalr.service";
-
+import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import {MatIcon} from "@angular/material/icon";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-forum-page',
@@ -28,8 +31,11 @@ import {SignalrService} from "../services/signalr.service";
     MatMenuModule,
     MatButtonModule,
     MatDialogModule,
-
-
+    MatSidenavContainer,
+    MatSidenav,
+    MatSidenavContent,
+    MatIcon,
+    NgClass
   ],
   templateUrl: './forum-page.component.html',
   styleUrl: './forum-page.component.css'
@@ -39,9 +45,12 @@ export class ForumPageComponent implements OnInit {
   private forumService: ForumService = inject(ForumService);
   private authService: AuthenticationService = inject(AuthenticationService);
   private sharedService: SharedService = inject(SharedService);
-  private signalRService: SignalrService = inject(SignalrService)
+  private signalRService: SignalrService = inject(SignalrService);
+  private dialog = inject(MatDialog);
+  private breakpointObserver = inject(BreakpointObserver);
 
   subscription: Subscription;
+  @ViewChild('sideNav') sideNav: MatSidenav;
 
   private currentUserId: string;
   public postList: PostInfoDtoInterface[] = [];
@@ -50,10 +59,10 @@ export class ForumPageComponent implements OnInit {
   public showUsersLoader = true;
   public searchText: string;
   public orderBy: string;
-  private dialog = inject(MatDialog);
+  role = this.authService.role;
 
-  role = this.authService.role
-
+  public sidenavMode: 'over' | 'side' = 'side';
+  public isMobile = false;
 
   ngOnInit() {
     this.currentUserId = this.authService.getCurrentId();
@@ -61,20 +70,37 @@ export class ForumPageComponent implements OnInit {
       this.userList = data.sort((a, b) => a.role < b.role ? -1 : 1);
       this.showUsersLoader = false;
     });
+
     this.forumService.getAllPosts(this.currentUserId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
       this.postList = data;
       this.orderBy = "Od najnovšieho"
-      this.postList.sort((a, b) => b.id - a.id)
+      this.postList.sort((a, b) => b.id - a.id);
       this.showPostsLoader = false;
     });
 
     this.subscription = this.sharedService.data$.subscribe(data => {
       console.log(data);
       this.updateRole(data.role, data.userId);
-    })
+    });
 
-
+    // Sledovanie veľkosti obrazovky pre responsivitu
+    this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.Handset]).subscribe(result => {
+      if (result.matches) {
+        this.sidenavMode = 'over';
+        this.isMobile = true;
+        this.sideNav?.close();
+      } else {
+        this.sidenavMode = 'side';
+        this.isMobile = false;
+        this.sideNav?.open();
+      }
+    });
   }
+
+  toggleSideNav() {
+    this.sideNav.toggle();
+  }
+
 
   onLike(postId: number) {
     const index = this.postList.findIndex(post => post.id == postId)
@@ -99,7 +125,6 @@ export class ForumPageComponent implements OnInit {
       this.forumService.removePostLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
       })
     }
-
   }
 
   changeOrder(order: string) {
@@ -119,31 +144,22 @@ export class ForumPageComponent implements OnInit {
   }
 
   openUserInfo(user: UserDtoInterface) {
-    //test
-    console.log(this.userList)
-
-    //open dialog
     this.dialog.open(UserInfoDialogComponent, {
       data: user,
-      width: '400px',
-      maxWidth: '500px',
-      maxHeight: '400px'
-
+      width: '500px',
+      maxWidth: '90vw',
+      height: 'auto',
+      panelClass: 'custom-dialog-container',
     });
   }
 
-  updateRole(role: string, id: string){
+  updateRole(role: string, id: string) {
     for (let user of this.userList) {
-      if(id == user.id){
+      if (id == user.id) {
         user.role = role;
       }
     }
-
     this.userList = this.userList.sort((a, b) => a.role < b.role ? -1 : 1);
-
   }
 }
-
-
-
 

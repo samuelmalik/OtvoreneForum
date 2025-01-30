@@ -101,9 +101,22 @@
               </div>
             }
           </mat-list>
-        }
-      </div>
-      </div>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+        @for (user of userList; track user) {
+          @if(user.role != "root"){
+            <div class="users-item">
+              <div class="user" (click)="openUserInfo(user)">
+                <img class="pfp" src="assets/profilovka.jpeg"/>
+                <div class="u-info">
+                  <p>{{user.username}}
+                    @if (user.role == "admin"){
+                      <i class="bi bi-person-gear"></i>
+                    } @else if(user.role == "master"){
+                      <i class="bi bi-mortarboard"></i>
+                    } @else {
+                      <i class="bi bi-backpack2"></i>
+                    }</p>
+                  <p style="font-style: italic">{{user.status}}</p>
+                </div>
+              </div>
+            </div>
+          }

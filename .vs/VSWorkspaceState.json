@@ -5,6 +5,6 @@
     "\\AspNetWebAPI\\Authentication",
     "\\AspNetWebAPI\\Controllers"
   ],
-  "SelectedNode": "\\AspNetWebAPI\\AspNetWebAPI.sln",
+  "SelectedNode": "\\AspNetWebAPI\\Controllers\\ForumController.cs",
   "PreviewInSolutionExplorer": false
 }

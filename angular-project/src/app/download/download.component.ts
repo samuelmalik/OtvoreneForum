@@ -1,5 +1,5 @@
 
-import {Component, inject, Inject, OnInit, ChangeDetectionStrategy, signal} from '@angular/core';
+import {Component, inject, Inject, OnInit, ChangeDetectionStrategy, signal, ViewChild} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpEventType, HttpResponse} from '@angular/common/http';
 import {FormsModule} from "@angular/forms";
 import {UploadComponent} from "../upload/upload.component";
@@ -7,6 +7,7 @@ import {AuthenticationService} from "../api-authorization/authentication.service
 import {FileService} from "../services/file.service";
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatButton} from "@angular/material/button";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 
 @Component({
@@ -16,7 +17,8 @@ import {MatButton} from "@angular/material/button";
     FormsModule,
     UploadComponent,
     MatExpansionModule,
-    MatButton
+    MatButton,
+    MatProgressSpinner
   ],
   templateUrl: './download.component.html',
   styleUrl: './download.component.css'
@@ -24,6 +26,9 @@ import {MatButton} from "@angular/material/button";
 export class DownloadComponent {
   private authService: AuthenticationService = inject(AuthenticationService);
 
+  @ViewChild(UploadComponent) uploadComponent;
+
+  showLoader: boolean
   isCreate: boolean;
   description: string;
   fileDetails: FileToCreate;
@@ -38,6 +43,7 @@ export class DownloadComponent {
   message: string;
   progress: number;
   ngOnInit(){
+    this.showLoader = true;
     this.isCreate = false;
     this.description = ""
     this.getFiles()
@@ -45,6 +51,26 @@ export class DownloadComponent {
   }
 
   onCreate = () => {
+    //upload file to BE
+    this.uploadComponent.uploadFileToServer()
+  }
+
+  private getFiles = () => {
+    this.http.get(`${this.baseUrl}/download`)
+      .subscribe(
+        {
+        next: (res) => this.files = res as File[],
+        //this.showLoader = false;
+        error: (err: HttpErrorResponse) => console.log(err),
+        complete: () => this.showLoader = false,
+
+      });
+  }
+
+
+  public uploadFinished = (event) => {
+    this.response = event
+
     this.fileDetails = {
       description: this.description,
       path: this.response.dbPath,
@@ -55,6 +81,7 @@ export class DownloadComponent {
 
     }
 
+    //upload details about file to DB
     console.log(this.response)
     this.http.post(`${this.baseUrl}/download`, this.fileDetails)
       .subscribe({
@@ -64,23 +91,6 @@ export class DownloadComponent {
         },
         error: (err: HttpErrorResponse) => console.log(err)
       });
-  }
-
-  private getFiles = () => {
-    this.http.get(`${this.baseUrl}/download`)
-      .subscribe({
-        next: (res) => this.files = res as File[],
-        error: (err: HttpErrorResponse) => console.log(err)
-      });
-  }
-
-  returnToCreate = () => {
-    this.isCreate = true;
-    this.description = '';
-  }
-
-  public uploadFinished = (event) => {
-    this.response = event
   }
 
   // download logic

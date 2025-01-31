@@ -29,45 +29,53 @@
 
         <!-- List of files -->
 
-        <div class="table_component">
-          @for(file of files; track  file.id){
-            <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
-              <mat-expansion-panel-header>
+        @if(showLoader){
+          <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 20px">
+            <mat-spinner [diameter]="50"></mat-spinner>
+            <p>Načítavam súbory</p>
+          </div>
+        } @else{
+          <div class="table_component">
+            @for(file of files; track  file.id){
+              <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+                <mat-expansion-panel-header>
                 <span class="material-icons">
                   description
                 </span>
-                <p>{{ file.name }}</p>
+                  <p>{{ file.name }}</p>
 
-              </mat-expansion-panel-header>
-            <div class="file-container">
-              <div class="file-details">
-                <div class="file-property">
-                  <h4>Popis:</h4>
-                  <p>{{file.description}}</p>
-                </div>
+                </mat-expansion-panel-header>
+                <div class="file-container">
+                  <div class="file-details">
+                    <div class="file-property">
+                      <h4>Popis:</h4>
+                      <p>{{file.description}}</p>
+                    </div>
 
-                <div class="file-property">
-                  <h4>Typ súboru:</h4>
-                  <p>{{file.extension}}</p>
-                </div>
+                    <div class="file-property">
+                      <h4>Typ súboru:</h4>
+                      <p>{{file.extension}}</p>
+                    </div>
 
-                <div class="file-property">
-                  <h4>Veľkosť:</h4>
-                  <p>{{file.size}}</p>
-                </div>
+                    <div class="file-property">
+                      <h4>Veľkosť:</h4>
+                      <p>{{file.size}}</p>
+                    </div>
 
-                <div class="file-property">
-                  <h4>Pridal:</h4>
-                  <p>{{file.author}}</p>
-                </div>
-              </div>
-              <span class="material-icons" (click)="download(file.path)">
+                    <div class="file-property">
+                      <h4>Pridal:</h4>
+                      <p>{{file.author}}</p>
+                    </div>
+                  </div>
+                  <span class="material-icons" (click)="download(file.path)">
                 file_download
               </span>
-            </div>
-            </mat-expansion-panel>
-          }
-        </div>
+                </div>
+              </mat-expansion-panel>
+            }
+          </div>
+        }
+
       </div>
       <div class="div2"></div>
 

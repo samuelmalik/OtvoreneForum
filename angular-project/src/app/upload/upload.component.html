@@ -6,8 +6,10 @@
       <div class="drag-drop-container">
         <input type="file" #file class="drag-drop" placeholder="Choose file" (change)="uploadFile(file.files)">
         <div>
-          <div>
-            Drag a file or click here
+          <div class="upload-icon-container">
+            <span class="material-icons upload-icon">
+                file_upload
+              </span>
           </div>
         </div>
       </div>

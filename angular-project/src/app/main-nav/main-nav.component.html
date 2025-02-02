@@ -28,7 +28,7 @@
 
         </button>
         <mat-menu #profileMenu="matMenu">
-          <button mat-menu-item (click)="removeNotificationsAlert()" [routerLink]="['/notifications']">
+          <button mat-menu-item [routerLink]="['/notifications']">
             <mat-icon>notifications</mat-icon> Oznámenia
             @if(hasNotifications){
               <div class="menu-notifications-indicator notifications-indicator"></div>
@@ -74,7 +74,7 @@
     <button mat-menu-item class="create-btn" color="accent" (click)="createPost()">
       <mat-icon>add_circle</mat-icon> Nový príspevok
     </button>
-    <button mat-menu-item (click)="removeNotificationsAlert()" [routerLink]="['/notifications']">
+    <button mat-menu-item [routerLink]="['/notifications']">
       <mat-icon>notifications</mat-icon> Oznámenia
       @if(hasNotifications){
         <div class="menu-notifications-indicator notifications-indicator"></div>

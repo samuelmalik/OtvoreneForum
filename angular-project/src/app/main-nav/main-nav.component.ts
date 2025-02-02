@@ -62,8 +62,14 @@ export class MainNavComponent implements OnInit{
 
 
   constructor(private snackBar: MatSnackBar, private sharedService:SharedService, private signalRService: SignalrService, ) {
+    // real time notifications
     this.clickEventsubscription=    this.sharedService.getClickEvent().subscribe(()=>{
       this.checkForNotifications();
+    })
+
+    // removing notifications symbol
+    this.clickEventsubscription=    this.sharedService.getNotificationDeleteEvent().subscribe(()=>{
+      this.hasNotifications = false
     })
 
   }
@@ -85,6 +91,7 @@ export class MainNavComponent implements OnInit{
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+    this.hasNotifications = false
   }
 
   createPost() {

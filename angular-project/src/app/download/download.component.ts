@@ -1,7 +1,7 @@
 
 import {Component, inject, Inject, OnInit, ChangeDetectionStrategy, signal, ViewChild} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpEventType, HttpResponse} from '@angular/common/http';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {UploadComponent} from "../upload/upload.component";
 import {AuthenticationService} from "../api-authorization/authentication.service";
 import {FileService} from "../services/file.service";
@@ -18,7 +18,8 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     UploadComponent,
     MatExpansionModule,
     MatButton,
-    MatProgressSpinner
+    MatProgressSpinner,
+    ReactiveFormsModule
   ],
   templateUrl: './download.component.html',
   styleUrl: './download.component.css'

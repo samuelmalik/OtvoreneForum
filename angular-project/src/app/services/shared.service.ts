@@ -5,6 +5,7 @@ import { Observable, Subject } from 'rxjs';
 })
 export class SharedService {
   private subject = new Subject<void>();
+  private notificationCheckSubject = new Subject<void>();
   private data = new Subject<roleInterface>();
   data$ = this.data.asObservable();
   sendClickEvent() {
@@ -17,6 +18,15 @@ export class SharedService {
   setData(data: roleInterface){
     this.data.next(data);
   }
+
+  sendNotificationDeletedEvent() {
+    this.notificationCheckSubject.next();
+  }
+
+  getNotificationDeleteEvent(): Observable<any>{
+    return this.notificationCheckSubject.asObservable();
+  }
+
 }
 
 export interface roleInterface{

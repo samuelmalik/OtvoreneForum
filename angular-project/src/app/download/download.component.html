@@ -11,14 +11,13 @@
             <h2>Upload File</h2>
             <form>
               <div class="mb-3">
-                <label for="name">Popis</label>
-                <input type="text" class="form-control" id="name" name="name"
-                       placeholder="Zadajte popis súboru" [(ngModel)]="description">
+                <textarea type="text" class="form-control" id="name" name="name"
+                          placeholder="Zadajte popis súboru" [(ngModel)]="description"></textarea>
               </div>
               <app-upload (onUploadFinished)="uploadFinished($event)"></app-upload>
               <div class="row">
                 <div class="offset-md-5 col-md-2">
-                  <button type="button" class="btn btn-primary" (click)="onCreate()">Create </button>
+                  <button class="create-button" mat-flat-button (click)="onCreate()">Create </button>
                 </div>
               </div>
             </form>

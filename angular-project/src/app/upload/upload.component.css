@@ -35,10 +35,10 @@
 
 .drag-drop-container div div{
   position: relative;
-  height: 300px;
   left: -50%;
-  bottom: -50%;
+  top: -40px; /* one half of .upload-icon {font-size} */
   text-align: center;
+  height: 50px;
 }
 
 button[mat-icon-button] {
@@ -52,4 +52,29 @@ button[mat-icon-button] {
 button[mat-icon-button]:hover {
   background-color: #ffe6e6;
   transform: scale(1.1);
+}
+
+.chosen-file-details{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.chosen-file-details p{
+  margin: 0;
+  font-size: 16px;
+  text-decoration: underline;
+}
+
+.upload-icon{
+  font-size: 80px; /* if changing, change also .drag-drop-container div div {top}*/
+  transition: transform 0.3s ease-in-out;
+  color: rgba(0, 123, 255, 0.78);
+}
+
+.drag-drop-container:hover .upload-icon {
+  transform: scale(1.2) translateY(-10px);
 }

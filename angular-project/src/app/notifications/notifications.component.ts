@@ -1,11 +1,12 @@
 import {Component, OnInit, inject, DestroyRef} from '@angular/core';
-import {ForumService, NotificationInterface} from "../services/forum.service";
+import {ForumService, NotificationInterface,} from "../services/forum.service";
 import {AuthenticationService} from "../api-authorization/authentication.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCardModule} from "@angular/material/card";
 import {Router, RouterLink} from "@angular/router";
 import {MatIcon} from "@angular/material/icon";
+import {SharedService} from "../services/shared.service";
 
 @Component({
   selector: 'app-notifications',
@@ -22,6 +23,7 @@ export class NotificationsComponent implements OnInit{
   private currentUserId: string;
   private router: Router = inject(Router)
   private forumService: ForumService = inject(ForumService);
+  private sharedService: SharedService = inject(SharedService);
   private authService: AuthenticationService = inject(AuthenticationService);
   private destroyRef: DestroyRef = inject(DestroyRef);
   public notifications: NotificationInterface[] = [];
@@ -45,6 +47,11 @@ export class NotificationsComponent implements OnInit{
     } else if(type == "commentLike"){
       this.forumService.makeCommentLikeSeen(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe()
     }
+    // removing notifications symbol
+    if(this.notifications.length == 0){
+      this.sharedService.sendNotificationDeletedEvent()
+    }
+
   }
 
   navigateToDetails(type: string, itemId: number, postId: number){

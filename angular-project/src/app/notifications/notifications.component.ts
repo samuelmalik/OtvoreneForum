@@ -55,7 +55,6 @@ export class NotificationsComponent implements OnInit{
   }
 
   navigateToDetails(type: string, itemId: number, postId: number){
-    this.onRemoveNotification(type, itemId)
     this.router.navigate(['/post-details', postId])
   }
 

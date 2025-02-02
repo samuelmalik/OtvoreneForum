@@ -66,9 +66,17 @@
                       <p>{{file.author}}</p>
                     </div>
                   </div>
-                  <span class="material-icons" (click)="download(file.path)">
-                file_download
-              </span>
+                  <div class="file-actions-container">
+                    <button mat-icon-button class="download-btn" (click)="download(file.path)">
+                      <mat-icon>file_download</mat-icon>
+                    </button>
+                    @if(loggedRole == "admin" || currentUserId == file.authorId){
+                      <button mat-icon-button class="delete-btn" (click)="delete(file.path)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    }
+
+                  </div>
                 </div>
               </mat-expansion-panel>
             }

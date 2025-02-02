@@ -6,8 +6,9 @@ import {UploadComponent} from "../upload/upload.component";
 import {AuthenticationService} from "../api-authorization/authentication.service";
 import {FileService} from "../services/file.service";
 import {MatExpansionModule} from '@angular/material/expansion';
-import {MatButton} from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {MatIcon} from "@angular/material/icon";
 
 
 @Component({
@@ -19,7 +20,9 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     MatExpansionModule,
     MatButton,
     MatProgressSpinner,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatIcon,
+    MatIconButton
   ],
   templateUrl: './download.component.html',
   styleUrl: './download.component.css'
@@ -38,6 +41,7 @@ export class DownloadComponent {
 
   readonly panelOpenState = signal(false);
   loggedRole: string;
+  currentUserId: string;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private fileService: FileService){}
 
@@ -49,6 +53,7 @@ export class DownloadComponent {
     this.description = ""
     this.getFiles()
     this.loggedRole = this.authService.getRole();
+    this.currentUserId = this.authService.getCurrentId();
   }
 
   onCreate = () => {
@@ -78,12 +83,13 @@ export class DownloadComponent {
       name: this.response.fileName,
       extension: this.response.extension,
       size: this.response.size,
-      author: this.authService.getCurrentUsername()
-
+      author: this.authService.getCurrentUsername(),
+      authorId: this.authService.getCurrentId()
     }
 
     //upload details about file to DB
     console.log(this.response)
+    console.log(this.fileDetails)
     this.http.post(`${this.baseUrl}/download`, this.fileDetails)
       .subscribe({
         next: _ => {
@@ -121,6 +127,10 @@ export class DownloadComponent {
     document.body.removeChild(a);
   }
 
+  delete(path: string){
+    console.log("Delete file at: " + path)
+  }
+
 }
 
 export interface File {
@@ -131,6 +141,7 @@ export interface File {
   extension: string,
   description: string,
   size: string
+  authorId: string,
 }
 
 export interface FileToCreate {
@@ -138,6 +149,7 @@ export interface FileToCreate {
   path: string,
   name: string,
   extension: string,
-  author: string
-  size: string
+  author: string,
+  size: string,
+  authorId: string,
 }

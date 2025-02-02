@@ -55,6 +55,7 @@ namespace AspNetCoreAPI.Controllers
                     file.Name = fileDetails.Name;
                     file.Extension = fileDetails.Extension;
                     file.Size = fileDetails.Size;
+                    file.AuthorId = fileDetails.AuthorId;
                }
 
                 _context.Add(file);

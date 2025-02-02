@@ -9,5 +9,6 @@
         public string Extension { get; set; }
         public string Description { get; set; }
         public string Size { get; set; }
+        public string AuthorId { get; set; }
     }
 }

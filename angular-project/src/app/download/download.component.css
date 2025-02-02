@@ -138,3 +138,35 @@ textarea:focus {
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
   outline: none;
 }
+
+button[mat-icon-button] {
+  background-color: transparent;
+  font-size: 24px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+button[mat-icon-button]:hover {
+  transform: scale(1.1);
+}
+
+.download-btn{
+  color: #007bff;
+}
+
+.download-btn:hover{
+  background-color: rgba(0, 123, 255, 0.18);
+}
+
+.delete-btn{
+  color: #d32f2f;
+}
+
+.delete-btn:hover{
+  background-color: #ffe6e6;
+}
+
+.file-actions-container{
+  display: flex;
+  flex-direction: column;
+}

@@ -59,6 +59,8 @@ export class DashboardComponent implements OnInit {
   public errorMessage ="";
   public errorMessageName ="";
   public statusChangeIndicator: boolean = false;
+   maxChars = 100;
+   remainingChars = this.maxChars;
 
 
 
@@ -77,8 +79,13 @@ export class DashboardComponent implements OnInit {
     });
 
     this.StatusForm = this.formBuilder.group({
-      newStatus: new FormControl(''),
+      newStatus: new FormControl('', Validators.maxLength(this.maxChars))
     });
+
+    this.StatusForm.get('newStatus')?.valueChanges.subscribe(value => {
+      this.updateCharCount();
+    });
+
 
   }
    get newPasswordFormField()
@@ -93,6 +100,10 @@ export class DashboardComponent implements OnInit {
       this.StatusForm.get("newStatus")?.setValue(data.status)
       });
   }
+   updateCharCount() {
+     const statusValue = this.StatusForm.get('newStatus')?.value || '';
+     this.remainingChars = this.maxChars - statusValue.length;
+   }
 
   submitPasswordForm(){
     if(this.PasswordForm.value.newPassword == this.PasswordForm.value.confirmPassword){
@@ -133,18 +144,34 @@ export class DashboardComponent implements OnInit {
      }
    }
 
-   submitStatusForm(){
-     console.log(this.StatusForm.value.newStatus)
+   submitStatusForm() {
+     const statusValue = this.StatusForm.value.newStatus.trim();
+
+     if (statusValue.length === 0) {
+       console.log("Status nemôže byť prázdny.");
+       return;
+     }
+
+     if (statusValue.length > this.maxChars) {
+       console.log("Status je príliš dlhý.");
+       return;
+     }
+
      let data: UpdateStatusInterface = {
        userId: this.currentUserId,
-       status: this.StatusForm.value.newStatus
-     }
-     this.forumService.updateStatus(data).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{})
+       status: statusValue
+     };
 
-     this.statusChangeIndicator = true;
-     setTimeout(() => {
-       this.statusChangeIndicator = false;
-     }, 3000)
+     this.forumService.updateStatus(data).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+       this.statusChangeIndicator = true;
+
+       this.StatusForm.reset();
+       this.remainingChars = this.maxChars;
+
+       setTimeout(() => {
+         this.statusChangeIndicator = false;
+       }, 3000);
+     });
    }
 
 }

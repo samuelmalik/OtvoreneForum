@@ -1,43 +1,47 @@
+<div class="user-dialog">
+  <div class="header">
+    <h1 class="headerh1">Informácie o používateľovi</h1>
+  </div>
 
-<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='user-info-dialog.component.css'>
-
-<div class="parent">
-<div class="div1">
-  <h1>Informácie o používateľovi</h1>
-</div>
-  <div class="div2">
+  <div class="profile-container">
     <img class="pfp" src="assets/profilovka.jpeg"/>
   </div>
-  <div class="div3">
-  <p><strong>Užívateľské meno:</strong> {{data.username}}</p>
-  <p><strong>Typ účtu:</strong> {{data.role}}</p>
-  <p><strong>Status:</strong> {{data.status}}</p>
+
+  <div class="user-info">
+    <p><strong>Užívateľské meno: </strong> {{ data.username }}</p>
+    <p><strong>Typ účtu: </strong> <span [ngClass]="data.role">
+    @if (data.role == 'admin') { Administrátor }
+    @else if (data.role == 'master') { Lab Master }
+    @else if (data.role == 'student') { Študent }
+    @else { {{ data.role }} }
+  </span></p>
+    <p><strong>Status: </strong> {{ data.status }}</p>
   </div>
 
-  @if ((loggedRole() == "master" || loggedRole() == "admin") && this.authService.isAuthenticated()){
-    <div class="div4">
-      <p><strong>Poznámka</strong>(poznámku vidíte len vy)</p>
-    <div class="note"> <input type="text" size="35" maxlength="35" [(ngModel)]="note"/>
-    @if(noteLoaded){
-      <button class="save-btn" type="submit" (click)="updateNote()">Uložiť poznámku</button>
-    }
-    @if(noteUpdated){
-      <i class="bi bi-check-lg"></i>
-    }
-    </div>
+  @if ((loggedRole() == "master" || loggedRole() == "admin") && this.authService.isAuthenticated()) {
+    <div class="note-section">
+      <p><strong>Poznámka</strong> (poznámku vidíte len vy)</p>
+      <div class="note">
+        <input type="text" size="35" maxlength="35" [(ngModel)]="note"/>
+        @if(noteLoaded){
+          <button class="save-btn" type="submit" (click)="updateNote()">Uložiť</button>
+        }
+        @if(noteUpdated){
+          <p style="color: green" >Poznámka úspešne zmenená</p>
+          <i class="bi bi-check-lg"></i>
+        }
+      </div>
     </div>
   }
 
-  @if ((loggedRole() == "root" || loggedRole() == "admin")  && this.authService.isAuthenticated()){
-
-    <div class="div5">
-
-      @if(data.role != "admin" || loggedRole() == "root"){
+  @if ((loggedRole() == "root" || loggedRole() == "admin") && this.authService.isAuthenticated()) {
+    <div class="role-section">
+      @if(data.role != "admin" || loggedRole() == "root") {
         <p><strong>Zmeniť rolu</strong></p>
         <mat-form-field>
           <mat-label>Vyberte rolu</mat-label>
           <mat-select [(value)]="selected" (selectionChange)="changeRole()">
-            <mat-option value="student">Student</mat-option>
+            <mat-option value="student">Študent</mat-option>
             <mat-option value="master">Master</mat-option>
             @if(loggedRole() == "root"){
               <mat-option value="admin">Admin</mat-option>
@@ -46,8 +50,5 @@
         </mat-form-field>
       }
     </div>
-
-
   }
 </div>
-

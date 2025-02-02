@@ -135,6 +135,14 @@ button:hover {
   padding-top: 15px
 }
 
+.char-counter {
+  display: block;
+  font-size: 12px;
+  color: #777;
+  margin-top: 5px;
+  text-align: right;
+}
+
 @media (max-width: 900px) {
   .content {
     grid-template-columns: 1fr;
@@ -157,5 +165,12 @@ button:hover {
 
   input, button {
     font-size: 16px;
+  }
+}
+
+
+@media (max-width: 450px) {
+  .container {
+    padding: 20px;
   }
 }

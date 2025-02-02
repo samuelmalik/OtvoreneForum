@@ -8,7 +8,8 @@
       <form class="status-form" [formGroup]="StatusForm">
         <h2>Status</h2>
         <div class="form-group">
-          <input type="text" id="newStatus" class="form-control" formControlName="newStatus" placeholder="Napíšte svoj status" />
+          <input type="text" id="newStatus" class="form-control" formControlName="newStatus" placeholder="Napíšte svoj status" (input)="updateCharCount()" maxlength="100" />
+          <small class="char-counter">{{ remainingChars }} / 100 znakov zostáva</small>
         </div>
         <button (click)="submitStatusForm()" type="submit">Uložiť</button>
         @if (statusChangeIndicator) {

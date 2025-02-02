@@ -83,18 +83,7 @@ export class ForumPageComponent implements OnInit {
       this.updateRole(data.role, data.userId);
     });
 
-    // Sledovanie veľkosti obrazovky pre responsivitu
-    this.breakpointObserver.observe([Breakpoints.Small, Breakpoints.Handset]).subscribe(result => {
-      if (result.matches) {
-        this.sidenavMode = 'over';
-        this.isMobile = true;
-        this.sideNav?.close();
-      } else {
-        this.sidenavMode = 'side';
-        this.isMobile = false;
-        this.sideNav?.open();
-      }
-    });
+
   }
 
   toggleSideNav() {
@@ -146,8 +135,7 @@ export class ForumPageComponent implements OnInit {
   openUserInfo(user: UserDtoInterface) {
     this.dialog.open(UserInfoDialogComponent, {
       data: user,
-      width: '500px',
-      maxWidth: '90vw',
+      width: '40vw',
       height: 'auto',
       panelClass: 'custom-dialog-container',
     });

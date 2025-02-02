@@ -1,75 +1,143 @@
-.parent {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(6, auto );
-  grid-column-gap: 0;
-  grid-row-gap: 0;
-  margin: 10px;
-  font-family: Montserrat, sans-serif ;
-}
 
-.div1 {
-  grid-area: 1 / 1 / 2 / 6;
+.user-dialog {
   display: flex;
-  justify-content: flex-start;
-}
-
-.div2 {
-  grid-area: 2 / 1 / 4 / 3;
-  display: flex;
+  flex-direction: column;
   align-items: center;
+  padding: 15px 20px;
+  font-family: 'Montserrat', sans-serif;
+
+}
+
+.user-dialog p {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  white-space: normal;
+}
+
+
+
+.header {
+  width: 100%;
+  text-align: left;
+  display: flex;
   justify-content: center;
 }
 
-.div3  {
-  grid-area: 2 / 3 / 4 / 6;
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  align-content: flex-start;
-  justify-content: flex-end;
-  padding-top: 5px;
+.headerh1{
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
-.div4 {
-  grid-area: 4 / 1 / 6 / 6;
+
+
+.profile-container {
   display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0;
+}
+
+.pfp {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-info {
+  width: 100%;
+  text-align: left;
+}
+
+.admin {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.master {
+  color: #3498db;
+  font-weight: bold;
+}
+
+.student {
+  color: #2ecc71;
+  font-weight: bold;
+}
+
+.note-section {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 15px;
+  display:flex;
   flex-direction: column;
-  padding-bottom: 10px;
-  padding-top: 10px;
 }
 
 .note {
   display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  justify-content: flex-start;
-}
-
-.div5 {
-  grid-area: 6 / 1 / 7 / 6;
-  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
   flex-direction: column;
-  align-items: stretch;
 }
 
-.pfp {
-  display: inline-block;
-  vertical-align: middle;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
+.note input {
+  flex: 1;
+  padding: 10px 0 ;
+  height: 30px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.note input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
 }
 
 .save-btn {
-  margin-left: 5px;
-  background-color: #808080;
-  color: #fff;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
   cursor: pointer;
-
+  transition: background-color 0.2s, transform 0.1s;
 }
 
-h1 {
-  font-weight: bolder;
+.save-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.02);
+}
+
+.save-btn:active {
+  background-color: #004085; /* Ešte tmavšia pri kliknutí */
+  transform: scale(0.98);
+}
+
+.role-section {
+  width: 100%;
+  text-align: left;
+  margin-top: 15px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .user-dialog {
+    padding: 15px;
+  }
+
+  .headerh1 {
+    font-size: 1.25rem;
+  }
 }
 

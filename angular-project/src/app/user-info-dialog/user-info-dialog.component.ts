@@ -12,11 +12,12 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {SharedService, roleInterface} from "../services/shared.service";
 import {ForumService} from "../services/forum.service";
 import {FormsModule} from "@angular/forms";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-user-info-dialog',
   standalone: true,
-  imports: [MatDialogModule, MatFormFieldModule, MatSelectModule, FormsModule],
+  imports: [MatDialogModule, MatFormFieldModule, MatSelectModule, FormsModule, NgClass],
   templateUrl: './user-info-dialog.component.html',
   styleUrl: './user-info-dialog.component.css',
 })

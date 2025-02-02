@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
+using System;
 using System.IO;
 using System.Net.Http.Headers;
 
@@ -92,6 +93,31 @@ namespace AspNetCoreAPI.Controllers
 
             return contentType;
         }
+
+        [HttpDelete, DisableRequestSizeLimit]
+        [Route("delete")]
+        public IActionResult Delete([FromQuery(Name = "path")] string path)
+        {
+            //deleting from DB
+            var result = _context.Files
+            .FirstOrDefault(e => e.Path == path);
+            if (result != null)
+            {
+                _context.Files.Remove(result);
+                _context.SaveChanges();
+            }
+
+            //deleting from BE
+            var fullPath = Path.Combine(Directory.GetCurrentDirectory(), path);
+
+            if (System.IO.File.Exists(fullPath))
+            {
+                System.IO.File.Delete(fullPath);
+            }
+
+            return Ok(fullPath);
+        }
+
 
     }
 }

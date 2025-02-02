@@ -115,9 +115,12 @@ mat-expansion-panel-header p{
 }
 
 .create-button{
-  color: #f9f6f7;
-  background-color: #007bff;
+  /*background-color: #007bff;*/
   margin-bottom: 50px;
+}
+
+.mat-mdc-raised-button.mat-primary{
+  --mdc-protected-button-container-color: #007bff;
 }
 
 textarea {

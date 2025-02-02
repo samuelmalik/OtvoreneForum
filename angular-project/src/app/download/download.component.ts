@@ -9,6 +9,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatIcon} from "@angular/material/icon";
+import {concatAll} from "rxjs";
 
 
 @Component({
@@ -32,6 +33,7 @@ export class DownloadComponent {
 
   @ViewChild(UploadComponent) uploadComponent;
 
+  fileChosen: boolean
   showLoader: boolean
   isCreate: boolean;
   description: string;
@@ -54,11 +56,13 @@ export class DownloadComponent {
     this.getFiles()
     this.loggedRole = this.authService.getRole();
     this.currentUserId = this.authService.getCurrentId();
+    this.fileChosen = false
   }
 
   onCreate = () => {
     //upload file to BE
     this.uploadComponent.uploadFileToServer()
+    this.fileChosen = false
   }
 
   private getFiles = () => {
@@ -127,8 +131,19 @@ export class DownloadComponent {
     document.body.removeChild(a);
   }
 
+  fileChosenEvent(chosen: boolean) {
+    console.log('Správa z child komponentu:', chosen);
+    this.fileChosen = chosen
+  }
+
   delete(path: string){
     console.log("Delete file at: " + path)
+    this.fileService.delete(path).subscribe({
+      error: (err) => {
+        console.error('Error deleting user:', err);
+      }
+    })
+    this.files = this.files.filter(item => item.path != path)
   }
 
 }

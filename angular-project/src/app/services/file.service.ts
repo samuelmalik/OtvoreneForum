@@ -27,4 +27,12 @@ export class FileService {
 
     });
   }
+
+  public delete(data: string){
+    let params = new HttpParams();
+    params = params.append('path', data);
+    return this.http.delete(`${this.baseUrl}/file/delete`, {params: params})
+  }
 }
+
+

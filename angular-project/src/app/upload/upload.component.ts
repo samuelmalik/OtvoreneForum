@@ -18,6 +18,7 @@ export class UploadComponent {
   message: string;
   formData = new FormData();
   @Output() public onUploadFinished = new EventEmitter();
+  @Output() onFileChosenEvent = new EventEmitter<boolean>();
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private fileService: FileService) { }
   ngOnInit() {
@@ -34,6 +35,7 @@ export class UploadComponent {
     console.log(this.fileToUpload.name)
     //tuto spraviť aby zmizla message a nabehol názov súboru a prípadné odstránenie
 
+    this.onFileChosenEvent.emit(true);
     this.fileChosen = true
     this.message = ""
     this.progress = null
@@ -65,5 +67,6 @@ export class UploadComponent {
   removeChosenFile(){
     this.formData = new FormData()
     this.fileChosen = false
+    this.onFileChosenEvent.emit(false);
   }
 }

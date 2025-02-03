@@ -9,6 +9,7 @@ using System.Security.Claims;
 using AspNetCoreAPI.dto;
 using Microsoft.EntityFrameworkCore;
 using AspNetCoreAPI.Authentication.dto;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace AspNetCoreAPI.Controllers
 {
@@ -78,6 +79,7 @@ namespace AspNetCoreAPI.Controllers
                        .Where(p => p.Id.ToString() == postId)
                         select new PostDetailsDto()
                         {
+                            AuthorId = p.UserId,
                             Author = p.User.UserName,
                             Title = p.Title,
                             Description = p.Description,
@@ -330,6 +332,36 @@ namespace AspNetCoreAPI.Controllers
                     u.Status = updateStatusDto.Status;
                     _context.Update(u);
             _context.SaveChanges();
+        }
+
+        [HttpDelete, DisableRequestSizeLimit]
+        [Route("deletePost")]
+        public IActionResult DeletePost([FromQuery(Name = "postId")] int postId)
+        {
+            //deleting from DB
+            var result = _context.Post.Include(p => p.Likes)
+            .FirstOrDefault(p => p.Id == postId);
+            var comments = _context.Comment.Include(c => c.Likes).Where(c => c.PostId == result.Id);
+            if (result != null)
+            {
+                foreach (var comment in comments)
+                {
+                    foreach(var like in comment.Likes)
+                    {
+                        _context.CommentLikes.Remove(like);
+                    }
+                    _context.Comment.Remove(comment);
+                }
+                foreach(var like in result.Likes)
+                {
+                    _context.PostLikes.Remove(like);
+                }
+                _context.Post.Remove(result);
+                _context.SaveChanges();
+            }
+
+
+            return Ok(postId);
         }
 
 

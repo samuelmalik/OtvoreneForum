@@ -1,7 +1,7 @@
 import {Component, inject, OnInit, DestroyRef, Signal, signal} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {
   AddCommentLikeInterface,
   AddPostLikeInterface,
@@ -20,22 +20,24 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatButtonModule} from "@angular/material/button";
 import {MatMenuModule} from "@angular/material/menu";
 import {SignalrService} from "../services/signalr.service";
+import {MatIcon} from "@angular/material/icon";
 
 
 @Component({
   selector: 'app-post-details',
   standalone: true,
-  imports: [
-    MatExpansionModule,
-    HighlightAuto,
-    HighlightLineNumbers,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatButton,
-    MatProgressSpinner,
-    MatMenuModule,
-    MatButtonModule
-  ],
+    imports: [
+        MatExpansionModule,
+        HighlightAuto,
+        HighlightLineNumbers,
+        ReactiveFormsModule,
+        MatCardModule,
+        MatButton,
+        MatProgressSpinner,
+        MatMenuModule,
+        MatButtonModule,
+        MatIcon
+    ],
   templateUrl: './post-details.component.html',
   styleUrl: './post-details.component.css',
 })
@@ -44,10 +46,12 @@ export class PostDetailsComponent implements OnInit {
   private forumService: ForumService = inject(ForumService);
   private destroyRef: DestroyRef = inject(DestroyRef);
   private signalRService: SignalrService = inject(SignalrService)
+  private router: Router = inject(Router)
   public CreateCommentForm: FormGroup;
   public id: number;
   public postDetails: PostDetailsDtoInterface;
   public currentUserId :string;
+  public loggedRole :string;
   //public commentList = signal<CommentInfoInterface[]>([]);
   public commentArray :CommentInfoInterface[] = [];
   public postLoading: boolean = true;
@@ -58,6 +62,7 @@ export class PostDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.currentUserId = this.authService.getCurrentId();
+    this.loggedRole = this.authService.getRole();
 
     const routeParams = this.route.snapshot.paramMap;
      this.id = Number(routeParams.get('postId'));
@@ -170,6 +175,16 @@ export class PostDetailsComponent implements OnInit {
       this.commentArray[index].likes -= 1
       this.forumService.removeCommentLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{})
     }
+
+  }
+
+  onDelete(id: number){
+    this.forumService.deletePost(id).subscribe({
+      complete: () => {
+        this.router.navigate(['/forum']);
+      }
+
+    })
 
   }
 }

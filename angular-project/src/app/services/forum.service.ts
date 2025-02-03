@@ -91,6 +91,12 @@ export class ForumService {
     return this.httpClient.put(`${this.baseUrl}/forum/updateStatus`, data)
   }
 
+  public deletePost(data: number){
+    let params = new HttpParams();
+    params = params.append('postId', data);
+    return this.httpClient.delete(`${this.baseUrl}/forum/deletePost`, {params: params})
+  }
+
 }
 
  export interface PostInfoDtoInterface {
@@ -107,6 +113,7 @@ export interface PostDetailsDtoInterface {
   title: string;
   description: string;
   author: string;
+  authorId: string;
   date: string;
   code: string;
   likes: number;

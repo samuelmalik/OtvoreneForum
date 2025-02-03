@@ -8,12 +8,21 @@
     <div class="post-info box">
       <div class="author">
         <img class="pfp" src="assets/profilovka.jpeg"/>
-        <div class="author-info">
-          <p>{{postDetails.author}}</p>
-          <p>{{postDetails.date}}</p>
+        <div>
+          <div class="author-info">
+            <p>{{postDetails.author}}</p>
+            <p>{{postDetails.date}}</p>
+          </div>
         </div>
 
+        @if(this.currentUserId == postDetails.authorId || loggedRole == "admin"){
+          <button mat-icon-button (click)="onDelete(id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        }
+
       </div>
+
 
       <h2>{{postDetails.title}}</h2>
 

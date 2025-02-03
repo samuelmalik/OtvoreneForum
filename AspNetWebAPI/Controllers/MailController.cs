@@ -21,11 +21,11 @@ namespace AspNetCoreAPI.Controllers
             var result = _mailService.SendMail(mailData);
             if (result)
             {
-                return Ok("Email sent successfully.");
+                return Ok("Mail bol úspešne odoslaný.");
             }
             else
             {
-                return BadRequest("Failed to send email.");
+                return BadRequest("Nepodarilo sa poslať mail.");
             }
         }
     }

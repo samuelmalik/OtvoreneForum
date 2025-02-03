@@ -140,7 +140,7 @@ export class DashboardComponent implements OnInit {
        });
      }
      else {
-       this.errorMessageName = "Meno musí mať aspoň 6 znakov"
+       this.errorMessageName = "Meno musí mať aspoň 6 znakov a nesmie obsahovať medzery"
      }
    }
 

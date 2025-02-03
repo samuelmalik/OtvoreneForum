@@ -142,10 +142,10 @@ namespace AspNetCoreAPI.Authentication
             var user = await _userManager.FindByEmailAsync(userLoginDto.Email);
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, userLoginDto.Password))
-                return Ok(new UserLoginResponseDto { ErrorMessage = "Wrong username or password", IsAuthSuccessful = false });
+                return Ok(new UserLoginResponseDto { ErrorMessage = "Zadali ste nesprávne prihlasovacie údaje", IsAuthSuccessful = false });
             var checkConfirmed = await _userManager.IsEmailConfirmedAsync(user);
             if (!checkConfirmed)
-                return Ok(new UserLoginResponseDto { ErrorMessage = "Email is not confirmed", IsAuthSuccessful = false });
+                return Ok(new UserLoginResponseDto { ErrorMessage = "Váš email nieje overený", IsAuthSuccessful = false });
 
             var signingCredentials = _jwtHandler.GetSigningCredentials();
             var claims = _jwtHandler.GetClaims(user);
@@ -162,13 +162,13 @@ namespace AspNetCoreAPI.Authentication
                 return BadRequest(new { message = "Email je povinný." });
 
             if (string.IsNullOrEmpty(forgotPasswordDto.CaptchaToken))
-                return BadRequest(new { message = "Captcha token is required." });
+                return BadRequest(new { message = "Prosím potvrďte že nieste bot" });
 
             // Validácia reCAPTCHA tokenu
             var isCaptchaValid = await _captchaValidationService.ValidateCaptchaToken(forgotPasswordDto.CaptchaToken);
             if (!isCaptchaValid)
             {
-                return BadRequest(new { message = "Invalid reCAPTCHA token." });
+                return BadRequest(new { message = "Nepodarila sa overiť CAPTCHA" });
             }
 
             var user = await _userManager.FindByEmailAsync(forgotPasswordDto.Email);

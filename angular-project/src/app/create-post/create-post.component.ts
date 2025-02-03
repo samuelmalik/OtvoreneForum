@@ -42,12 +42,12 @@ export class CreatePostComponent implements OnInit{
   }
 
   submitPost() {
-
-    if(this.currentUserId == null){
+    if (this.currentUserId == null) {
       this.router.navigate(['/login']);
+      return; 
     }
 
-    else if (this.CreatePostForm.valid) {
+    if (this.CreatePostForm.valid) {
       const postData = {
         title: this.CreatePostForm.value.title,
         description: this.CreatePostForm.value.description,
@@ -57,15 +57,25 @@ export class CreatePostComponent implements OnInit{
 
       this.forumService.createPost(postData)
         .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe();
+        .subscribe({
+          next: (response) => {
+            console.log("Príspevok bol úspešne vytvorený!", response);
 
-      this.CreatePostForm.reset();
-      this.openSnackBar("Príspevok bol úspešne vytvorený");
+            this.CreatePostForm.reset();
+            this.openSnackBar("Príspevok bol úspešne vytvorený");
+
+            this.router.navigate(['/forum']);
+          },
+          error: (error) => {
+            console.error("Chyba pri vytváraní príspevku", error);
+            this.openSnackBar("Nastala chyba pri vytváraní príspevku.");
+          }
+        });
 
     } else {
-      this.openSnackBar("Zadali ste nesprávne informácie, príspevok sa nevytvoril")
+      this.openSnackBar("Zadali ste nesprávne informácie, príspevok sa nevytvoril");
     }
-    }
+  }
 
   openSnackBar(message: string) {
     this.snackBar.open(message, "", {

@@ -1,30 +1,42 @@
-@if (authService.authenticated()) {
-  <h1>You're currently logged in.</h1>
-} @else {
-  <h1 class="header">OpenForum</h1>
-  <h2 class="subheader">Prihlás sa a pomáhaj si s ostatnými OpenLabistami!</h2>
-  <form [formGroup]="loginForm" (ngSubmit)="login()">
+<script src="https://www.google.com/recaptcha/api.js"></script>
 
-    <mat-form-field>
-      <mat-label>Zadajte váš e-mail</mat-label>
-      <input matInput formControlName="email" required>
-    </mat-form-field>
+<div class="page-container">
+  @if (authService.authenticated()) {
+    <h1>You're currently logged in.</h1>
+  } @else {
+    <h1 class="header">OpenForum</h1>
+    <h2 class="subheader">Prihlás sa a pomáhaj si s ostatnými OpenLabistami!</h2>
 
-    <mat-form-field>
-      <mat-label>Zadajte svoje heslo</mat-label>
-      <input matInput [type]="'password'" formControlName="password">
-    </mat-form-field>
+    <div class="register-card">
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <mat-form-field class="full-width">
+          <mat-label>Zadajte váš e-mail</mat-label>
+          <input matInput formControlName="email" required>
+        </mat-form-field>
 
-    @if(showLoader == false){
-      <button mat-raised-button color="primary" type="submit">Prihlásiť sa</button>
-      <p>Ak ešte nemáte účet, <a [routerLink]="['/register']">zaregistrujte sa</a> </p>
+        <mat-form-field class="full-width">
+          <mat-label>Zadajte svoje heslo</mat-label>
+          <input matInput type="password" formControlName="password">
+        </mat-form-field>
 
-      <p><a [routerLink]="['/forgot-password']">Zabudnuté heslo?</a></p>
-    } @else {
-      <mat-spinner [diameter]="50"></mat-spinner>
-    }
+        <p style="color: red;">{{ errorMessage }}</p>
 
-      <p style="color: red;">{{errorMessage}}</p>
+        @if (showLoader == false) {
+          <button mat-raised-button color="primary" type="submit" class="register-btn">
+            Prihlásiť sa
+          </button>
 
-  </form>
-}
+          <p class="login-link">
+            Ak ešte nemáte účet, <a [routerLink]="['/register']">zaregistrujte sa</a>
+          </p>
+
+          <p class="login-link">
+            <a [routerLink]="['/forgot-password']">Zabudnuté heslo?</a>
+          </p>
+        } @else {
+          <mat-spinner [diameter]="50"></mat-spinner>
+        }
+      </form>
+    </div>
+  }
+</div>

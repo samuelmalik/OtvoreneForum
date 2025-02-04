@@ -27,7 +27,7 @@
         <re-captcha (resolved)="resolved($event)" siteKey="6LdESbkqAAAAABVOJnmG1cOyx5FGPD1e23TVUHur"></re-captcha>
       </div>
 
-      <button mat-raised-button color="primary" type="submit" class="register-btn">
+      <button mat-raised-button color="primary" type="submit" class="register-btn" [disabled]="!captcha">
         Registrovať
       </button>
 

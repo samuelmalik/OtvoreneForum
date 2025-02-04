@@ -1,40 +1,37 @@
-<script src="https://www.google.com/recaptcha/api.js" ></script>
-<div *ngIf="authService.authenticated(); else registrationForm">
-  <h1>You're currently logged in.</h1>
-</div>
+<script src="https://www.google.com/recaptcha/api.js"></script>
 
-<ng-template #registrationForm>
+<div class="page-container">
   <h1 class="header">OpenForum</h1>
   <h2 class="subheader">Zaregistruj sa a pomáhaj si s ostatnými OpenLabistami!</h2>
 
-  <form [formGroup]="registerForm" (ngSubmit)="register()" class="registration-form">
-    <mat-form-field>
-      <mat-label>Zadajte váš e-mail</mat-label>
-      <input matInput formControlName="email" required />
-    </mat-form-field>
+  <div class="register-card">
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <mat-form-field class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" required />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Zadajte vaše heslo</mat-label>
-      <input matInput [type]="'password'" formControlName="password" required />
-    </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Heslo</mat-label>
+        <input matInput type="password" formControlName="password" required />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Potvrďte vaše heslo</mat-label>
-      <input matInput [type]="'password'" formControlName="confirmPassword" required />
-    </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Potvrďte heslo</mat-label>
+        <input matInput type="password" formControlName="confirmPassword" required />
+      </mat-form-field>
 
-    <div *ngIf="!showLoader">
-      <div *ngIf="captcha === ''">
+      <div class="captcha-container">
         <re-captcha (resolved)="resolved($event)" siteKey="6LdESbkqAAAAABVOJnmG1cOyx5FGPD1e23TVUHur"></re-captcha>
       </div>
-      <div *ngIf="captcha !== ''">
-        <button mat-raised-button color="primary" type="submit" style="margin: 5px;">
-          Registrovať
-        </button>
-        <p>Ak ste už zaregistrovaný, <a [routerLink]="['/login']">prihláste sa</a></p>
-      </div>
-    </div>
 
-    <mat-spinner *ngIf="showLoader" [diameter]="50"></mat-spinner>
-  </form>
-</ng-template>
+      <button mat-raised-button color="primary" type="submit" class="register-btn">
+        Registrovať
+      </button>
+
+      <p class="login-link">
+        Už máte účet? <a [routerLink]="['/login']">Prihlásiť sa</a>
+      </p>
+    </form>
+  </div>
+</div>

@@ -1,44 +1,89 @@
-form {
-  padding-top: 1rem;
+.page-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 5px;
+  margin-top: 40px;
+  overflow-y: hidden;
 }
 
-.header{
-  font-family: monsterrat, system-ui;
-  font-weight: bolder;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 60px;
-  margin-top: 50px;
-}
-
-.subheader{
-  font-family: monsterrat, system-ui;
-  font-weight: lighter;
-  display: flex;
-  align-items: center;
-  justify-content: center ;
-  font-size: 40px;
-  margin: 25px 0 40px 0;
+.register-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
   text-align: center;
 }
 
-a{
+.header {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  font-size: 3.75rem; /* Dynamická veľkosť */
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.subheader {
+  font-size: 2rem; /* Dynamická veľkosť */
+  color: #555;
+  margin: 10px 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.captcha-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.register-btn {
+  width: 100%;
+  margin-top: 15px;
+}
+
+.login-link {
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+.login-link a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-link a:hover {
   text-decoration: underline;
-  color: darkblue;
-  cursor: pointer;
 }
 
-a:hover {
-  cursor: pointer;
-}
+@media (max-width: 500px) {
+  .register-card{
+    width: 80%;
+  }
+  .header{
+    font-size: 3rem;
+  }
+  .subheader {
+    font-size: 1.7rem;
+  }
 
-p {
-  margin: 5px;
+  .page-container {
+    height: auto;
+    margin-top: 10%;
+  }
 }
-
 

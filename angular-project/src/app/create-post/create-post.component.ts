@@ -44,7 +44,7 @@ export class CreatePostComponent implements OnInit{
   submitPost() {
     if (this.currentUserId == null) {
       this.router.navigate(['/login']);
-      return; 
+      return;
     }
 
     if (this.CreatePostForm.valid) {

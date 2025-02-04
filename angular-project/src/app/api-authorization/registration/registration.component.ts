@@ -42,6 +42,8 @@ export class RegistrationComponent implements OnInit {
 
   captcha: string = '';
   registerForm: FormGroup;
+  errorMessage: string;
+  showErrorMessage: boolean;
 
   ngOnInit(): void {
     this.registerForm = new FormGroup({
@@ -49,9 +51,12 @@ export class RegistrationComponent implements OnInit {
       password: new FormControl('', passwordStrengthValidator()),
       confirmPassword: new FormControl('', equalValuesValidator('password')),
     });
+
+    this.errorMessage = "";
   }
 
   register() {
+    this.errorMessage = ""
     if (this.registerForm.valid && this.captcha) {
       this.showLoader = true;
 
@@ -62,32 +67,45 @@ export class RegistrationComponent implements OnInit {
       };
 
       // Volanie služby na registráciu
-      this.authService.registerUser(registrationData).subscribe({
-        next: () => {
-          this.showLoader = false;
-          this.snackBar.open('Na váš email bol odoslaný overovací link.', 'OK', {
-            duration: 5000,
-            verticalPosition: 'bottom',
-            horizontalPosition: 'center',
-          });
-          this.router.navigate(['/']);
-        },
-        error: (err: HttpErrorResponse) => {
-          this.showLoader = false;
-          this.snackBar.open('Registrácia zlyhala. Skontrolujte údaje a skúste znova.', 'OK', {
-            duration: 5000,
-            verticalPosition: 'bottom',
-            horizontalPosition: 'center',
-          });
-          console.error('Oops, something went wrong!', err);
-        },
-      });
+      this.authService.registerUser(registrationData).subscribe(
+        data =>{
+          console.log(data)
+          if(data.isSuccessfulRegistration){
+            this.showLoader = false;
+            this.snackBar.open('Na váš email bol odoslaný overovací link.', 'OK', {
+              duration: 5000,
+              verticalPosition: 'bottom',
+              horizontalPosition: 'center',
+            });
+            this.router.navigate(['/']);
+            console.log(data)
+          } else{
+            this.showLoader = false;
+            this.errorMessage = data.errors[0]
+          }
+        });
     } else if (!this.captcha) {
       this.snackBar.open('Prosím overte, že ste človek pomocou reCAPTCHA.', 'OK', {
         duration: 5000,
         verticalPosition: 'bottom',
         horizontalPosition: 'center',
       });
+    } else if (!this.registerForm.valid){
+      if(this.registerForm.get('email')?.errors){
+        this.errorMessage = "Nesprávny formát e-mailu"
+      }
+      else if(this.registerForm.get('password')?.errors){
+        this.errorMessage = "Heslo musí byť aspoň 6 znakov dlhé, obsahovať malé, veľké písmená, číslo a špeciálny znak"
+      }
+      else if(this.registerForm.get('confirmPassword')?.errors){
+        this.errorMessage = "Heslá sa nezhodujú"
+      }
+      console.log()
+      console.log()
+
+
+
+
     }
   }
 

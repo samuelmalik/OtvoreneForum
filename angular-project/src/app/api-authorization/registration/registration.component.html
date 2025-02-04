@@ -21,6 +21,8 @@
         <input matInput type="password" formControlName="confirmPassword" required />
       </mat-form-field>
 
+      <p style="color: red">{{ errorMessage }}</p>
+
       <div class="captcha-container">
         <re-captcha (resolved)="resolved($event)" siteKey="6LdESbkqAAAAABVOJnmG1cOyx5FGPD1e23TVUHur"></re-captcha>
       </div>

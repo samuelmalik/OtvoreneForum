@@ -137,12 +137,7 @@ export class DownloadComponent {
   }
 
   delete(path: string){
-    console.log("Delete file at: " + path)
-    this.fileService.delete(path).subscribe({
-      error: (err) => {
-        console.error('Error deleting user:', err);
-      }
-    })
+    this.fileService.delete(path).subscribe();
     this.files = this.files.filter(item => item.path != path)
   }
 

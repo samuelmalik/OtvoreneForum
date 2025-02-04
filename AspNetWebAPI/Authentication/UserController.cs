@@ -39,7 +39,7 @@ namespace AspNetCoreAPI.Authentication
         {
         // Validácia požiadavky
         if (userRegistrationDto == null || !ModelState.IsValid)
-            return BadRequest(new { success = false, message = "Invalid registration data." });
+            return Ok(new { success = false, message = "Invalid registration data." });
 
         // Overenie CAPTCHA tokenu
         var isCaptchaValid = await _captchaValidationService.ValidateCaptchaToken(userRegistrationDto.CaptchaToken);
@@ -77,7 +77,7 @@ namespace AspNetCoreAPI.Authentication
 
             if (mailResult)
             {
-                return Ok(new { message = "Registration successful. Please check your email to confirm your account." });
+                return Ok(new UserRegistrationResponseDto { IsSuccessfulRegistration = true, Errors = new List<string> { "Registration successful. Please check your email to confirm your account." } });
             }
             else
             {
@@ -86,7 +86,8 @@ namespace AspNetCoreAPI.Authentication
         }
 
         var errors = result.Errors.Select(e => e.Description);
-        return BadRequest(new { success = false, errors });
+            return Ok(new UserRegistrationResponseDto { IsSuccessfulRegistration = false, Errors = errors });
+
         }
 
 

@@ -6,7 +6,7 @@
 
 
 html, body { height: 100%; }
-body { margin: 0;   font-family: 'Montserrat', sans-serif; background-color: #f2f2f2 }
+body { margin: 0;   font-family: 'Montserrat', sans-serif; background-color: #f4f6f9 }
 
 .custom-dialog-container {
   border-radius: 20px;

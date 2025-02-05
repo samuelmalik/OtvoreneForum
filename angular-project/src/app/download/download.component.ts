@@ -63,6 +63,7 @@ export class DownloadComponent {
     //upload file to BE
     this.uploadComponent.uploadFileToServer()
     this.fileChosen = false
+    this.description = '';
   }
 
   private getFiles = () => {

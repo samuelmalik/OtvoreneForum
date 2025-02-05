@@ -1,98 +1,80 @@
- <div class="container">
-      <div class="div1">
-        <h1>Zoznam materiálov k stiahnutiu</h1>
-      </div>
-      <div class="div2"></div>
-      <div class="div4">
+<div class="container">
+  <div class="div1">
+    <h1>Zoznam materiálov k stiahnutiu</h1>
+  </div>
 
-        <!-- upload section -->
-        @if(loggedRole != "student"  ){
-          <section class="create">
-            <h2>Upload File</h2>
-            <form>
-              <div class="mb-3">
-                <textarea type="text" class="form-control" id="name" name="name"
-                          placeholder="Zadajte popis súboru" [(ngModel)]="description"></textarea>
+  <div class="div4">
+    <!-- Upload sekcia -->
+    @if(loggedRole != "student" ){
+      <section class="create">
+        <h2>Upload súboru</h2>
+        <form>
+          <div class="mb-3">
+            <textarea type="text" class="form-control" id="name" name="name"
+                      placeholder="Zadajte popis súboru" [(ngModel)]="description"></textarea>
+          </div>
+          <app-upload (onUploadFinished)="uploadFinished($event)" (onFileChosenEvent)="fileChosenEvent($event)"></app-upload>
+          <div class="row">
+            <div class="offset-md-5 col-md-2">
+              <button mat-raised-button class="create-button" color="primary" type="submit" (click)="onCreate()" [disabled]="!fileChosen">Vytvoriť </button>
+            </div>
+          </div>
+        </form>
+      </section>
+    }
+
+
+    @if(showLoader){
+      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 20px">
+        <mat-spinner [diameter]="50"></mat-spinner>
+        <p>Načítavam súbory</p>
+      </div>
+    } @else{
+      <div class="table_component">
+        @for(file of files; track file.id){
+          <mat-expansion-panel class="card">
+            <mat-expansion-panel-header >
+              <div class="header-content">
+              <span class="material-icons">description</span>
+              <p>{{ file.name }}</p>
               </div>
-              <app-upload (onUploadFinished)="uploadFinished($event)" (onFileChosenEvent)="fileChosenEvent($event)"></app-upload>
-              <div class="row">
-                <div class="offset-md-5 col-md-2">
-                  <button mat-raised-button class="create-button" color="primary" type="submit" (click)="onCreate()" [disabled]="!fileChosen">Create </button>
+            </mat-expansion-panel-header>
+            <div class="file-container">
+              <div class="file-details">
+                <div class="file-property">
+                  <h4>Popis:</h4>
+                  <p>{{file.description}}</p>
+                </div>
+                <div class="file-property">
+                  <h4>Typ:</h4>
+                  <p>{{file.extension}}</p>
+                </div>
+                <div class="file-property">
+                  <h4>Veľkosť:</h4>
+                  <p>{{file.size}}</p>
+                </div>
+                <div class="file-property">
+                  <h4>Pridal:</h4>
+                  <p>{{file.author}}</p>
                 </div>
               </div>
-            </form>
-          </section>
+              <div class="file-actions-container">
+                <button mat-icon-button class="download-btn" (click)="download(file.path)">
+                  <mat-icon>file_download</mat-icon>
+                </button>
+                @if(loggedRole == "admin" || currentUserId == file.authorId){
+                  <button mat-icon-button class="delete-btn" (click)="delete(file.path)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                }
+              </div>
+            </div>
+          </mat-expansion-panel>
         }
-
-
-
-        <!-- List of files -->
-
-        @if(showLoader){
-          <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 20px">
-            <mat-spinner [diameter]="50"></mat-spinner>
-            <p>Načítavam súbory</p>
-          </div>
-        } @else{
-          <div class="table_component">
-            @for(file of files; track  file.id){
-              <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
-                <mat-expansion-panel-header>
-                <span class="material-icons">
-                  description
-                </span>
-                  <p>{{ file.name }}</p>
-
-                </mat-expansion-panel-header>
-                <div class="file-container">
-                  <div class="file-details">
-                    <div class="file-property">
-                      <h4>Popis:</h4>
-                      <p>{{file.description}}</p>
-                    </div>
-
-                    <div class="file-property">
-                      <h4>Typ súboru:</h4>
-                      <p>{{file.extension}}</p>
-                    </div>
-
-                    <div class="file-property">
-                      <h4>Veľkosť:</h4>
-                      <p>{{file.size}}</p>
-                    </div>
-
-                    <div class="file-property">
-                      <h4>Pridal:</h4>
-                      <p>{{file.author}}</p>
-                    </div>
-                  </div>
-                  <div class="file-actions-container">
-                    <button mat-icon-button class="download-btn" (click)="download(file.path)">
-                      <mat-icon>file_download</mat-icon>
-                    </button>
-                    @if(loggedRole == "admin" || currentUserId == file.authorId){
-                      <button mat-icon-button class="delete-btn" (click)="delete(file.path)">
-                        <mat-icon>delete</mat-icon>
-                      </button>
-                    }
-
-                  </div>
-                </div>
-              </mat-expansion-panel>
-            }
-          </div>
-        }
-
       </div>
-      <div class="div2"></div>
-
-    </div>
-
-
-
-
-
-
+    }
+  </div>
+</div>
 
 
 

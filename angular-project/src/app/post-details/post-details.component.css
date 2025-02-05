@@ -136,7 +136,12 @@ button {
     transform: scale(0.95);
 
 }
-
+.bottom-post {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+}
 .disabled-btn {
   background-color: #ccc;
   color: #888;
@@ -177,10 +182,11 @@ button {
   padding: 5px 10px;
   background-color: #f9f6f7;
   width: 35px;
+  height: 25px;
   border-radius: 20px;
-  margin-top: 10px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  margin-top: 7px;
 }
 
 .likes-container:hover {

@@ -15,11 +15,7 @@
           </div>
         </div>
 
-        @if(this.currentUserId == postDetails.authorId || loggedRole == "admin"){
-          <button mat-icon-button (click)="onDelete(id)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        }
+
 
       </div>
 
@@ -27,13 +23,14 @@
       <h2>{{postDetails.title}}</h2>
 
       <p class="description">{{postDetails.description}}</p>
-
-      <h3 style="margin-top: 30px">Kód:</h3>
       @if (postDetails.code && postDetails.code.trim()) {
+      <h3 style="margin-top: 30px">Kód:</h3>
+
         <pre class="code">
       <code [highlightAuto]="postDetails.code" lineNumbers></code>
     </pre>
       }
+      <div class="bottom-post">
       <div class="likes-container" (click)="onPostLike()" >
         @if (postDetails.isLiked){
           <i  class="bi bi-heart-fill"></i>
@@ -44,6 +41,14 @@
 
         <p class="like-count">{{postDetails.likes }}</p>
 
+      </div>
+        <div class="delete-post">
+        @if(this.currentUserId == postDetails.authorId || loggedRole == "admin"){
+          <button mat-icon-button (click)="onDelete(id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        }
+        </div>
       </div>
     </div>
 

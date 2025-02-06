@@ -1,13 +1,16 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Configuration;
+using System.IdentityModel.Tokens.Jwt;
 using AspNetCoreAPI.Authentication.dto;
 using AspNetCoreAPI.Data;
 using AspNetCoreAPI.dto;
+using AspNetCoreAPI.Migrations;
 using AspNetCoreAPI.Models;
 using AspNetCoreAPI.Registration;
 using AspNetCoreAPI.Registration.dto;
 using AspNetCoreAPI.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MimeKit;
 
 
@@ -58,8 +61,9 @@ namespace AspNetCoreAPI.Authentication
         };
 
         var result = await _userManager.CreateAsync(user, userRegistrationDto.Password);
+        var claim = await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("role", "student"));
 
-        if (result.Succeeded)
+            if (result.Succeeded)
         {
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var confirmationLink = $"https://openforum.tech/email-verification?email={user.Email}&code={code}";
@@ -77,6 +81,7 @@ namespace AspNetCoreAPI.Authentication
 
             if (mailResult)
             {
+
                 return Ok(new UserRegistrationResponseDto { IsSuccessfulRegistration = true, Errors = new List<string> { "Registration successful. Please check your email to confirm your account." } });
             }
             else
@@ -295,7 +300,83 @@ namespace AspNetCoreAPI.Authentication
             _context.SaveChangesAsync();
             return Ok(updateNoteDto);
         }
+
+        [HttpDelete]
+        [Route("deleteUser")]
+        public IActionResult DeleteUser([FromQuery(Name = "userId")] string userId)
+        {
+            //deleting from DB
+            var result = _context.Users.Include(u => u.Comments).Include(u => u.Posts)
+            .FirstOrDefault(u => u.Id == userId);
+            if (result != null)
+            {
+                // vymazanie všetkých lajkov u komentárov usera
+                foreach(var like in result.CommentLikes)
+                {
+                    _context.CommentLikes.Remove(like);
+                }
+
+                // vymazanie všetkých lajkov u postovv usera
+                foreach (var like in result.Likes)
+                {
+                    _context.PostLikes.Remove(like);
+                }
+
+                // vymazanie všetkých komentárov
+                var comments = _context.Comment.Where(c => c.UserId == userId).Include(c => c.Likes);
+                foreach (var comment in comments)
+                {
+                    
+                    var commentLikes = comment.Likes;
+                    foreach(var like in commentLikes)
+                    {
+
+                       _context.CommentLikes.Remove(like);
+                    }
+                    _context.Comment.Remove(comment);
+                }
+
+                // vymazanie postov usera
+                foreach (var post in result.Posts)
+                {
+                    DeletePost(post.Id);
+                }
+                
+
+                _context.Users.Remove(result);
+                _context.SaveChanges();
+            }
+            return Ok(userId);
+        }
+
+        // only usable in this file
+        private void DeletePost(int postId)
+        {
+            //deleting from DB
+            var result = _context.Post.Include(p => p.Likes)
+            .FirstOrDefault(p => p.Id == postId);
+            var comments = _context.Comment.Include(c => c.Likes).Where(c => c.PostId == result.Id);
+            if (result != null)
+            {
+                foreach (var comment in comments)
+                {
+                    foreach (var like in comment.Likes)
+                    {
+                        _context.CommentLikes.Remove(like);
+                    }
+                    _context.Comment.Remove(comment);
+                }
+                foreach (var like in result.Likes)
+                {
+                    _context.PostLikes.Remove(like);
+                }
+                _context.Post.Remove(result);
+                //_context.SaveChanges();
+            }
+        }
     }
+
+   
     public class ReCaptchaResponse
     {
         public bool Success { get; set; }

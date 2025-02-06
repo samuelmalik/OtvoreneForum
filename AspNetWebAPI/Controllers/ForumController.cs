@@ -334,7 +334,7 @@ namespace AspNetCoreAPI.Controllers
             _context.SaveChanges();
         }
 
-        [HttpDelete, DisableRequestSizeLimit]
+        [HttpDelete]
         [Route("deletePost")]
         public IActionResult DeletePost([FromQuery(Name = "postId")] int postId)
         {
@@ -359,8 +359,6 @@ namespace AspNetCoreAPI.Controllers
                 _context.Post.Remove(result);
                 _context.SaveChanges();
             }
-
-
             return Ok(postId);
         }
 

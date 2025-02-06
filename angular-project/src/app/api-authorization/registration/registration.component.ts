@@ -100,12 +100,6 @@ export class RegistrationComponent implements OnInit {
       else if(this.registerForm.get('confirmPassword')?.errors){
         this.errorMessage = "Heslá sa nezhodujú"
       }
-      console.log()
-      console.log()
-
-
-
-
     }
   }
 

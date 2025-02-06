@@ -18,6 +18,10 @@
     <p><strong>Status: </strong> {{ data.status }}</p>
   </div>
 
+  <button mat-icon-button class="delete-btn" (click)="deleteUser(data.id)">
+    <mat-icon>delete</mat-icon>
+  </button>
+
   @if ((loggedRole() == "master" || loggedRole() == "admin") && this.authService.isAuthenticated()) {
     <div class="note-section">
       <p><strong>Poznámka</strong> (poznámku vidíte len vy)</p>

@@ -13,11 +13,13 @@ import {SharedService, roleInterface} from "../services/shared.service";
 import {ForumService} from "../services/forum.service";
 import {FormsModule} from "@angular/forms";
 import {NgClass} from "@angular/common";
+import {MatIcon} from "@angular/material/icon";
+import {MatIconButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-user-info-dialog',
   standalone: true,
-  imports: [MatDialogModule, MatFormFieldModule, MatSelectModule, FormsModule, NgClass],
+    imports: [MatDialogModule, MatFormFieldModule, MatSelectModule, FormsModule, NgClass, MatIcon, MatIconButton],
   templateUrl: './user-info-dialog.component.html',
   styleUrl: './user-info-dialog.component.css',
 })
@@ -82,5 +84,9 @@ export class UserInfoDialogComponent implements OnInit, OnDestroy{
     }
     this.authService.setRole(this.claimData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
     })
+  }
+
+  deleteUser(id: string){
+    console.log("vymazavanie usera s idčkom: " + id)
   }
 }

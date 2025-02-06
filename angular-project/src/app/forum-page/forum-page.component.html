@@ -8,26 +8,29 @@
     </div>
     <div  class="users-list">
       @for (user of userList; track user) {
-        <div (click)="openUserInfo(user)" class="users-item" [ngClass]="{
+        @if(user.role != "root"){
+          <div (click)="openUserInfo(user)" class="users-item" [ngClass]="{
           'admin': user.role == 'admin',
           'master': user.role == 'master',
           'default': user.role != 'admin' && user.role != 'master'
         }">
-          <div class="user" >
-            <img class="pfp" src="assets/profilovka.jpeg"/>
-            <div class="u-info">
-              <p>{{user.username}}
-                @if (user.role == "admin"){
-                  <i class="bi bi-person-gear"></i>
-                } @else if(user.role == "master"){
-                  <i class="bi bi-mortarboard"></i>
-                } @else {
-                  <i class="bi bi-backpack2"></i>
-                }</p>
-              <p>{{user.status}}</p>
+            <div class="user" >
+              <img class="pfp" src="assets/profilovka.jpeg"/>
+              <div class="u-info">
+                <p>{{user.username}}
+                  @if (user.role == "admin"){
+                    <i class="bi bi-person-gear"></i>
+                  } @else if(user.role == "master"){
+                    <i class="bi bi-mortarboard"></i>
+                  } @else {
+                    <i class="bi bi-backpack2"></i>
+                  }</p>
+                <p>{{user.status}}</p>
+              </div>
             </div>
           </div>
-        </div>
+        }
+
       }
     </div>
   </mat-sidenav>

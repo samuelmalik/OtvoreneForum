@@ -131,6 +131,17 @@ mat-form-field {
   width: 100%;
 }
 
+.delete-btn {
+  color: #d32f2f;
+  background-color: white;
+}
+
+.delete-btn:hover {
+  background-color: #ffe6e6;
+}
+
+
+
 @media (max-width: 600px) {
   .user-dialog {
     padding: 15px;

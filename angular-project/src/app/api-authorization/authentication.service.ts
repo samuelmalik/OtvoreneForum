@@ -108,6 +108,12 @@ export class AuthenticationService {
     return this.httpClient.post<ForgotPasswordResponse>(`${this.baseUrl}/user/forgot-password`, data);
   }
 
+  deleteUser(data: string){
+    let params = new HttpParams();
+    params = params.append('userId', data);
+    return this.httpClient.delete(`${this.baseUrl}/user/deleteUser`, {params: params})
+  }
+
 }
 
 export interface ForgotPasswordResponse {

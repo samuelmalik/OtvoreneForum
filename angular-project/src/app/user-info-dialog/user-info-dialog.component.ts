@@ -1,5 +1,5 @@
 import {Component, DestroyRef, inject, Inject, OnInit, OnDestroy} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import {UserDtoInterface} from "../services/forum.service";
 import {
   AuthenticationService,
@@ -27,6 +27,7 @@ export class UserInfoDialogComponent implements OnInit, OnDestroy{
   public authService: AuthenticationService = inject(AuthenticationService);
   private destroyRef = inject(DestroyRef);
   private sharedService: SharedService = inject(SharedService);
+  readonly dialogRef = inject(MatDialogRef<UserInfoDialogComponent>);
 
   loggedRole = this.authService.role
   selected = "student"
@@ -58,6 +59,9 @@ export class UserInfoDialogComponent implements OnInit, OnDestroy{
         role: this.claimData.value
       }
       this.sharedService.setData(roleData);
+
+      //vymazanie usera z listu na forum page
+      this.sharedService.sendDeletedUserData(this.data.id)
     }
   }
 
@@ -88,5 +92,8 @@ export class UserInfoDialogComponent implements OnInit, OnDestroy{
 
   deleteUser(id: string){
     console.log("vymazavanie usera s idčkom: " + id)
+    this.authService.deleteUser(id).subscribe()
+    this.dialogRef.close()
   }
+
 }

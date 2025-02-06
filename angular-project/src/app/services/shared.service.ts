@@ -8,6 +8,9 @@ export class SharedService {
   private notificationCheckSubject = new Subject<void>();
   private data = new Subject<roleInterface>();
   data$ = this.data.asObservable();
+
+  private deletedUserId = new Subject<string>()
+  deletedUserId$ = this.deletedUserId.asObservable()
   sendClickEvent() {
     this.subject.next();
   }
@@ -26,6 +29,11 @@ export class SharedService {
   getNotificationDeleteEvent(): Observable<any>{
     return this.notificationCheckSubject.asObservable();
   }
+
+  sendDeletedUserData(data: string){
+    this.deletedUserId.next(data);
+  }
+
 
 }
 

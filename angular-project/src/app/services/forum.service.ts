@@ -97,6 +97,8 @@ export class ForumService {
     return this.httpClient.delete(`${this.baseUrl}/forum/deletePost`, {params: params})
   }
 
+
+
 }
 
  export interface PostInfoDtoInterface {

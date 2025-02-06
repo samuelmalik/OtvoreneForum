@@ -50,6 +50,7 @@ export class ForumPageComponent implements OnInit {
   private breakpointObserver = inject(BreakpointObserver);
 
   subscription: Subscription;
+  subscription2: Subscription;
   @ViewChild('sideNav') sideNav: MatSidenav;
 
   private currentUserId: string;
@@ -82,6 +83,13 @@ export class ForumPageComponent implements OnInit {
       console.log(data);
       this.updateRole(data.role, data.userId);
     });
+
+    this.subscription2 = this.sharedService.deletedUserId$.subscribe(data => {
+      console.log(data);
+      this.updateUsersList(data);
+    });
+
+
 
 
   }
@@ -148,6 +156,11 @@ export class ForumPageComponent implements OnInit {
       }
     }
     this.userList = this.userList.sort((a, b) => a.role < b.role ? -1 : 1);
+  }
+
+  updateUsersList(id: string){
+    console.log("správa z forum komponentu, id je: " + id)
+    this.userList = this.userList.filter(item => item.id != id)
   }
 }
 

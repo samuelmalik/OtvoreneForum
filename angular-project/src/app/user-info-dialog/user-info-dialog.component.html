@@ -48,8 +48,13 @@
             }
           </mat-select>
         </mat-form-field>
-        <button mat-icon-button class="delete-btn" (click)="deleteUser(data.id)">
-          Vymazať používateľa
+        <button class="delete-btn" (click)="deleteUser(data.id)">
+          @if(!deleteConfirmed){
+            Vymazať používateľa
+          } @else if(deleteConfirmed){
+            Potvrdiť vymazanie
+          }
+
         </button>
       }
     </div>

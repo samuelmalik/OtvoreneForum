@@ -25,9 +25,14 @@ export class DeleteDialogComponent {
   readonly dialogRef = inject(MatDialogRef<DeleteDialogComponent>);
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
 
-  deleteFile(path: string){
-    console.log("deleting file with pat: " + path)
-    this.dialogRef.close(path);
+  delete(data: string){
+    console.log(data)
+    this.dialogRef.close(data);
+  }
+
+  deleteInt(data: number){
+    console.log(data)
+    this.dialogRef.close(data);
   }
 
   closeDialog(){

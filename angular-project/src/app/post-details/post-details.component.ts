@@ -21,6 +21,8 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatMenuModule} from "@angular/material/menu";
 import {SignalrService} from "../services/signalr.service";
 import {MatIcon} from "@angular/material/icon";
+import {DeleteDialogComponent} from "../delete-dialog/delete-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 
 @Component({
@@ -47,6 +49,8 @@ export class PostDetailsComponent implements OnInit {
   private destroyRef: DestroyRef = inject(DestroyRef);
   private signalRService: SignalrService = inject(SignalrService)
   private router: Router = inject(Router)
+  readonly dialog = inject(MatDialog);
+
   public CreateCommentForm: FormGroup;
   public id: number;
   public postDetails: PostDetailsDtoInterface;
@@ -179,12 +183,24 @@ export class PostDetailsComponent implements OnInit {
   }
 
   onDelete(id: number){
-    this.forumService.deletePost(id).subscribe({
-      complete: () => {
-        this.router.navigate(['/forum']);
-      }
+    console.log(id)
+      const dialogRef = this.dialog.open(DeleteDialogComponent, {
+        data: {type: "post", integerParameter: id},
+        width: '40vw',
+        height: 'auto',
+        panelClass: 'custom-dialog-container',
+      });
 
-    })
+      dialogRef.afterClosed().subscribe(result => {
+        if (result !== undefined) {
+          console.log('The dialog was closed' + result);
+          this.forumService.deletePost(id).subscribe({
+            complete: () => {
+              this.router.navigate(['/forum']);
+            }
 
+          })
+        }
+      });
   }
 }

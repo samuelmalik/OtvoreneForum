@@ -34,6 +34,7 @@ export class UserInfoDialogComponent implements OnInit, OnDestroy{
   note: string
   noteUpdated = false;
   noteLoaded = false;
+  deleteConfirmed :boolean
 
   claimData: AddClaimInterface ={
     userId: "",
@@ -44,6 +45,7 @@ export class UserInfoDialogComponent implements OnInit, OnDestroy{
 
   ngOnInit() {
     this.selected = this.data.role
+    this.deleteConfirmed = false
     this.authService.getNote(this.authService.getCurrentId(), this.data.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
       this.note = data.note;
       this.noteLoaded = true
@@ -88,12 +90,17 @@ export class UserInfoDialogComponent implements OnInit, OnDestroy{
   }
 
   deleteUser(id: string){
-    console.log("vymazavanie usera s idčkom: " + id)
-    this.authService.deleteUser(id).subscribe()
+    if (!this.deleteConfirmed ){
+      this.deleteConfirmed = true
+    } else if (this.deleteConfirmed) {
+      console.log("vymazavanie usera s idčkom: " + id)
+      this.authService.deleteUser(id).subscribe()
 
-    //vymazanie usera z listu na forum page
-    this.sharedService.sendDeletedUserData(this.data.id)
-    this.dialogRef.close()
+      //vymazanie usera z listu na forum page
+      this.sharedService.sendDeletedUserData(this.data.id)
+      this.dialogRef.close()
+    }
+
   }
 
 }

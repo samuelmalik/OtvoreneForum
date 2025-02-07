@@ -3,10 +3,16 @@
 
   @if (data.type == "file"){
     <p>Naozaj chcete zmazať tento súbor?</p>
-    <button class="delete-btn" (click)="deleteFile(data.stringParameter)">
+    <button class="delete-btn" (click)="delete(data.stringParameter)">
       Vymazať súbor
     </button>
+  } @else if(data.type == "post"){
+      <p>Naozaj chcete zmamať tento príspevok?</p>
+    <button class="delete-btn" (click)="deleteInt(data.integerParameter)">
+      Vymazať príspevok
+    </button>
   }
+
 </div>
 
 

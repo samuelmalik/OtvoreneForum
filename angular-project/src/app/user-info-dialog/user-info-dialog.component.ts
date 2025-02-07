@@ -90,7 +90,7 @@ export class UserInfoDialogComponent implements OnInit, OnDestroy{
   deleteUser(id: string){
     console.log("vymazavanie usera s idčkom: " + id)
     this.authService.deleteUser(id).subscribe()
-    
+
     //vymazanie usera z listu na forum page
     this.sharedService.sendDeletedUserData(this.data.id)
     this.dialogRef.close()

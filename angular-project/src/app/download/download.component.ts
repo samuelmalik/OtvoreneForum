@@ -10,6 +10,16 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatIcon} from "@angular/material/icon";
 import {concatAll} from "rxjs";
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
+import {DeleteDialogComponent, DialogData} from "../delete-dialog/delete-dialog.component";
 
 
 @Component({
@@ -30,6 +40,7 @@ import {concatAll} from "rxjs";
 })
 export class DownloadComponent {
   private authService: AuthenticationService = inject(AuthenticationService);
+  readonly dialog = inject(MatDialog);
 
   @ViewChild(UploadComponent) uploadComponent;
 
@@ -138,8 +149,22 @@ export class DownloadComponent {
   }
 
   delete(path: string){
-    this.fileService.delete(path).subscribe();
-    this.files = this.files.filter(item => item.path != path)
+    //this.fileService.delete(path).subscribe();
+    //this.files = this.files.filter(item => item.path != path)
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: {type: "file", stringParameter: path},
+      width: '40vw',
+      height: 'auto',
+      panelClass: 'custom-dialog-container',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        console.log('The dialog was closed' + result);
+        this.fileService.delete(result).subscribe();
+        this.files = this.files.filter(item => item.path != result)
+      }
+    });
   }
 
 }

@@ -14,6 +14,15 @@ import {equalValuesValidator} from "../api-authorization/password-validators";
  import { CommonModule } from '@angular/common';
  import {max, min} from "rxjs";
  import {ForumService, UpdateStatusInterface} from "../services/forum.service";
+ import {
+   MAT_DIALOG_DATA,
+   MatDialog,
+   MatDialogActions,
+   MatDialogClose,
+   MatDialogContent,
+   MatDialogRef,
+   MatDialogTitle,
+ } from '@angular/material/dialog';
 
 
  @Component({

@@ -1,0 +1,14 @@
+<div class="container">
+  <mat-icon class="close-btn" (click)="closeDialog()">close</mat-icon>
+
+  @if (data.type == "file"){
+    <p>Naozaj chcete zmazať tento súbor?</p>
+    <button class="delete-btn" (click)="deleteFile(data.stringParameter)">
+      Vymazať súbor
+    </button>
+  }
+</div>
+
+
+
+

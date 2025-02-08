@@ -5,6 +5,6 @@
     "\\AspNetWebAPI\\Authentication",
     "\\AspNetWebAPI\\Controllers"
   ],
-  "SelectedNode": "\\AspNetWebAPI\\Authentication\\UserController.cs",
+  "SelectedNode": "\\AspNetWebAPI\\appsettings.json",
   "PreviewInSolutionExplorer": false
 }

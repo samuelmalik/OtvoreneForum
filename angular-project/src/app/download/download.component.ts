@@ -74,7 +74,6 @@ export class DownloadComponent {
     //upload file to BE
     this.uploadComponent.uploadFileToServer()
     this.fileChosen = false
-    this.description = '';
   }
 
   private getFiles = () => {
@@ -104,7 +103,6 @@ export class DownloadComponent {
     }
 
     //upload details about file to DB
-    console.log(this.response)
     console.log(this.fileDetails)
     this.http.post(`${this.baseUrl}/download`, this.fileDetails)
       .subscribe({

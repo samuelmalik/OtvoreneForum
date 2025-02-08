@@ -2,7 +2,7 @@
   @if(this.commentsLoading || this.postLoading){
     <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 20px">
       <mat-spinner [diameter]="50"></mat-spinner>
-      <p>Načítavam príspevky</p>
+      <p>Načítavam príspevok</p>
     </div>
   } @else {
     <div class="post-info box">
@@ -111,16 +111,22 @@
                 </pre>
               }
 
-              <div class="likes-container" (click)="onCommentLike(comment.id)">
-                @if (comment.isLiked){
-                  <i  class="bi bi-heart-fill"></i>
-                } @else {
-                  <i  class="bi bi-heart"></i>
+              <div class="bottom-post">
+                <div class="likes-container" (click)="onCommentLike(comment.id)">
+                  @if (comment.isLiked){
+                    <i  class="bi bi-heart-fill"></i>
+                  } @else {
+                    <i  class="bi bi-heart"></i>
+                  }
+                  <p class="like-count" >{{comment.likes }}</p>
+                </div>
+                @if(this.currentUserId == comment.authorId || loggedRole == "admin"){
+                  <button mat-icon-button (click)="onDeleteComment(comment.id)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
                 }
-
-                <p class="like-count" >{{comment.likes }}</p>
-
               </div>
+
 
             </mat-card-content>
           </mat-card>

@@ -97,6 +97,12 @@ export class ForumService {
     return this.httpClient.delete(`${this.baseUrl}/forum/deletePost`, {params: params})
   }
 
+  public deleteComment(data: number){
+    let params = new HttpParams();
+    params = params.append('commentId', data);
+    return this.httpClient.delete(`${this.baseUrl}/forum/deleteComment`, {params: params})
+  }
+
 
 
 }
@@ -140,6 +146,7 @@ export interface CommentInfoInterface{
   message: string;
   code: string;
   author: string;
+  authorId: string;
   id: number;
   date: string;
   likes: number;

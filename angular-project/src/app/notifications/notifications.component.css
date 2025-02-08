@@ -85,6 +85,7 @@ button[mat-icon-button]:hover {
 
   .notification-card {
     padding: 10px 15px;
+    cursor: pointer;
   }
 
   .timestamp {

@@ -112,6 +112,7 @@ body {
 }
 
 .posts-item {
+  cursor: pointer;
   position: relative;
   padding: 20px;
   margin-bottom: 20px;
@@ -227,7 +228,7 @@ margin-right: 10px;
   border-radius: 10px;
   transition: background-color 0.2s, transform 0.2s;
   border-left: 4px solid transparent;
-  white-space: normal; 
+  white-space: normal;
   word-break: break-word;
   overflow-wrap: break-word;
   max-width: 100%;

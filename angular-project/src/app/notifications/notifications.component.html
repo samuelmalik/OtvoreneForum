@@ -21,6 +21,13 @@
       </mat-card-actions>
     </div>
   } @empty {
+    @if (showLoader){
+      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 20px">
+        <mat-spinner [diameter]="50"></mat-spinner>
+        <p>Načítavam oznámenia</p>
+      </div>
+    } @else {
     <p class="no-notifications">Nemáte žiadne nové upozornenia</p>
+    }
   }
 </div>

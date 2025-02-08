@@ -7,6 +7,7 @@ import {MatCardModule} from "@angular/material/card";
 import {Router, RouterLink} from "@angular/router";
 import {MatIcon} from "@angular/material/icon";
 import {SharedService} from "../services/shared.service";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-notifications',
@@ -14,7 +15,8 @@ import {SharedService} from "../services/shared.service";
   imports: [
     MatCardModule,
     MatButtonModule,
-    MatIcon
+    MatIcon,
+    MatProgressSpinner
   ],
   templateUrl: './notifications.component.html',
   styleUrl: './notifications.component.css'
@@ -27,13 +29,16 @@ export class NotificationsComponent implements OnInit{
   private authService: AuthenticationService = inject(AuthenticationService);
   private destroyRef: DestroyRef = inject(DestroyRef);
   public notifications: NotificationInterface[] = [];
+  public showLoader: boolean;
 
 
   ngOnInit() {
+    this.showLoader = true
     this.currentUserId = this.authService.getCurrentId();
 
     this.forumService.getNotifications(this.currentUserId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{
       this.notifications = data
+      this.showLoader = false
     });
   }
 

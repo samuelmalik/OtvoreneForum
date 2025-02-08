@@ -2,14 +2,19 @@
   <mat-icon class="close-btn" (click)="closeDialog()">close</mat-icon>
 
   @if (data.type == "file"){
-    <p>Naozaj chcete zmazať tento súbor?</p>
+    <p>Naozaj chcete odstrániť tento súbor?</p>
     <button class="delete-btn" (click)="delete(data.stringParameter)">
       Vymazať súbor
     </button>
   } @else if(data.type == "post"){
-      <p>Naozaj chcete zmamať tento príspevok?</p>
+      <p>Naozaj chcete odstrániť tento príspevok?</p>
     <button class="delete-btn" (click)="deleteInt(data.integerParameter)">
       Vymazať príspevok
+    </button>
+  } @else if(data.type == "comment"){
+    <p>Naozaj chcete odstrániť tento komentár?</p>
+    <button class="delete-btn" (click)="deleteInt(data.integerParameter)">
+      Vymazať komentár
     </button>
   }
 

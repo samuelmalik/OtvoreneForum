@@ -362,6 +362,26 @@ namespace AspNetCoreAPI.Controllers
             return Ok(postId);
         }
 
+        [HttpDelete]
+        [Route("deleteComment")]
+        public IActionResult DeleteComment([FromQuery(Name = "commentId")] int commentId)
+        {
+            //deleting from DB
+            var comment = _context.Comment.Include(c => c.Likes).Where(c => c.Id == commentId).FirstOrDefault();
+            if (comment != null)
+            {
+                    foreach (var like in comment.Likes)
+                    {
+                        _context.CommentLikes.Remove(like);
+                    }
+                    _context.Comment.Remove(comment);
+
+                _context.Comment.Remove(comment);
+                _context.SaveChanges();
+            }
+            return Ok(commentId);
+        }
+
 
 
 

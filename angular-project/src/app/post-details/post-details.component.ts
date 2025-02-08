@@ -183,7 +183,6 @@ export class PostDetailsComponent implements OnInit {
   }
 
   onDelete(id: number){
-    console.log(id)
       const dialogRef = this.dialog.open(DeleteDialogComponent, {
         data: {type: "post", integerParameter: id},
         width: '40vw',
@@ -193,7 +192,6 @@ export class PostDetailsComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         if (result !== undefined) {
-          console.log('The dialog was closed' + result);
           this.forumService.deletePost(id).subscribe({
             complete: () => {
               this.router.navigate(['/forum']);
@@ -202,5 +200,21 @@ export class PostDetailsComponent implements OnInit {
           })
         }
       });
+  }
+
+  onDeleteComment(id: number){
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: {type: "comment", integerParameter: id},
+      width: '40vw',
+      height: 'auto',
+      panelClass: 'custom-dialog-container',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.forumService.deleteComment(id).subscribe()
+        this.commentArray = this.commentArray.filter(item => item.id != result)
+      }
+    });
   }
 }

@@ -10,6 +10,7 @@ using AspNetCoreAPI.dto;
 using Microsoft.EntityFrameworkCore;
 using AspNetCoreAPI.Authentication.dto;
 using Org.BouncyCastle.Asn1.X509;
+using System.Globalization;
 
 namespace AspNetCoreAPI.Controllers
 {
@@ -24,18 +25,22 @@ namespace AspNetCoreAPI.Controllers
             _context = context;
         }
 
-        
+        //info about Timezone
+        private TimeZoneInfo cestZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+
+
         [HttpPost("newPost")]
         public CreatePostDto CreatePost([FromBody] CreatePostDto createPost )
         {
+
             Post newPost = new Post()
             {
                 UserId = createPost.AuthorId,
                 Title = createPost.Title,
                 Description = createPost.Description,
                 Code = createPost.Code,
-                Date = DateTime.Now,
-            };
+                Date = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, this.cestZone),
+        };
 
             _context.Add(newPost);
             _context.SaveChanges();
@@ -55,7 +60,7 @@ namespace AspNetCoreAPI.Controllers
                             Author = p.User.UserName,
                             Title = p.Title,
                             Description = p.Description,
-                            Date = p.Date.ToString("dd MMMM yyyy HH:mm"),
+                            Date = p.Date.ToString("dd MMMM yyyy HH:mm", new CultureInfo("sk-SK")),
                             Id = p.Id,
                             Likes = _context.PostLikes
                                .Include(l => l.User)
@@ -83,7 +88,7 @@ namespace AspNetCoreAPI.Controllers
                             Author = p.User.UserName,
                             Title = p.Title,
                             Description = p.Description,
-                            Date = p.Date.ToString("dd MMMM yyyy HH:mm"),
+                            Date = p.Date.ToString("dd MMMM yyyy HH:mm", new CultureInfo("sk-SK")),
                             Code = p.Code,
                             Likes = _context.PostLikes
                                .Include(l => l.User)
@@ -106,7 +111,7 @@ namespace AspNetCoreAPI.Controllers
                 PostId = createComment?.PostId,
                 Message = createComment.Message,
                 Code = createComment.Code,
-                Date = DateTime.Now,
+                Date = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, this.cestZone),
             };
             var user = from u in _context.Users
                        .Where(u => u.Id == createComment.AuthorId)
@@ -135,8 +140,9 @@ namespace AspNetCoreAPI.Controllers
                         {
                             Id = p.Id,
                             Author = p.User.UserName,
+                            AuthorId = p.User.Id,
                             Message = p.Message,
-                            Date = p.Date.ToString("dd MMMM yyyy HH:mm"),
+                            Date = p.Date.ToString("dd MMMM yyyy HH:mm", new CultureInfo("sk-SK")),
                             Code = p.Code,
                             Likes = _context.CommentLikes
                                .Include(l => l.User)
@@ -157,7 +163,7 @@ namespace AspNetCoreAPI.Controllers
             {
                 UserId = addLike.UserId,
                 PostId = addLike.PostId,
-                Date = DateTime.Now,
+                Date = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, this.cestZone),
             };
            
 
@@ -188,7 +194,7 @@ namespace AspNetCoreAPI.Controllers
             {
                 UserId = addLike.UserId,
                 CommentId = addLike.CommentId,
-                Date = DateTime.Now,
+                Date = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, this.cestZone),
             };
 
 
@@ -226,7 +232,7 @@ namespace AspNetCoreAPI.Controllers
                     PostTitle = item.Post.Title,
                     Type = "comment",
                     AuthorUsername = item.User.UserName,
-                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm"),
+                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm", new CultureInfo("sk-SK")),
                     ItemId = item.Id
                 });
             }
@@ -239,7 +245,7 @@ namespace AspNetCoreAPI.Controllers
                     PostTitle = item.Post.Title,
                     Type = "postLike",
                     AuthorUsername = item.User.UserName,
-                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm"),
+                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm", new CultureInfo("sk-SK")),
                     ItemId = item.Id
                 });
             }
@@ -252,7 +258,7 @@ namespace AspNetCoreAPI.Controllers
                     PostTitle = item.Comment.Post.Title,
                     Type = "commentLike",
                     AuthorUsername = item.User.UserName,
-                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm"),
+                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm", new CultureInfo("sk-SK")),
                     ItemId = item.Id
                 });
             }

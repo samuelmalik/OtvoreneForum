@@ -222,49 +222,53 @@ namespace AspNetCoreAPI.Controllers
         public IEnumerable<NotificationDto> GetNotifications(
             [FromQuery(Name = "currentUserId")] string currentUserId)
         {
-            List<NotificationDto> notifications = new List<NotificationDto>();
+            try { 
+                List<NotificationDto> notifications = new List<NotificationDto>();
 
-            foreach (var item in _context.Comment.Include(c => c.Post).Include(c => c.User).Where(c => c.Post.UserId == currentUserId && c.IsAuthorNotificated == false))
-            {
-                notifications.Add(new NotificationDto
+                foreach (var item in _context.Comment.Include(c => c.Post).Include(c => c.User).Where(c => c.Post.UserId == currentUserId && c.IsAuthorNotificated == false))
                 {
-                    PostId = item.PostId,
-                    PostTitle = item.Post.Title,
-                    Type = "comment",
-                    AuthorUsername = item.User.UserName,
-                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm", new CultureInfo("sk-SK")),
-                    ItemId = item.Id
-                });
-            }
+                    notifications.Add(new NotificationDto
+                    {
+                        PostId = item.PostId,
+                        PostTitle = item.Post.Title,
+                        Type = "comment",
+                        AuthorUsername = item.User.UserName,
+                        CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm"),
+                        ItemId = item.Id
+                    });
+                }
 
-            foreach (var item in _context.PostLikes.Include(p => p.Post).Include(p => p.User).Where(p => p.Post.UserId == currentUserId && p.IsAuthorNotificated == false))
-            {
-                notifications.Add(new NotificationDto
+                foreach (var item in _context.PostLikes.Include(p => p.Post).Include(p => p.User).Where(p => p.Post.UserId == currentUserId && p.IsAuthorNotificated == false))
                 {
-                    PostId = item.PostId,
-                    PostTitle = item.Post.Title,
-                    Type = "postLike",
-                    AuthorUsername = item.User.UserName,
-                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm", new CultureInfo("sk-SK")),
-                    ItemId = item.Id
-                });
-            }
+                    notifications.Add(new NotificationDto
+                    {
+                        PostId = item.PostId,
+                        PostTitle = item.Post.Title,
+                        Type = "postLike",
+                        AuthorUsername = item.User.UserName,
+                        CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm"),
+                        ItemId = item.Id
+                    });
+                }
 
-            foreach (var item in _context.CommentLikes.Include(cl => cl.Comment.Post).Include(cl => cl.User).Where(cl => cl.Comment.UserId == currentUserId && cl.IsAuthorNotificated == false))
-            {
-                notifications.Add(new NotificationDto
+                foreach (var item in _context.CommentLikes.Include(cl => cl.Comment.Post).Include(cl => cl.User).Where(cl => cl.Comment.UserId == currentUserId && cl.IsAuthorNotificated == false))
                 {
-                    PostId = item.Comment.PostId,
-                    PostTitle = item.Comment.Post.Title,
-                    Type = "commentLike",
-                    AuthorUsername = item.User.UserName,
-                    CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm", new CultureInfo("sk-SK")),
-                    ItemId = item.Id
-                });
+                    notifications.Add(new NotificationDto
+                    {
+                        PostId = item.Comment.PostId,
+                        PostTitle = item.Comment.Post.Title,
+                        Type = "commentLike",
+                        AuthorUsername = item.User.UserName,
+                        CreateTime = item.Date.ToString("dd MMMM yyyy HH:mm"),
+                        ItemId = item.Id
+                    });
+                }
+
+                return notifications.OrderByDescending(n => DateTime.Parse(n.CreateTime));
+            } catch(Exception e)
+            {
+                throw new Exception("E:", e);
             }
-
-            return notifications.OrderByDescending(n => DateTime.Parse(n.CreateTime));
-
 
 
         }

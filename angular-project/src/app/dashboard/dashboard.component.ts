@@ -75,7 +75,7 @@ export class DashboardComponent implements OnInit {
     });
 
     this.UsernameForm = this.formBuilder.group({
-      newUsername: new FormControl('',  [Validators.required, Validators.minLength(6), this.noWhitespaceValidator])
+      newUsername: new FormControl('',  [Validators.required, Validators.minLength(6), ])
     });
 
     this.StatusForm = this.formBuilder.group({
@@ -120,9 +120,6 @@ export class DashboardComponent implements OnInit {
       this.errorMessage = "Heslá sa nezhodujú"
     }
   }
-   public noWhitespaceValidator(control: FormControl) {
-     return (control.value || '').trim().length? null : { 'whitespace': true };
-   }
    submitUsernameForm(){
      if(this.UsernameForm.valid && this.UsernameForm.value.newUsername.length >0){
        let data :ChangePasswordInterface ={
@@ -132,9 +129,11 @@ export class DashboardComponent implements OnInit {
        }
 
        this.authService.changeUsername(data).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(output =>{
+         console.log(this.UsernameForm.value.newUsername.indexOf(" ")>=0)
          if (output == false){
-           if (this.UsernameForm.hasError("whitespace")){
-             this.errorMessage = "Meno nemôže obsahovať medzery"
+           const forbiddenChars = /[\s!@#$%^&*(),?":{}|<>]/;
+           if (forbiddenChars.test(this.UsernameForm.value.newUsername)){
+             this.errorMessageName = "Meno nemôže obsahovať medzery ani špeciálne znaky (len znaky '.', '_' a '-' )"
            }
           else {
              this.errorMessageName = "Meno už existuje"

@@ -58,6 +58,7 @@ textarea:focus {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 30px;
 }
 
 
@@ -213,7 +214,8 @@ p {
 
   .table_component {
     width: 100%;
-    overflow-x: auto;
+    overflow-x: hidden;
+    margin-bottom: 30px;
   }
 
 

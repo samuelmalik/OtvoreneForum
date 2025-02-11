@@ -64,7 +64,10 @@ body {
   border-radius: 50%;
 }
 
+.post-route {
+  cursor: pointer;
 
+}
 
 .searchButton i {
   color: white;
@@ -112,7 +115,6 @@ body {
 }
 
 .posts-item {
-  cursor: pointer;
   position: relative;
   padding: 20px;
   margin-bottom: 20px;

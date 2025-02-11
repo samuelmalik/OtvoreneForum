@@ -14,15 +14,6 @@ import {equalValuesValidator} from "../api-authorization/password-validators";
  import { CommonModule } from '@angular/common';
  import {max, min} from "rxjs";
  import {ForumService, UpdateStatusInterface} from "../services/forum.service";
- import {
-   MAT_DIALOG_DATA,
-   MatDialog,
-   MatDialogActions,
-   MatDialogClose,
-   MatDialogContent,
-   MatDialogRef,
-   MatDialogTitle,
- } from '@angular/material/dialog';
 
 
  @Component({
@@ -84,7 +75,7 @@ export class DashboardComponent implements OnInit {
     });
 
     this.UsernameForm = this.formBuilder.group({
-      newUsername: new FormControl('', Validators.minLength(6)),
+      newUsername: new FormControl('',  [Validators.required, Validators.minLength(6), this.noWhitespaceValidator])
     });
 
     this.StatusForm = this.formBuilder.group({
@@ -129,7 +120,9 @@ export class DashboardComponent implements OnInit {
       this.errorMessage = "Heslá sa nezhodujú"
     }
   }
-
+   public noWhitespaceValidator(control: FormControl) {
+     return (control.value || '').trim().length? null : { 'whitespace': true };
+   }
    submitUsernameForm(){
      if(this.UsernameForm.valid && this.UsernameForm.value.newUsername.length >0){
        let data :ChangePasswordInterface ={
@@ -140,7 +133,12 @@ export class DashboardComponent implements OnInit {
 
        this.authService.changeUsername(data).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(output =>{
          if (output == false){
-           this.errorMessageName = "Meno už existuje"
+           if (this.UsernameForm.hasError("whitespace")){
+             this.errorMessage = "Meno nemôže obsahovať medzery"
+           }
+          else {
+             this.errorMessageName = "Meno už existuje"
+           }
          } else {
            this.errorMessageName = "Meno úspešne zmenené"
            this.currentUserName = data.newPassword

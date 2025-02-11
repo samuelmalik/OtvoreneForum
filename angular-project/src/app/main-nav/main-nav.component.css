@@ -28,6 +28,10 @@ mat-toolbar {
   height: 80px;
 }
 
+.logo:hover {
+  cursor: pointer;
+}
+
 .nav-left {
   display: flex;
   justify-content: flex-start;

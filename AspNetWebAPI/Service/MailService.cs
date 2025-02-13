@@ -35,39 +35,26 @@ namespace AspNetCoreAPI.Service
                 {
                     try
                     {
-                        // Pridáme logovanie pripojenia a autentifikácie
-                        Console.WriteLine($"Connecting to SMTP server: {_mailSetting.Host}:{_mailSetting.Port}");
-
                         mailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;  // Disable SSL cert validation for testing
                         mailClient.Connect(_mailSetting.Host, _mailSetting.Port, SecureSocketOptions.StartTls);
 
-                        Console.WriteLine("Connected to SMTP server.");
-
                         mailClient.Authenticate(_mailSetting.UserName, _mailSetting.Password);
-                        Console.WriteLine("Authenticated successfully.");
 
                         mailClient.Send(emailMessage);
-                        Console.WriteLine("Email sent successfully.");
 
                         mailClient.Disconnect(true);
                         return true;
                     }
                     catch (Exception smtpEx)
                     {
-                        // Logujeme SMTP chyby podrobne
-                        Console.WriteLine("SMTP Exception:");
                         Console.WriteLine(smtpEx.Message);
-                        Console.WriteLine(smtpEx.StackTrace);
                         return false;
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Logovanie ak sa email ani nevytvorí
-                Console.WriteLine("General Exception:");
                 Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
                 return false;
             }
         }

@@ -45,7 +45,6 @@ export class ForgotPasswordComponent {
 
   resolved(captchaResponse: string) {
     this.captcha = captchaResponse;
-    console.log('CAPTCHA resolved with token:', captchaResponse);
   }
 
   submit() {
@@ -65,7 +64,7 @@ export class ForgotPasswordComponent {
         });
       }
     } else {
-      this.snackBar.open('Please complete the CAPTCHA.', 'OK', { duration: 3000 });
+      this.snackBar.open('Prosím vyplňte captchu.', 'OK', { duration: 3000 });
     }
   }
 }

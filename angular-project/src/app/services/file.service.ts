@@ -15,7 +15,6 @@ export class FileService {
     });
   }
 
-
   public download(fileUrl: string) {
     let params = new HttpParams();
     params = params.append('fileUrl', fileUrl);

@@ -30,7 +30,6 @@
             </div>
           </div>
         }
-
       }
     </div>
   </mat-sidenav>
@@ -44,9 +43,8 @@
             <i style="color: white; font-size: 25px; display: flex; justify-content: center" class="bi bi-search"></i>
           </button>
         </div>
-
-
       </div>
+
       <div class="div3">
         <div class="order-container">
           <p class="xd">Zoradiť podľa: {{ orderBy }}</p>
@@ -72,8 +70,6 @@
 
       <div class="central">
       <div class="div2">
-
-
         @if (showPostsLoader){
           <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 20px">
             <mat-spinner [diameter]="50"></mat-spinner>
@@ -94,7 +90,7 @@
                 <h2 class="title">{{post.title}}</h2>
                 <p class="post-description">{{post.description}}</p>
                 </div>
-                <!--<a [routerLink]="['/post-details', post.id]">Zobraziť viac...</a>-->
+
                 <div class="likes-container" (click)="onLike(post.id)">
                   @if (post.isLiked){
                     <i  class="bi bi-heart-fill"></i>
@@ -107,7 +103,6 @@
             }
           </mat-list>
         }
-
       </div>
       </div>
     </div>

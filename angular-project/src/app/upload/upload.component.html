@@ -1,7 +1,6 @@
 <div class="row" style="margin-bottom:15px;">
   <div class="col-md-3">
 
-    <!-- drag and drop -->
     @if(!fileChosen){
       <div class="drag-drop-container">
         <input type="file" #file class="drag-drop" placeholder="Choose file" (change)="uploadFile(file.files)">
@@ -20,7 +19,6 @@
           <mat-icon>cancel</mat-icon>
         </button>
       </div>
-
     }
 
   </div>
@@ -36,6 +34,5 @@
       {{message}}
     </span>
     }
-
   </div>
 </div>

@@ -66,9 +66,7 @@ export class RegistrationComponent implements OnInit {
         captchaToken: this.captcha,
       };
 
-      //disable register button
       this.captcha ="";
-      // Volanie služby na registráciu
       this.authService.registerUser(registrationData).subscribe(
         data =>{
           console.log(data)
@@ -107,7 +105,6 @@ export class RegistrationComponent implements OnInit {
 
   resolved(captchaResponse: string) {
     this.captcha = captchaResponse;
-    console.log('reCAPTCHA resolved, token:', this.captcha);
   }
 }
 

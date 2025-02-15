@@ -21,6 +21,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
   templateUrl: './notifications.component.html',
   styleUrl: './notifications.component.css'
 })
+
 export class NotificationsComponent implements OnInit{
   private currentUserId: string;
   private router: Router = inject(Router)
@@ -30,7 +31,6 @@ export class NotificationsComponent implements OnInit{
   private destroyRef: DestroyRef = inject(DestroyRef);
   public notifications: NotificationInterface[] = [];
   public showLoader: boolean;
-
 
   ngOnInit() {
     this.showLoader = true

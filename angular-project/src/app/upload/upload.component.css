@@ -37,7 +37,7 @@
 .drag-drop-container div div{
   position: relative;
   left: -50%;
-  top: -40px; /* one half of .upload-icon {font-size} */
+  top: -40px;
   text-align: center;
   height: 50px;
 }
@@ -45,7 +45,7 @@
 button[mat-icon-button] {
   background-color: transparent;
   color: #d32f2f;
-  font-size: 24px; /* Väčšie tlačidlo */
+  font-size: 24px;
   border-radius: 50%;
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
@@ -71,7 +71,7 @@ button[mat-icon-button]:hover {
 }
 
 .upload-icon{
-  font-size: 80px; /* if changing, change also .drag-drop-container div div {top}*/
+  font-size: 80px;
   transition: transform 0.3s ease-in-out;
   color: rgba(0, 123, 255, 0.78);
 }

@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
           }
 
         },
-        error: (err) => console.log("Oops, something went wrong", err)
+        error: (err) => console.log("Niečo sa pokazilo", err)
       });
     }
   }

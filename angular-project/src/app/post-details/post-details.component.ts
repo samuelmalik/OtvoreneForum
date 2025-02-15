@@ -74,7 +74,6 @@ export class PostDetailsComponent implements OnInit {
        this.postDetails = data;
        this.postLoading = false
      });
-
      // get comments
     this.forumService.getCommentsByPost(this.currentUserId, this.id).subscribe(data => {
     //this.commentList = signal<CommentInfoInterface[]>(data);
@@ -83,8 +82,6 @@ export class PostDetailsComponent implements OnInit {
     this.commentArray.sort((a, b) => b.id - a.id)
     this.commentsLoading = false
     })
-
-
     this.CreateCommentForm = this.formBuilder.group({
       message: ['', [Validators.required]],
       code: ['']
@@ -106,9 +103,7 @@ export class PostDetailsComponent implements OnInit {
     }
   }
 
-
   submitPost() {
-
     if(this.currentUserId == null){
       console.log("Neprihlásený user");
     }
@@ -133,16 +128,15 @@ export class PostDetailsComponent implements OnInit {
   }
 
   onPostLike(){
-
     const likeData: AddPostLikeInterface = {
       userId: this.currentUserId,
       postId: this.id
     }
 
     if(this.currentUserId == null){
-      console.log("Neprihlásený user");
-    }else if(this.postDetails.isLiked == false){
+      console.log("Neprihlásený user");}
 
+    else if(this.postDetails.isLiked == false){
       this.postDetails.isLiked = true
       this.postDetails.likes += 1
       this.forumService.addPostLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{
@@ -154,7 +148,6 @@ export class PostDetailsComponent implements OnInit {
       this.postDetails.likes -= 1
       this.forumService.removePostLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{})
     }
-
   }
 
   onCommentLike(commentId: number){
@@ -165,9 +158,9 @@ export class PostDetailsComponent implements OnInit {
     }
 
     if(this.currentUserId == null){
-      console.log("neprihlásený user");
-    }else if(this.commentArray[index].isLiked == false){
+      console.log("neprihlásený user");}
 
+    else if(this.commentArray[index].isLiked == false){
       this.commentArray[index].isLiked = true
       this.commentArray[index].likes += 1
       this.forumService.addCommentLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{
@@ -179,7 +172,6 @@ export class PostDetailsComponent implements OnInit {
       this.commentArray[index].likes -= 1
       this.forumService.removeCommentLike(likeData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data =>{})
     }
-
   }
 
   onDelete(id: number){
@@ -196,7 +188,6 @@ export class PostDetailsComponent implements OnInit {
             complete: () => {
               this.router.navigate(['/forum']);
             }
-
           })
         }
       });

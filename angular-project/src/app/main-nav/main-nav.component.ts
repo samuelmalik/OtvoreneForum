@@ -20,9 +20,6 @@ import { MatIconModule } from '@angular/material/icon';
 import {MatSidenavContainer} from "@angular/material/sidenav";
 import { MatSidenavModule } from '@angular/material/sidenav';
 
-
-
-
 @Component({
   selector: 'app-main-nav',
   standalone: true,
@@ -47,7 +44,6 @@ export class MainNavComponent implements OnInit{
 
   clickEventsubscription :Subscription;
 
-
   public authService = inject(AuthenticationService);
   private forumService :ForumService = inject(ForumService);
   private destroyRef :DestroyRef = inject(DestroyRef)
@@ -59,7 +55,6 @@ export class MainNavComponent implements OnInit{
     verticalPosition: 'top',
 
   };
-
 
   constructor(private snackBar: MatSnackBar, private sharedService:SharedService, private signalRService: SignalrService, ) {
     // real time notifications
@@ -82,11 +77,8 @@ export class MainNavComponent implements OnInit{
     //real time notifications subscribe method
     this.signalRService.currentMessage.subscribe(data => {
         this.checkForNotifications();
-        console.log("broadcast")
     });
-
   }
-
 
   logout() {
     this.authService.logout();
@@ -115,7 +107,6 @@ export class MainNavComponent implements OnInit{
   removeNotificationsAlert(){
     this.hasNotifications = false;
   }
-
 }
 
 @Component({
@@ -132,11 +123,9 @@ export class CreatePostNavSnackComponent {
     public snackBarRef: MatSnackBarRef<CreatePostNavSnackComponent>,
   ) {}
 
-
   onClick() {
     this.snackBarRef.dismiss()
     this.router.navigate(['/login'])
   }
-
 }
 

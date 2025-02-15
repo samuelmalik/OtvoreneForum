@@ -14,33 +14,25 @@
             <p>{{postDetails.date}}</p>
           </div>
         </div>
-
-
-
       </div>
-
-
       <h2>{{postDetails.title}}</h2>
-
       <p class="description">{{postDetails.description}}</p>
       @if (postDetails.code && postDetails.code.trim()) {
       <h3 style="margin-top: 30px">Kód:</h3>
 
         <pre class="code">
       <code [highlightAuto]="postDetails.code" lineNumbers></code>
-    </pre>
+        </pre>
+
       }
       <div class="bottom-post">
       <div class="likes-container" (click)="onPostLike()" >
         @if (postDetails.isLiked){
           <i  class="bi bi-heart-fill"></i>
-
         } @else {
           <i  class="bi bi-heart"></i>
         }
-
         <p class="like-count">{{postDetails.likes }}</p>
-
       </div>
         <div class="delete-post">
         @if(this.currentUserId == postDetails.authorId || loggedRole == "admin"){
@@ -102,15 +94,12 @@
                   <p>{{comment.date}}</p>
                 </div>
               </div>
-
-
               <p>{{comment.message}}</p>
               @if (comment.code && comment.code.trim()) {
                 <pre class="code">
             <code [highlightAuto]="comment.code" lineNumbers></code>
                 </pre>
               }
-
               <div class="bottom-post">
                 <div class="likes-container" (click)="onCommentLike(comment.id)">
                   @if (comment.isLiked){
@@ -126,15 +115,10 @@
                   </button>
                 }
               </div>
-
-
             </mat-card-content>
           </mat-card>
         }
       </div>
-
-
     </div>
   }
-
 </div>

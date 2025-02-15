@@ -10,9 +10,6 @@ import {equalValuesValidator} from "../api-authorization/password-validators";
  import {MatFormField, MatLabel} from "@angular/material/form-field";
  import {MatInput} from "@angular/material/input";
  import {AuthenticationService, ChangePasswordInterface, ChangePasswordResponse} from "../api-authorization/authentication.service";
- import {HttpErrorResponse} from "@angular/common/http";
- import { CommonModule } from '@angular/common';
- import {max, min} from "rxjs";
  import {ForumService, UpdateStatusInterface} from "../services/forum.service";
 
 

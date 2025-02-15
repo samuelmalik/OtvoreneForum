@@ -1,11 +1,9 @@
-
 .user-dialog {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 15px 20px;
   font-family: 'Montserrat', sans-serif;
-
 }
 
 .user-dialog p {
@@ -14,8 +12,6 @@
   max-width: 100%;
   white-space: normal;
 }
-
-
 
 .header {
   width: 100%;
@@ -29,8 +25,6 @@
   font-size: 1.5rem;
   font-weight: bold;
 }
-
-
 
 .profile-container {
   display: flex;
@@ -117,7 +111,7 @@
 }
 
 .save-btn:active {
-  background-color: #004085; /* Ešte tmavšia pri kliknutí */
+  background-color: #004085;
   transform: scale(0.98);
 }
 
@@ -150,11 +144,9 @@ mat-form-field {
 }
 
 .delete-btn:active {
-  background-color: #600909; /* Ešte tmavšia pri kliknutí */
+  background-color: #600909;
   transform: scale(0.98);
 }
-
-
 
 @media (max-width: 600px) {
   .user-dialog {

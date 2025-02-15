@@ -33,8 +33,6 @@ export class SharedService {
   sendDeletedUserData(data: string){
     this.deletedUserId.next(data);
   }
-
-
 }
 
 export interface roleInterface{

@@ -23,7 +23,7 @@
 }
 
 .delete-btn:active {
-  background-color: #600909; /* Ešte tmavšia pri kliknutí */
+  background-color: #600909;
   transform: scale(0.98);
 }
 

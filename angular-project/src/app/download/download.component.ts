@@ -71,7 +71,6 @@ export class DownloadComponent {
   }
 
   onCreate = () => {
-    //upload file to BE
     this.uploadComponent.uploadFileToServer()
     this.fileChosen = false
   }
@@ -81,7 +80,6 @@ export class DownloadComponent {
       .subscribe(
         {
         next: (res) => this.files = res as File[],
-        //this.showLoader = false;
         error: (err: HttpErrorResponse) => console.log(err),
         complete: () => this.showLoader = false,
 

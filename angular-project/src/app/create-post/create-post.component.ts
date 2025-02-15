@@ -33,7 +33,6 @@ export class CreatePostComponent implements OnInit{
 
   ngOnInit() {
     this.currentUserId = this.authService.getCurrentId();
-
     this.CreatePostForm = this.formBuilder.group({
       title: ['', [Validators.required, Validators.maxLength(50)]],
       description: ['', [Validators.required]],
@@ -59,11 +58,7 @@ export class CreatePostComponent implements OnInit{
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: (response) => {
-            console.log("Príspevok bol úspešne vytvorený!", response);
-
             this.CreatePostForm.reset();
-            this.openSnackBar("Príspevok bol úspešne vytvorený");
-
             this.router.navigate(['/forum']);
           },
           error: (error) => {

@@ -74,9 +74,11 @@ export class ForumService {
   makeCommentSeen(data :any) {
     return this.httpClient.put(`${this.baseUrl}/forum/makeCommentSeen`, data)
   }
+
   makePostLikeSeen(data :any) {
     return this.httpClient.put(`${this.baseUrl}/forum/makePostLikeSeen`, data)
   }
+
   makeCommentLikeSeen(data :any) {
     return this.httpClient.put(`${this.baseUrl}/forum/makeCommentLikeSeen`, data)
   }
@@ -102,9 +104,6 @@ export class ForumService {
     params = params.append('commentId', data);
     return this.httpClient.delete(`${this.baseUrl}/forum/deleteComment`, {params: params})
   }
-
-
-
 }
 
  export interface PostInfoDtoInterface {

@@ -28,7 +28,7 @@
 }
 
 .card-header {
-  flex: 1; /* Zaberá čo najviac miesta */
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -41,13 +41,13 @@
 
 mat-card-title {
   margin: 0;
-  font-size: 18px; /* Väčší text */
+  font-size: 18px;
   font-weight: 600;
 }
 
 .post-title {
   font-style: italic;
-  font-size: 16px; /* Zvýraznený text pre názov príspevku */
+  font-size: 16px;
   color: #555;
 }
 
@@ -55,13 +55,13 @@ mat-card-actions {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 100px; /* Fixná šírka na zarovnanie tlačidla */
+  width: 100px;
 }
 
 button[mat-icon-button] {
   background-color: transparent;
   color: #d32f2f;
-  font-size: 24px; /* Väčšie tlačidlo */
+  font-size: 24px;
   border-radius: 50%;
   transition: background-color 0.2s ease, transform 0.2s ease;
 }

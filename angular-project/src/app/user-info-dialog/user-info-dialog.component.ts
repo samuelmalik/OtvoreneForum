@@ -53,7 +53,6 @@ export class UserInfoDialogComponent implements OnInit, OnDestroy{
   }
 
   ngOnDestroy() {
-    console.log("dialog zniceny")
     if (this.claimData.userId != null && this.claimData.value != null){
       //prepísanie role v ForumPage user liste
       let roleData: roleInterface = {
@@ -79,7 +78,6 @@ export class UserInfoDialogComponent implements OnInit, OnDestroy{
 
   changeRole(){
     // kód na nastavenie rolí v databáze tabuľke userov
-    console.log("menim rolu")
     this.claimData ={
       userId : this.data.id,
       type : "role",
@@ -93,9 +91,7 @@ export class UserInfoDialogComponent implements OnInit, OnDestroy{
     if (!this.deleteConfirmed ){
       this.deleteConfirmed = true
     } else if (this.deleteConfirmed) {
-      console.log("vymazavanie usera s idčkom: " + id)
       this.authService.deleteUser(id).subscribe()
-
       //vymazanie usera z listu na forum page
       this.sharedService.sendDeletedUserData(this.data.id)
       this.dialogRef.close()

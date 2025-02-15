@@ -66,14 +66,12 @@ body {
 
 .post-route {
   cursor: pointer;
-
 }
 
 .searchButton i {
   color: white;
   font-size: 20px;
 }
-
 
 .order-container {
   display: flex;
@@ -84,6 +82,7 @@ body {
   flex-wrap: nowrap;
   white-space: nowrap;
 }
+
 .menubtn {
   padding: 0;
   display: flex;
@@ -98,7 +97,6 @@ body {
   justify-content: center;
   align-items: center;
   position: relative;
-
 }
 
 .div3{
@@ -158,9 +156,11 @@ body {
   border-radius: 50%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 .title{
   margin: 10px 0;
 }
+
 .likes-container {
   display: flex;
   align-items: center;
@@ -280,6 +280,7 @@ margin-right: 10px;
   overflow-wrap: break-word;
   max-width: 100%;
 }
+
 .central {
   display: flex;
   justify-content: center;
@@ -297,8 +298,6 @@ margin-right: 10px;
 }
 
 @media (max-width: 600px) {
-
-
   .search-container {
     max-width: 100%;
   }
@@ -308,6 +307,7 @@ margin-right: 10px;
     flex-direction: row;
     padding: 0;
   }
+
   .div3 {
     display: flex;
     flex-direction: column;
@@ -325,7 +325,6 @@ margin-right: 10px;
 
   .sidenav-button {
     font-size: 14px;
-
   }
   .mat-mdc-button {
     padding: 0;
@@ -340,5 +339,4 @@ margin-right: 10px;
     padding: 10px 10px 10px 0
 
   }
-
 }

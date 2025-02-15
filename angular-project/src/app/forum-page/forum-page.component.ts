@@ -15,7 +15,7 @@ import {MatDialogModule, MatDialog} from '@angular/material/dialog';
 import { UserInfoDialogComponent } from '../user-info-dialog/user-info-dialog.component';
 import {SignalrService} from "../services/signalr.service";
 import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver} from '@angular/cdk/layout';
 import {MatIcon} from "@angular/material/icon";
 import {NgClass} from "@angular/common";
 
@@ -88,16 +88,11 @@ export class ForumPageComponent implements OnInit {
       console.log(data);
       this.updateUsersList(data);
     });
-
-
-
-
   }
 
   toggleSideNav() {
     this.sideNav.toggle();
   }
-
 
   onLike(postId: number) {
     const index = this.postList.findIndex(post => post.id == postId)
@@ -107,7 +102,6 @@ export class ForumPageComponent implements OnInit {
     }
 
     if (this.currentUserId == null) {
-      console.log("neprihlásený user");
     } else if (this.postList[index].isLiked == false) {
 
       this.postList[index].isLiked = true
@@ -159,7 +153,6 @@ export class ForumPageComponent implements OnInit {
   }
 
   updateUsersList(id: string){
-    console.log("správa z forum komponentu, id je: " + id)
     this.userList = this.userList.filter(item => item.id != id)
   }
 }

@@ -33,7 +33,6 @@ export class UploadComponent {
 
     this.formData.append('file', this.fileToUpload, this.fileToUpload.name);
     console.log(this.fileToUpload.name)
-    //tuto spraviť aby zmizla message a nabehol názov súboru a prípadné odstránenie
 
     this.onFileChosenEvent.emit(true);
     this.fileChosen = true

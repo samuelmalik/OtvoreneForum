@@ -107,6 +107,7 @@ export class DownloadComponent {
         next: _ => {
           this.getFiles();
           this.isCreate = false;
+          this.description = "";
         },
         error: (err: HttpErrorResponse) => console.log(err)
       });

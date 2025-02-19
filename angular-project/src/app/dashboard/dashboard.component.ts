@@ -122,7 +122,7 @@ export class DashboardComponent implements OnInit {
        let data :ChangePasswordInterface ={
          id: this.currentUserId,
          oldPassword: "",
-         newPassword: this.UsernameForm.value.newUsername
+         newPassword: this.UsernameForm.value.newUsername.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
        }
 
        this.authService.changeUsername(data).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(output =>{

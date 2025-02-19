@@ -3,8 +3,12 @@
     "",
     "\\AspNetWebAPI",
     "\\AspNetWebAPI\\Authentication",
-    "\\AspNetWebAPI\\Controllers"
+    "\\AspNetWebAPI\\Controllers",
+    "\\AspNetWebAPI\\dto",
+    "\\AspNetWebAPI\\HubConfig",
+    "\\AspNetWebAPI\\Models",
+    "\\AspNetWebAPI\\Service"
   ],
-  "SelectedNode": "\\AspNetWebAPI\\appsettings.json",
+  "SelectedNode": "\\AspNetWebAPI\\Controllers\\ForumController.cs",
   "PreviewInSolutionExplorer": false
 }

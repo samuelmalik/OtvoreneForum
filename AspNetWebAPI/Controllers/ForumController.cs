@@ -123,7 +123,7 @@ namespace AspNetCoreAPI.Controllers
             _context.Add(newComment);
             _context.SaveChanges();
 
-            return new CommentInfoDto { Author = user.FirstOrDefault().UserName, Id = newComment.Id, Message = newComment.Message, Code = newComment.Code, Date = newComment.Date.ToString("dd MMMM yyyy HH:mm") };
+            return new CommentInfoDto { Author = user.FirstOrDefault().UserName, Id = newComment.Id, Message = newComment.Message, Code = newComment.Code, Date = newComment.Date.ToString("dd MMMM yyyy HH:mm", new CultureInfo("sk-SK")) };
         }
 
         [HttpGet("getCommentsByPost")]

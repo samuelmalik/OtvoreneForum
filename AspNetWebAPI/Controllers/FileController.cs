@@ -37,6 +37,7 @@ namespace AspNetCoreAPI.Controllers
                     var extension = Path.GetExtension(fullPath);
                     long length = file.Length;
                     string size = length.ToString() + " B";
+
                     // choosing suitable multiplication of bytes
                     if(length > 10 * 1024 * 1024)
                     {

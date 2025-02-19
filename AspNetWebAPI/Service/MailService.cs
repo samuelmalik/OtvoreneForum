@@ -35,7 +35,7 @@ namespace AspNetCoreAPI.Service
                 {
                     try
                     {
-                        mailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;  // Disable SSL cert validation for testing
+                        mailClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
                         mailClient.Connect(_mailSetting.Host, _mailSetting.Port, SecureSocketOptions.StartTls);
 
                         mailClient.Authenticate(_mailSetting.UserName, _mailSetting.Password);

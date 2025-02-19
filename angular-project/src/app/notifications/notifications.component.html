@@ -2,7 +2,7 @@
   @for (notification of notifications; track notification) {
     <div class="notification-card">
       <div class="card-header" (click)="navigateToDetails(notification.type, notification.itemId, notification.postId)">
-        <p class="timestamp">{{ notification.createTime }}</p>
+        <!--<p class="timestamp">{{ notification.createTime }}</p>-->
         <mat-card-title>
           @if(notification.type == "comment") {
             Používateľ {{ notification.authorUsername }} komentoval Váš príspevok:

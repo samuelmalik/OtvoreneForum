@@ -1,9 +1,7 @@
-﻿using System.Configuration;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using AspNetCoreAPI.Authentication.dto;
 using AspNetCoreAPI.Data;
 using AspNetCoreAPI.dto;
-using AspNetCoreAPI.Migrations;
 using AspNetCoreAPI.Models;
 using AspNetCoreAPI.Registration;
 using AspNetCoreAPI.Registration.dto;
@@ -11,7 +9,6 @@ using AspNetCoreAPI.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MimeKit;
 
 
 namespace AspNetCoreAPI.Authentication
@@ -38,20 +35,17 @@ namespace AspNetCoreAPI.Authentication
         }
 
        [HttpPost("register")]
-       public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto userRegistrationDto)
+       public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto? userRegistrationDto)
         {
-        // Validácia požiadavky
         if (userRegistrationDto == null || !ModelState.IsValid)
             return Ok(new { success = false, message = "Invalid registration data." });
 
-        // Overenie CAPTCHA tokenu
         var isCaptchaValid = await _captchaValidationService.ValidateCaptchaToken(userRegistrationDto.CaptchaToken);
         if (!isCaptchaValid)
         {
             return BadRequest(new { success = false, message = "Invalid reCAPTCHA token." });
         }
 
-        // Registrácia používateľa
         var user = new User
         {
             UserName = userRegistrationDto.Email,
@@ -72,9 +66,9 @@ namespace AspNetCoreAPI.Authentication
             {
                 EmailToId = user.Email,
                 EmailToName = user.UserName,
-                EmailSubject = "Confirm Your Email",
-                EmailBody = "<h2>Please confirm your email by clicking on the link below:</h2>" +
-                            $"<a href='{confirmationLink}'>Verify Email</a>"
+                EmailSubject = "Potvrďte svoju e-mailovú adresu",
+                EmailBody = "<h2>Prosím potvrďte svojú e-mailovú adresu kliknutím na link:</h2>" +
+                            $"<a href='{confirmationLink}'>Overiť e-mail</a>"
             };
 
             var mailResult = _mailService.SendMail(mailData);
@@ -82,11 +76,11 @@ namespace AspNetCoreAPI.Authentication
             if (mailResult)
             {
 
-                return Ok(new UserRegistrationResponseDto { IsSuccessfulRegistration = true, Errors = new List<string> { "Registration successful. Please check your email to confirm your account." } });
+                return Ok(new UserRegistrationResponseDto { IsSuccessfulRegistration = true, Errors = new List<string> { "Registrácia prebehla úspešne. Pre prihlásenie prosím overte svoju e-mailovú adresu." } });
             }
             else
             {
-                return StatusCode(500, "User created but email failed to send.");
+                return StatusCode(500, "Používateľ bol vytvorený ale nepodarilo sa poslať e-mail.");
             }
         }
 
@@ -113,13 +107,12 @@ namespace AspNetCoreAPI.Authentication
                 {
                     message = "Email confirmed"
                 });
-            return BadRequest("Something went wrong");
+            return BadRequest("Niečo sa pokazilo");
         }
         [HttpPost("add-claim")]
         public async Task<IActionResult> AddClaim([FromBody] ClaimDto claimDto)
             // role: student/master/admin/root
         {
-            //nahradit pomocou replace claim 
             var user = await _userManager.FindByIdAsync(claimDto.userId);
             var claims = await _userManager.GetClaimsAsync(user);
             var deleted = await _userManager.RemoveClaimsAsync(user, claims);
@@ -170,7 +163,6 @@ namespace AspNetCoreAPI.Authentication
             if (string.IsNullOrEmpty(forgotPasswordDto.CaptchaToken))
                 return BadRequest(new { message = "Prosím potvrďte že nieste bot" });
 
-            // Validácia reCAPTCHA tokenu
             var isCaptchaValid = await _captchaValidationService.ValidateCaptchaToken(forgotPasswordDto.CaptchaToken);
             if (!isCaptchaValid)
             {
@@ -181,7 +173,6 @@ namespace AspNetCoreAPI.Authentication
             if (user == null)
                 return NotFound(new { message = "Používateľ s týmto emailom neexistuje." });
 
-            // Generovanie nového hesla
             var random = new Random();
             var newPassword = $"P{random.Next(100, 999)}a!{random.Next(10, 99)}";
             var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -189,7 +180,6 @@ namespace AspNetCoreAPI.Authentication
 
             if (result.Succeeded)
             {
-                // Príprava a odoslanie emailu
                 var mailData = new MailData
                 {
                     EmailToId = user.Email,

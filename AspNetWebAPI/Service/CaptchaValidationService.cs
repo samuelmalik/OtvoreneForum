@@ -26,8 +26,6 @@ public class CaptchaValidationService
         );
 
         var responseContent = await response.Content.ReadAsStringAsync();
-        Console.WriteLine($"Google API response content: {responseContent}");
-
         var captchaResponse = JsonSerializer.Deserialize<ReCaptchaResponse>(
             responseContent,
             new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
@@ -35,21 +33,15 @@ public class CaptchaValidationService
 
         if (captchaResponse == null)
         {
-            Console.WriteLine("CAPTCHA response is null.");
             return false;
         }
-
-        Console.WriteLine($"CAPTCHA validation result: {captchaResponse.Success}");
-        Console.WriteLine($"Hostname: {captchaResponse.Hostname}");
-        Console.WriteLine($"Error Codes: {(captchaResponse.ErrorCodes != null ? string.Join(", ", captchaResponse.ErrorCodes) : "None")}");
 
         if (!captchaResponse.Success)
         {
-            Console.WriteLine("CAPTCHA validation failed.");
+
             return false;
         }
 
-        Console.WriteLine("CAPTCHA validation succeeded.");
         return true;
     }
 }

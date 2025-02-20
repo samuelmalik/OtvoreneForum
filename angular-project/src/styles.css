@@ -17,6 +17,11 @@ body { margin: 0;   font-family: 'Montserrat', sans-serif; background-color: #f4
   width: 30%
 }
 
+.highlight-text {
+  background-color: yellow;
+
+}
+
 
 @media (max-width: 600px) {
   .custom-dialog-container {

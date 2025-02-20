@@ -83,12 +83,12 @@
                 <div class="creator">
                   <img class="pfp" src="assets/profilovka.jpeg"/>
                   <div class="c-info">
-                    <p>{{post.author}}</p>
+                    <p [innerHTML]="post.author"></p>
                     <p >{{post.date}}</p>
                   </div>
                 </div>
-                <h2 class="title">{{post.title}}</h2>
-                <p class="post-description">{{post.description}}</p>
+                  <h2 class="title" [innerHTML]="post.title"></h2>
+                  <p class="post-description" [innerHTML]="post.description"></p>
                 </div>
 
                 <div class="likes-container" (click)="onLike(post.id)">

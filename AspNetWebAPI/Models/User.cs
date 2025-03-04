@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Reflection.Metadata;
 
 namespace AspNetCoreAPI.Models
 {
@@ -10,5 +11,7 @@ namespace AspNetCoreAPI.Models
         public ICollection<CommentLike> CommentLikes { get; } = new List<CommentLike>();
         public string Status { get; set; }
         public string Role { get; set; }
+        public int? GroupId { get; set; }
+        public Group Group { get; set; } = null!;
     }
 }

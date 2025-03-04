@@ -40,7 +40,7 @@ namespace AspNetCoreAPI.Controllers
                 Description = createPost.Description,
                 Code = createPost.Code,
                 Date = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, this.cestZone),
-        };
+            };
 
             _context.Add(newPost);
             _context.SaveChanges();

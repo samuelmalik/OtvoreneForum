@@ -20,10 +20,11 @@ import {DownloadComponent} from "./app/download/download.component";
 import {UploadComponent} from "./app/upload/upload.component";
 import {EmailVerificationComponent} from "./app/email-verification/email-verification.component";
 import {ForgotPasswordComponent} from "./app/forgot-password/forgot-password.component";
+import {GroupsComponent} from "./app/groups/groups.component";
 
 export function getBaseUrl() {
-  return 'https://samko123.bsite.net/api';
-  //return 'https://localhost:7186/api';
+  //return 'https://samko123.bsite.net/api';
+  return 'https://localhost:7186/api';
 }
 
 export function tokenGetter() {
@@ -62,6 +63,7 @@ bootstrapApplication(AppComponent, {
         {path: 'material', component: DownloadComponent, canActivate: [authGuard]},
         { path: 'email-verification', component: EmailVerificationComponent },
         { path: 'forgot-password', component: ForgotPasswordComponent },
+        { path: 'groups', component: GroupsComponent }
 
 
       ])

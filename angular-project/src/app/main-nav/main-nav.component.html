@@ -11,6 +11,11 @@
       <button mat-button [routerLink]="['/material']">
         <mat-icon>book</mat-icon> Materiály
       </button>
+      @if(this.authService.role() == "admin"){
+        <button mat-button [routerLink]="['/groups']">
+          <mat-icon>groups</mat-icon> Skupiny
+        </button>
+      }
     </div>
 
     <img class="logo" [routerLink]="['/forum']" src="assets/logo.png" alt="Favicon" />
@@ -66,6 +71,9 @@
   </button>
   <button mat-menu-item [routerLink]="['/material']">
     <mat-icon>book</mat-icon> Materiály
+  </button>
+  <button mat-menu-item [routerLink]="['/groups']">
+    <mat-icon>groups</mat-icon> Skupiny
   </button>
 </mat-menu>
 

@@ -1,0 +1,10 @@
+<p>groups works!</p>
+
+@for (group of groupsList; track group.id){
+  <p>{{group.name}}</p>
+  <ul>
+    @for (user of group.users; track user.id){
+      <li>{{user.username}}</li>
+    }
+  </ul>
+}

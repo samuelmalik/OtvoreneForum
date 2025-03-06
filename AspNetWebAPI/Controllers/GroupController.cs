@@ -60,14 +60,38 @@ namespace AspNetCoreAPI.Controllers
         [HttpPut("addUserToGroup")]
         public async Task<IActionResult> AddUserToGroup([FromBody] AddUserToGroupDto info)
         {
+            
+
             var user = _context.Users.Where(u => u.Id == info.UserId).FirstOrDefault();
-            user.GroupId = info.GroupId;
+            if (info.GroupId == -1)
+            {
+                user.GroupId = null;
+            }
+            else
+            {
+                user.GroupId = info.GroupId;
+            }
+            
 
 
             _context.Update(user);
             _context.SaveChanges();
 
             return Ok(user);
+        }
+
+        [HttpGet("unassignedUsers")]
+        public IEnumerable<UserInfoDto> GetUnassignedUsers()
+        {
+            var users = from u in _context.Users.Where(u => u.GroupId == null)
+                        select new UserInfoDto()
+                        {
+                            Id = u.Id,
+                            Username = u.UserName,
+                            Status = u.Status,
+                            Role = u.Role
+                        };
+            return users;
         }
     }
 }

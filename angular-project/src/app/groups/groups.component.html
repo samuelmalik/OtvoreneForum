@@ -1,10 +1,29 @@
-<p>groups works!</p>
-
-@for (group of groupsList; track group.id){
-  <p>{{group.name}}</p>
-  <ul>
-    @for (user of group.users; track user.id){
-      <li>{{user.username}}</li>
+<div cdkDropListGroup class="main-container">
+    <!-- Groups -->
+  <div class="groups-container">
+    @for (group of groupsList; track group) {
+      <div class="cdk-container">
+        <h2>{{group.name}}</h2>
+        <div cdkDropList [cdkDropListData]="group.users" class="cdk-list" (cdkDropListDropped)="drop($event)">
+          @for (item of group.users; track item) {
+            <div class="cdk-box" cdkDrag [cdkDragData]="item">{{item.username}}</div>
+          }
+        </div>
+      </div>
     }
-  </ul>
-}
+  </div>
+
+  <div class="cdk-container ">
+    <h2>Nezaradení používatelia</h2>
+
+    <div
+      cdkDropList
+      [cdkDropListData]="unassignedUsers"
+      class="cdk-list unassigned-usrs-container"
+      (cdkDropListDropped)="drop($event)">
+      @for (user of unassignedUsers; track user) {
+        <div class="cdk-box" cdkDrag>{{user.username}}</div>
+      }
+    </div>
+  </div>
+</div>

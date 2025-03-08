@@ -4,6 +4,7 @@ body{
 
 h2{
   margin: 0;
+  text-align: center;
 }
 
 .cdk-container {
@@ -14,14 +15,15 @@ h2{
 }
 
 .cdk-list {
-  border: solid 1px #ccc;
-  min-height: 60px;
-  background: white;
+  border: 1px solid #ccc;
+  background-color: white;
+  min-height: 45px;
   border-radius: 4px;
   overflow: hidden;
   display: block;
   margin-bottom: 20px;
 }
+
 
 .cdk-box {
   padding: 20px 10px;
@@ -62,16 +64,33 @@ h2{
 }
 
 .main-container{
-  display: flex;
-  flex-direction: row;
-  margin: 25px;
+  display: grid;
+  grid-template-columns: 1fr 350px 1fr;
+}
+
+.groups-list-container{
+  display: grid;
+  grid-template-columns: 1fr 50px 1fr;
+  /* height of navbar - height of .create-group-container - padding of .create-group-container*/
+  grid-template-rows: calc(100vh - 130px - 140px - 20px);
+  margin: 25px 100px;
   justify-content: space-between;
-  max-height: calc(100vh - 130px);
+  grid-row: 2;
+  grid-column: 1/4;
 }
 
 .groups-container{
   display: flex;
   flex-direction: column;
+}
+
+.group-head{
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+
+.cdk2{
+  grid-column: 3;
 }
 
 .unassigned-usrs-container, .groups-container{
@@ -87,4 +106,84 @@ h2{
 /* hiding scrollbars for Chrome, Safari and Opera */
 .unassigned-usrs-container::-webkit-scrollbar, groups-container::-webkit-scrollbar {
   display: none;
+}
+
+.create-button {
+  width: 100%;
+  margin-bottom: 12px;
+
+}
+
+mat-icon {
+  background-color: transparent;
+  color: #d32f2f;
+  font-size: 24px;
+  border-radius: 50%;
+  align-self: end;
+}
+
+mat-icon:hover {
+  background-color: transparent;
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #555;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  resize: none;
+  overflow-y: auto;
+}
+
+textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+.create-group-container{
+  width: 100%;
+  align-self: center;
+  justify-self: center;
+  height: 140px;
+  grid-row: 1;
+  grid-column: 2;
+  margin-top: 20px;
+}
+
+.users-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px;
+  border-left: 4px solid transparent;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  height: 45px;
+}
+
+
+.users-item.master {
+  border-left-color: #3498db;
+  background: rgba(52, 152, 219, 0.1);
+}
+
+.users-item.default {
+  border-left-color: #2ecc71;
+  background: rgba(46, 204, 113, 0.1);
+}
+
+@media (max-width: 850px){
+  .groups-list-container{
+    margin: 25px 10px;
+    grid-template-columns: 1fr 25px 1fr;
+  }
 }

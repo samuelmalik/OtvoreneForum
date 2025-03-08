@@ -23,7 +23,7 @@ namespace AspNetCoreAPI.Controllers
         }
 
         [HttpPost("newGroup")]
-        public CreateGroupDto CreateGroup([FromBody] CreateGroupDto createGroup)
+        public GetGroupsDto CreateGroup([FromBody] CreateGroupDto createGroup)
         {
 
             Group newGroup = new Group()
@@ -34,7 +34,7 @@ namespace AspNetCoreAPI.Controllers
             _context.Add(newGroup);
             _context.SaveChanges();
 
-            return new CreateGroupDto { Name = createGroup.Name };
+            return new GetGroupsDto { Name = createGroup.Name, Id = newGroup.Id, Users = Enumerable.Empty<UserInfoDto>() };
         }
 
         [HttpGet("getGroups")]
@@ -45,7 +45,7 @@ namespace AspNetCoreAPI.Controllers
                          select new GetGroupsDto {
                              Name = g.Name,
                              Id = g.Id,
-                             Users = from u in g.Users
+                             Users = from u in g.Users.OrderBy(c => c.Role).ToArray()
                                      select new UserInfoDto
                                      {
                                          Id = u.Id,
@@ -54,6 +54,7 @@ namespace AspNetCoreAPI.Controllers
                                      }
 
                          };
+
             return groups;
         }
 
@@ -83,7 +84,7 @@ namespace AspNetCoreAPI.Controllers
         [HttpGet("unassignedUsers")]
         public IEnumerable<UserInfoDto> GetUnassignedUsers()
         {
-            var users = from u in _context.Users.Where(u => u.GroupId == null)
+            var users = from u in _context.Users.Where(u => u.GroupId == null && u.Role != "admin" && u.Role != "root").OrderBy(c => c.Role).ToArray()
                         select new UserInfoDto()
                         {
                             Id = u.Id,
@@ -92,6 +93,16 @@ namespace AspNetCoreAPI.Controllers
                             Role = u.Role
                         };
             return users;
+        }
+
+        [HttpDelete("deleteGroup")]
+        public IEnumerable<UserInfoDto> DeleteGroup([FromQuery(Name = "groupId")] int groupId)
+        {
+            var group = _context.Groups.Where(g => g.Id == groupId).FirstOrDefault();
+
+            _context.Groups.Remove(group);
+            _context.SaveChanges();
+            return GetUnassignedUsers();
         }
     }
 }

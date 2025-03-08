@@ -1,29 +1,59 @@
-<div cdkDropListGroup class="main-container">
-    <!-- Groups -->
-  <div class="groups-container">
-    @for (group of groupsList; track group) {
-      <div class="cdk-container">
-        <h2>{{group.name}}</h2>
-        <div cdkDropList [cdkDropListData]="group.users" class="cdk-list" (cdkDropListDropped)="drop($event)">
-          @for (item of group.users; track item) {
-            <div class="cdk-box" cdkDrag [cdkDragData]="item">{{item.username}}</div>
-          }
+<div class="main-container">
+  <!-- Create group section -->
+  <section class="create-group-container">
+    <h2>Vytvoriť skupinu</h2>
+    <form>
+      <div class="mb-3">
+            <textarea type="text" class="form-control" id="name" name="name"
+                      placeholder="Zadajte názov novej skupiny" [(ngModel)]="newGroupName"></textarea>
+      </div>
+      <div class="row">
+        <div class="offset-md-5 col-md-2">
+          <button mat-raised-button class="create-button" color="primary" type="submit" (click)="onCreate()">Vytvoriť </button>
         </div>
       </div>
-    }
-  </div>
+    </form>
+  </section>
 
-  <div class="cdk-container ">
-    <h2>Nezaradení používatelia</h2>
+  <!-- Groups -->
+  <div cdkDropListGroup class="groups-list-container">
+    <div class="groups-container">
+      @for (group of groupsList; track group) {
+        <div class="cdk-container">
+          <div class="group-head">
+            <h2>{{group.name}}</h2>
+              <mat-icon (click)="onDelete(group.id)">delete</mat-icon>
+          </div>
 
-    <div
-      cdkDropList
-      [cdkDropListData]="unassignedUsers"
-      class="cdk-list unassigned-usrs-container"
-      (cdkDropListDropped)="drop($event)">
-      @for (user of unassignedUsers; track user) {
-        <div class="cdk-box" cdkDrag>{{user.username}}</div>
+          <div cdkDropList [cdkDropListData]="group.users" class="cdk-list" (cdkDropListDropped)="drop($event)">
+            @for (user of group.users; track user) {
+              @if(user.role == "master"){
+                <div class="cdk-box users-item master" cdkDrag>{{user.username}}</div>
+              }@else{
+                <div class="cdk-box users-item default" cdkDrag>{{user.username}}</div>
+              }
+            }
+          </div>
+        </div>
       }
+    </div>
+
+    <div class="cdk-container cdk2">
+      <h2>Nezaradení používatelia</h2>
+
+      <div
+        cdkDropList
+        [cdkDropListData]="unassignedUsers"
+        class="cdk-list unassigned-usrs-container"
+        (cdkDropListDropped)="drop($event)">
+        @for (user of unassignedUsers; track user) {
+          @if(user.role == "master"){
+            <div class="cdk-box users-item master" cdkDrag>{{user.username}}</div>
+          }@else{
+            <div class="cdk-box users-item default" cdkDrag>{{user.username}}</div>
+          }
+        }
+      </div>
     </div>
   </div>
 </div>

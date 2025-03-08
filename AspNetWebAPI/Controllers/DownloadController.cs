@@ -22,7 +22,18 @@ namespace AspNetCoreAPI.Controllers
         {
             try
             {
-                var files = await _context.Files.ToListAsync();
+                var files = from f in _context.Files select new FileInfoDto
+                {
+                    Id = f.Id,
+                    Author = _context.Users.Where(u => u.Id == f.AuthorId).FirstOrDefault().UserName,
+                    Path = f.Path,
+                    Name = f.Name,
+                    Extension = f.Extension,
+                    Description = f.Description,
+                    Size = f.Size,
+                    AuthorId = f.AuthorId,
+                    Group = _context.Users.Where(u => u.Id == f.AuthorId).Include(u => u.Group).FirstOrDefault().Group.Name
+                };
 
                 return Ok(files);
             }

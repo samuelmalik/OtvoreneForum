@@ -36,7 +36,11 @@
             <mat-expansion-panel-header >
               <div class="header-content">
               <span class="material-icons">description</span>
-              <p>{{ file.name }}</p>
+                @if(file.group!=null){
+                  <p>{{ file.name }} ({{file.group}})</p>
+                } @else{
+                  <p>{{ file.name }}</p>
+                }
               </div>
             </mat-expansion-panel-header>
             <div class="file-container">
@@ -55,7 +59,11 @@
                 </div>
                 <div class="file-property">
                   <h4>Pridal:</h4>
-                  <p>{{file.author}}</p>
+                  @if(file.group!=null){
+                    <p>{{ file.author }} ({{file.group}})</p>
+                  } @else{
+                    <p>{{ file.author }}</p>
+                  }
                 </div>
               </div>
               <div class="file-actions-container">

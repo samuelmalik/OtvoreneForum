@@ -175,6 +175,7 @@ export interface File {
   description: string,
   size: string
   authorId: string,
+  group: string
 }
 
 export interface FileToCreate {

@@ -54,7 +54,7 @@ namespace AspNetCoreAPI.Controllers
         {
 
 
-            var posts = from p in _context.Post.Include(p => p.User)
+            var posts = from p in _context.Post.Include(p => p.User).Include(p => p.User.Group)
                         select new PostInfoDto()
                         {
                             Author = p.User.UserName,
@@ -69,7 +69,8 @@ namespace AspNetCoreAPI.Controllers
                             IsLiked = _context.PostLikes
                                .Include(l => l.User)
                                .Include(l => l.Post)
-                               .Where(l => l.User.Id == currentUserId && l.PostId == p.Id).Count() > 0
+                               .Where(l => l.User.Id == currentUserId && l.PostId == p.Id).Count() > 0,
+                            Group = p.User.Group.Name
                         };
             return posts;   
         }

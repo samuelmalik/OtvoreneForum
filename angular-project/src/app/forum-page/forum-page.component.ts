@@ -88,6 +88,8 @@ export class ForumPageComponent implements OnInit {
       console.log(data);
       this.updateUsersList(data);
     });
+
+
   }
 
   toggleSideNav() {

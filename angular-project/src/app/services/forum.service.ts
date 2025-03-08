@@ -114,6 +114,7 @@ export class ForumService {
   date: string;
   likes: number;
   isLiked: boolean;
+  group: string
 }
 
 export interface PostDetailsDtoInterface {

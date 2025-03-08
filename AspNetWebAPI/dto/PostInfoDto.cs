@@ -9,5 +9,6 @@
         public string Date { get; set; }
         public int Likes { get; set; }
         public bool IsLiked { get; set; }
+        public string Group {  get; set; }
     }
 }

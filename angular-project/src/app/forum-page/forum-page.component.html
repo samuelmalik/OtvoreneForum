@@ -83,7 +83,11 @@
                 <div class="creator">
                   <img class="pfp" src="assets/profilovka.jpeg"/>
                   <div class="c-info">
-                    <p [innerHTML]="post.author"></p>
+                    @if(post.group!=null){
+                      <p [innerHTML]="post.author + ' (' + post.group +')'"></p>
+                    } @else{
+                      <p [innerHTML]="post.author"></p>
+                    }
                     <p >{{post.date}}</p>
                   </div>
                 </div>

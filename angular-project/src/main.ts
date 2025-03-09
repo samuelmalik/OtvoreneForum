@@ -23,8 +23,8 @@ import {ForgotPasswordComponent} from "./app/forgot-password/forgot-password.com
 import {GroupsComponent} from "./app/groups/groups.component";
 
 export function getBaseUrl() {
-  //return 'https://samko123.bsite.net/api';
-  return 'https://localhost:7186/api';
+  return 'https://samko123.bsite.net/api';
+  //return 'https://localhost:7186/api';
 }
 
 export function tokenGetter() {

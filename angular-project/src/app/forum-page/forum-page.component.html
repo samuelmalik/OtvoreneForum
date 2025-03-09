@@ -47,6 +47,14 @@
 
       <div class="div3">
         <div class="order-container">
+          <select [(ngModel)]="selectedGroup" (change)="valueSelected()">
+            <option (click)="resetSelect" value="">Zobraziť všetky skupiny</option>
+
+            @for(item of groups; track item){
+              <option>{{ item }}</option>
+            }
+
+          </select>
           <p class="xd">Zoradiť podľa: {{ orderBy }}</p>
           <button class="menubtn" mat-button [matMenuTriggerFor]="menu">
             <i class="bi bi-chevron-down"></i>
@@ -61,6 +69,7 @@
               Lajky <i class="bi bi-arrow-up"></i>
             </button>
           </mat-menu>
+
         </div>
 
         <button class="sidenav-btn" mat-button (click)="toggleSideNav()">

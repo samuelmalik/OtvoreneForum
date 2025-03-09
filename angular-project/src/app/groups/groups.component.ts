@@ -2,6 +2,7 @@ import {Component, Inject, inject, OnInit} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {CdkDragDrop,
   CdkDrag,
+  CdkDragHandle,
   CdkDropList,
   CdkDropListGroup,
   moveItemInArray,
@@ -10,12 +11,13 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {AddCommentLikeInterface} from "../services/forum.service";
 import {MatIcon} from "@angular/material/icon";
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 
 @Component({
   selector: 'app-groups',
   standalone: true,
-  imports: [CdkDropListGroup, CdkDropList, CdkDrag, FormsModule, MatButton, ReactiveFormsModule, MatIcon, MatIconButton],
+  imports: [CdkDropListGroup, CdkDropList, CdkDrag,CdkDragHandle, FormsModule, MatButton, ReactiveFormsModule, MatIcon, MatIconButton],
   templateUrl: './groups.component.html',
   styleUrl: './groups.component.css'
 })
@@ -27,7 +29,19 @@ export class GroupsComponent implements OnInit{
   // po vymazaní skupiny cdkDrag neprepíše indexovanie, preto ich ťaháme znova z databáze a indexy shiftujeme
   public groupIndexShift = 0
 
-  constructor(@Inject('BASE_URL') private baseUrl: string) {}
+  constructor(@Inject('BASE_URL') private baseUrl: string, private deviceService: DeviceDetectorService) {}
+
+  get isMobile(): boolean {
+    return this.deviceService.isMobile();
+  }
+
+  get isTablet(): boolean {
+    return this.deviceService.isTablet();
+  }
+
+  get isDesktop(): boolean {
+    return this.deviceService.isDesktop();
+  }
 
   ngOnInit(){
     this.http.get<GetGroupsDtoInterface[]>(this.baseUrl + '/group/getGroups').subscribe(

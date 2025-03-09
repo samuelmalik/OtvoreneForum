@@ -18,6 +18,7 @@ import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/mater
 import { BreakpointObserver} from '@angular/cdk/layout';
 import {MatIcon} from "@angular/material/icon";
 import {NgClass} from "@angular/common";
+import {MatSelectModule} from "@angular/material/select";
 
 @Component({
   selector: 'app-forum-page',
@@ -35,7 +36,8 @@ import {NgClass} from "@angular/common";
     MatSidenav,
     MatSidenavContent,
     MatIcon,
-    NgClass
+    NgClass,
+    MatSelectModule
   ],
   templateUrl: './forum-page.component.html',
   styleUrl: './forum-page.component.css'
@@ -55,11 +57,14 @@ export class ForumPageComponent implements OnInit {
 
   private currentUserId: string;
   public postList: PostInfoDtoInterface[] = [];
+  public unfilteredPostList: PostInfoDtoInterface[] = [];
   public userList: UserDtoInterface[] = [];
   public showPostsLoader = true;
   public showUsersLoader = true;
   public searchText: string;
   public orderBy: string;
+  public groups: string[] = ["IV.AI", "Osada"]
+  public selectedGroup: string;
   role = this.authService.role;
 
   public sidenavMode: 'over' | 'side' = 'side';
@@ -74,6 +79,7 @@ export class ForumPageComponent implements OnInit {
 
     this.forumService.getAllPosts(this.currentUserId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
       this.postList = data;
+      this.unfilteredPostList = data;
       this.orderBy = "Od najnovšieho"
       this.postList.sort((a, b) => b.id - a.id);
       this.showPostsLoader = false;
@@ -157,5 +163,21 @@ export class ForumPageComponent implements OnInit {
   updateUsersList(id: string){
     this.userList = this.userList.filter(item => item.id != id)
   }
+
+  public valueSelected() {
+    if(this.selectedGroup == ""){
+      this.resetSelect()
+    } else{
+      this.postList = this.unfilteredPostList.filter(
+        item => item.group === this.selectedGroup
+      );
+    }
+
+  }
+
+  resetSelect(){
+    this.postList = this.unfilteredPostList
+  }
+
 }
 

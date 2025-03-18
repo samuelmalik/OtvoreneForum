@@ -72,9 +72,11 @@
   <button mat-menu-item [routerLink]="['/material']">
     <mat-icon>book</mat-icon> Materiály
   </button>
-  <button mat-menu-item [routerLink]="['/groups']">
-    <mat-icon>groups</mat-icon> Skupiny
-  </button>
+  @if(this.authService.role() == "admin"){
+    <button mat-menu-item [routerLink]="['/groups']">
+      <mat-icon>groups</mat-icon> Skupiny
+    </button>
+  }
 </mat-menu>
 
 <mat-menu #rightMenu="matMenu">

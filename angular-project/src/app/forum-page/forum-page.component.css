@@ -83,6 +83,27 @@ body {
   white-space: nowrap;
 }
 
+.filter-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.filter-container p{
+  margin: 0 0 0 8px;
+}
+
+mat-checkbox{
+  margin-right: 12px;
+}
+
+.data-arrangement-container{
+  display: flex;
+  flex-direction: row;
+  padding-left: 15px;
+}
+
+
 .menubtn {
   padding: 0;
   display: flex;
@@ -304,8 +325,13 @@ margin-right: 10px;
 
   .order-container {
     align-items: center;
-    flex-direction: row;
     padding: 0;
+  }
+
+  .data-arrangement-container{
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
   }
 
   .div3 {

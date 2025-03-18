@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, DestroyRef, Inject, inject, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {ForumService, UserDtoInterface, PostInfoDtoInterface, AddPostLikeInterface} from "../services/forum.service";
@@ -19,6 +19,10 @@ import { BreakpointObserver} from '@angular/cdk/layout';
 import {MatIcon} from "@angular/material/icon";
 import {NgClass} from "@angular/common";
 import {MatSelectModule} from "@angular/material/select";
+import {GetGroupsDtoInterface, UserInfoDtoInterface} from "../groups/groups.component";
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {DeviceDetectorService} from "ngx-device-detector";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 @Component({
   selector: 'app-forum-page',
@@ -37,12 +41,14 @@ import {MatSelectModule} from "@angular/material/select";
     MatSidenavContent,
     MatIcon,
     NgClass,
-    MatSelectModule
+    MatSelectModule,
+    MatCheckboxModule
   ],
   templateUrl: './forum-page.component.html',
   styleUrl: './forum-page.component.css'
 })
 export class ForumPageComponent implements OnInit {
+  private http = inject(HttpClient);
   private destroyRef = inject(DestroyRef);
   private forumService: ForumService = inject(ForumService);
   private authService: AuthenticationService = inject(AuthenticationService);
@@ -63,12 +69,15 @@ export class ForumPageComponent implements OnInit {
   public showUsersLoader = true;
   public searchText: string;
   public orderBy: string;
-  public groups: string[] = ["IV.AI", "Osada"]
+  public groups: GetGroupsDtoInterface[];
+  public selectedGroups: string[] = []
   public selectedGroup: string;
   role = this.authService.role;
 
   public sidenavMode: 'over' | 'side' = 'side';
   public isMobile = false;
+
+  constructor(@Inject('BASE_URL') private baseUrl: string) {}
 
   ngOnInit() {
     this.currentUserId = this.authService.getCurrentId();
@@ -84,6 +93,10 @@ export class ForumPageComponent implements OnInit {
       this.postList.sort((a, b) => b.id - a.id);
       this.showPostsLoader = false;
     });
+
+    this.http.get<GetGroupsDtoInterface[]>(this.baseUrl + '/group/getGroups').subscribe(
+      data => this.groups = data
+    );
 
     this.subscription = this.sharedService.data$.subscribe(data => {
       console.log(data);
@@ -165,18 +178,32 @@ export class ForumPageComponent implements OnInit {
   }
 
   public valueSelected() {
-    if(this.selectedGroup == ""){
+    if(this.selectedGroups.length ==0){
       this.resetSelect()
     } else{
       this.postList = this.unfilteredPostList.filter(
-        item => item.group === this.selectedGroup
+        item => this.selectedGroups.includes(item.group)
       );
     }
 
   }
-
   resetSelect(){
     this.postList = this.unfilteredPostList
+  }
+
+  boxChanged(checked: boolean, group){
+    if(checked){
+      this.selectedGroups.push(group)
+      console.log(this.selectedGroups)
+    } else{
+      console.log("vymazavam")
+
+      console.log(group)
+      this.selectedGroups.splice(this.selectedGroups.indexOf(group), 1)
+      console.log(this.selectedGroups)
+    }
+
+    this.valueSelected()
   }
 
 }

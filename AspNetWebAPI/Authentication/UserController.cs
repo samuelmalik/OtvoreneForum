@@ -51,7 +51,8 @@ namespace AspNetCoreAPI.Authentication
             UserName = userRegistrationDto.Email,
             Email = userRegistrationDto.Email,
             Status = "",
-            Role = "student"
+            Role = "student",
+            IsApproved = false
         };
 
         var result = await _userManager.CreateAsync(user, userRegistrationDto.Password);
@@ -108,6 +109,22 @@ namespace AspNetCoreAPI.Authentication
                     message = "Email confirmed"
                 });
             return BadRequest("Niečo sa pokazilo");
+        }
+        [HttpGet("UnapprovedUsers")]
+        public async Task<IActionResult> GetUnapprovedUsers()
+        {
+            var users = await _context.Users
+                .Where(u => !u.IsApproved)
+                .Select(u => new
+                {
+                    u.Id,
+                    u.Email,
+                    u.UserName,
+                    u.IsApproved
+                })
+                .ToListAsync();
+
+            return Ok(users);
         }
         [HttpPost("add-claim")]
         public async Task<IActionResult> AddClaim([FromBody] ClaimDto claimDto)

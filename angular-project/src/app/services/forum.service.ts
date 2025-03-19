@@ -133,6 +133,7 @@ export interface UserDtoInterface {
   username: string;
   status: string;
   role: string;
+  isApproved: boolean;
 }
 
 export interface CreateCommentInterface{

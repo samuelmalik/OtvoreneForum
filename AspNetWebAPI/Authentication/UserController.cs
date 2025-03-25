@@ -115,12 +115,11 @@ namespace AspNetCoreAPI.Authentication
         {
             var users = await _context.Users
                 .Where(u => !u.IsApproved)
-                .Select(u => new
+                .Select(u => new UserInfoDto()
                 {
-                    u.Id,
-                    u.Email,
-                    u.UserName,
-                    u.IsApproved
+                    Id = u.Id,
+                    Username = u.UserName,
+                    
                 })
                 .ToListAsync();
 

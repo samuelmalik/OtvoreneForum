@@ -20,6 +20,10 @@ export class ForumService {
     return this.httpClient.get<PostInfoDtoInterface[]>(`${this.baseUrl}/forum/getAllPosts`, {params: params})
   }
 
+  getUnapprovedUsers(){
+    return this.httpClient.get<UserDtoInterface[]>(`${this.baseUrl}/user/UnapprovedUsers`);
+  }
+
   getPostDetails(postId: number, userId: string){
     let params = new HttpParams();
     params = params.append('postId', postId);
@@ -70,6 +74,8 @@ export class ForumService {
     params = params.append('currentUserId', userId);
     return this.httpClient.get<boolean>(`${this.baseUrl}/forum/hasNotifications`, {params: params})
   }
+
+
 
   makeCommentSeen(data :any) {
     return this.httpClient.put(`${this.baseUrl}/forum/makeCommentSeen`, data)

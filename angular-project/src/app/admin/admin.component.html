@@ -1,0 +1,15 @@
+<h2>Nepotvrdení používatelia</h2>
+<ul *ngIf="unapprovedUsers.length > 0; else noUsers">
+  @for (  user of unapprovedUsers; track user) {
+
+    <li >
+
+      {{ user.username }}
+    </li>
+  }
+
+</ul>
+
+<ng-template #noUsers>
+  <p>Žiadni nepotvrdení používatelia.</p>
+</ng-template>

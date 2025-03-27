@@ -15,6 +15,9 @@
         <button mat-button [routerLink]="['/groups']">
           <mat-icon>groups</mat-icon> Skupiny
         </button>
+        <button mat-button [routerLink]="['/admin']">
+          <mat-icon>security</mat-icon> Administrácia
+        </button>
       }
     </div>
 
@@ -75,6 +78,9 @@
   @if(this.authService.role() == "admin"){
     <button mat-menu-item [routerLink]="['/groups']">
       <mat-icon>groups</mat-icon> Skupiny
+    </button>
+    <button mat-button [routerLink]="['/admin']">
+      <mat-icon>security</mat-icon> Administrácia
     </button>
   }
 </mat-menu>

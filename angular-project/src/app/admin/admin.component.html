@@ -1,15 +1,19 @@
-<h2>Nepotvrdení používatelia</h2>
-<ul *ngIf="unapprovedUsers.length > 0; else noUsers">
-  @for (  user of unapprovedUsers; track user) {
-
-    <li >
-
-      {{ user.username }}
-    </li>
-  }
-
-</ul>
-
-<ng-template #noUsers>
-  <p>Žiadni nepotvrdení používatelia.</p>
-</ng-template>
+<div class="container">
+  <div class="box">
+    <h2>Potvrdiť registrácie</h2>
+    <div *ngIf="unapprovedUsers.length > 0; else noUsers">
+      @for (user of unapprovedUsers; track user) {
+        <div class="user-item">
+          <span>{{ user.username }}</span>
+          <div class="user-actions">
+            <button class="approve-btn">Potvrdiť</button>
+            <button  class="reject-btn" (click)="deleteUser(user.id)">Vymazať</button>
+          </div>
+        </div>
+      }
+    </div>
+    <ng-template #noUsers>
+      <p>Žiadni nepotvrdení používatelia.</p>
+    </ng-template>
+  </div>
+</div>

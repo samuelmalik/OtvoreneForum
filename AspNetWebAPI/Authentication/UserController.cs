@@ -161,6 +161,8 @@ namespace AspNetCoreAPI.Authentication
             var checkConfirmed = await _userManager.IsEmailConfirmedAsync(user);
             if (!checkConfirmed)
                 return Ok(new UserLoginResponseDto { ErrorMessage = "Váš email nieje overený", IsAuthSuccessful = false });
+            if (!user.IsApproved)
+                return Ok(new UserLoginResponseDto { ErrorMessage = "Váš účet ešte nebol schválený administrátorom", IsAuthSuccessful = false });
 
             var signingCredentials = _jwtHandler.GetSigningCredentials();
             var claims = _jwtHandler.GetClaims(user);

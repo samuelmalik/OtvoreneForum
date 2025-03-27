@@ -32,6 +32,7 @@ export class AuthenticationService {
   logout() {
     localStorage.removeItem("token");
     this.authenticated.set(false);
+    this.role.set(undefined);
   }
 
   changePassword(data: ChangePasswordInterface){

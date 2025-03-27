@@ -13,7 +13,7 @@ import {PostDetailsComponent} from "./app/post-details/post-details.component";
 import {NotificationsComponent} from "./app/notifications/notifications.component";
 import { JwtModule } from '@auth0/angular-jwt';
 import { errorHandlerInterceptor } from './app/api-authorization/error-handler.interceptor';
-import { authGuard } from './app/api-authorization/auth.guard';
+import {adminGuard, authGuard} from './app/api-authorization/auth.guard';
 import { jwtInterceptor } from './app/api-authorization/jwt.interceptor';
 import {provideHighlightOptions} from "ngx-highlightjs";
 import {DownloadComponent} from "./app/download/download.component";
@@ -64,11 +64,10 @@ bootstrapApplication(AppComponent, {
         {path: 'material', component: DownloadComponent, canActivate: [authGuard]},
         { path: 'email-verification', component: EmailVerificationComponent },
         { path: 'forgot-password', component: ForgotPasswordComponent },
-        { path: 'groups', component: GroupsComponent },
-        { path: 'admin', component: AdminComponent }
+        { path: 'groups', component: GroupsComponent, canActivate: [adminGuard] },
+        { path: 'admin', component: AdminComponent, canActivate: [adminGuard] }
 
 
       ])
     ]
-})
-  .catch(err => console.error(err));
+}).catch(err => console.error(err));

@@ -25,6 +25,14 @@ export class AdminComponent {
     });
   }
 
+  approveUser(id: string) {
+    this.forumService.approveUser(id).subscribe(() => {
+      this.unapprovedUsers = this.unapprovedUsers.filter(user => user.id !== id);
+    }, error => {
+      this.unapprovedUsers = this.unapprovedUsers.filter(user => user.id !== id);
+    });
+  }
+
   deleteUser(id: string): void {
     this.authService.deleteUser(id).subscribe(() => {
       this.unapprovedUsers = this.unapprovedUsers.filter(user => user.id !== id);

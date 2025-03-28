@@ -24,6 +24,11 @@ export class ForumService {
     return this.httpClient.get<UserDtoInterface[]>(`${this.baseUrl}/user/UnapprovedUsers`);
   }
 
+  approveUser(userId: string) {
+    let params = new HttpParams().set('userId', userId);
+    return this.httpClient.put(`${this.baseUrl}/user/approveUser`, {}, { params });
+  }
+
   getPostDetails(postId: number, userId: string){
     let params = new HttpParams();
     params = params.append('postId', postId);

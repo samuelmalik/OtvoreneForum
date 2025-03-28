@@ -125,6 +125,18 @@ namespace AspNetCoreAPI.Authentication
 
             return Ok(users);
         }
+        [HttpPut("ApproveUser")]
+        public async Task<IActionResult> ApproveUser([FromQuery] string userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                return NotFound("Používateľ neexistuje.");
+
+            user.IsApproved = true;
+            await _context.SaveChangesAsync();
+
+            return Ok("Používateľ bol schválený.");
+        }
         [HttpPost("add-claim")]
         public async Task<IActionResult> AddClaim([FromBody] ClaimDto claimDto)
             // role: student/master/admin/root
@@ -259,7 +271,8 @@ namespace AspNetCoreAPI.Authentication
                             Id = u.Id,
                             Username = u.UserName,
                             Status = u.Status,
-                            Role = u.Role
+                            Role = u.Role,
+                            IsApproved = u.IsApproved
 
                         };
             return users;

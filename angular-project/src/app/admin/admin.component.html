@@ -6,7 +6,7 @@
         <div class="user-item">
           <span>{{ user.username }}</span>
           <div class="user-actions">
-            <button class="approve-btn">Potvrdiť</button>
+            <button class="approve-btn" (click)="approveUser(user.id)">Potvrdiť</button>
             <button  class="reject-btn" (click)="deleteUser(user.id)">Vymazať</button>
           </div>
         </div>

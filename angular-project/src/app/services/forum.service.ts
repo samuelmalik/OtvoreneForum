@@ -142,6 +142,7 @@ export interface PostDetailsDtoInterface {
 export interface UserDtoInterface {
   id: string;
   username: string;
+  email:  string;
   status: string;
   role: string;
   isApproved: boolean;

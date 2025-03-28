@@ -48,7 +48,7 @@ namespace AspNetCoreAPI.Authentication
 
         var user = new User
         {
-            UserName = userRegistrationDto.Email,
+            UserName = userRegistrationDto.UserName,
             Email = userRegistrationDto.Email,
             Status = "",
             Role = "student",
@@ -119,6 +119,7 @@ namespace AspNetCoreAPI.Authentication
                 {
                     Id = u.Id,
                     Username = u.UserName,
+                    Email = u.Email,
                     
                 })
                 .ToListAsync();
@@ -181,6 +182,7 @@ namespace AspNetCoreAPI.Authentication
             claims.AddRange(await _userManager.GetClaimsAsync(user));
             var tokenOptions = _jwtHandler.GenerateTokenOptions(signingCredentials, claims);
             var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            
 
             return Ok(new UserLoginResponseDto { IsAuthSuccessful = true, Token = token, Username = user.UserName, Id = user.Id });
         }

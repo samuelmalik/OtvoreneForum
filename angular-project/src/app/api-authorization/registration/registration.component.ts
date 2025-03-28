@@ -47,27 +47,28 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.registerForm = new FormGroup({
+      username: new FormControl('',  [Validators.required, Validators.minLength(6), ]),
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', passwordStrengthValidator()),
       confirmPassword: new FormControl('', equalValuesValidator('password')),
     });
 
     this.errorMessage = "";
-  }
+    }
 
-  register() {
-    this.errorMessage = ""
-    if (this.registerForm.valid && this.captcha) {
-      this.showLoader = true;
+    register() {
+      this.errorMessage = ""
+      if (this.registerForm.valid && this.captcha) {
+        this.showLoader = true;
 
 
-      const registrationData: UserRegistration = {
-        ...this.registerForm.value,
-        captchaToken: this.captcha,
-      };
+        const registrationData: UserRegistration = {
+          ...this.registerForm.value,
+          captchaToken: this.captcha,
+        };
 
-      this.captcha ="";
-      this.authService.registerUser(registrationData).subscribe(
+        this.captcha ="";
+        this.authService.registerUser(registrationData).subscribe(
         data =>{
           console.log(data)
           if(data.isSuccessfulRegistration){

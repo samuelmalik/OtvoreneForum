@@ -46,3 +46,8 @@
   color: white;
 }
 
+.user-info {
+  display: flex;
+  flex-direction: column;
+
+}

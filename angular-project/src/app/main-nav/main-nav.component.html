@@ -16,7 +16,7 @@
           <mat-icon>groups</mat-icon> Skupiny
         </button>
         <button mat-button [routerLink]="['/admin']">
-          <mat-icon>security</mat-icon> Administrácia
+          <mat-icon>security</mat-icon> Schválenia
         </button>
       }
     </div>
@@ -79,8 +79,8 @@
     <button mat-menu-item [routerLink]="['/groups']">
       <mat-icon>groups</mat-icon> Skupiny
     </button>
-    <button mat-button [routerLink]="['/admin']">
-      <mat-icon>security</mat-icon> Administrácia
+    <button mat-menu-item [routerLink]="['/admin']">
+      <mat-icon>security</mat-icon> Potvrdenia
     </button>
   }
 </mat-menu>

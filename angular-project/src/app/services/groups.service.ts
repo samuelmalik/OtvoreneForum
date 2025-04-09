@@ -11,6 +11,12 @@ export class GroupsService {
 
   constructor(@Inject('BASE_URL') private baseUrl: string) { }
 
+  getCurrentUserGroupId(id){
+    let params = new HttpParams();
+    params = params.append('userId', id);
+    return this.httpClient.get<number>(this.baseUrl + '/group/getCurrentUserGroupId', {params: params})
+  }
+
   getAllGroups(){
     return this.httpClient.get<GetGroupsDtoInterface[]>(this.baseUrl + '/group/getGroups')
   }
@@ -45,6 +51,7 @@ export interface GetGroupsDtoInterface{
   id: number
   name: string
   users: UserInfoDtoInterface[]
+  hasPosts: boolean
 }
 
 export interface AddUserToGroupDtoInterface{

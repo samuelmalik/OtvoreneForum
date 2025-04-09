@@ -9,6 +9,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatIcon} from "@angular/material/icon";
+import {GroupsService, GetGroupsDtoInterface} from "../services/groups.service";
 import {concatAll} from "rxjs";
 import {
   MAT_DIALOG_DATA,
@@ -20,6 +21,7 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import {DeleteDialogComponent, DialogData} from "../delete-dialog/delete-dialog.component";
+import {group} from "@angular/animations";
 
 
 @Component({
@@ -40,6 +42,7 @@ import {DeleteDialogComponent, DialogData} from "../delete-dialog/delete-dialog.
 })
 export class DownloadComponent {
   private authService: AuthenticationService = inject(AuthenticationService);
+  private groupService: GroupsService = inject(GroupsService);
   readonly dialog = inject(MatDialog);
 
   @ViewChild(UploadComponent) uploadComponent;
@@ -56,6 +59,9 @@ export class DownloadComponent {
   loggedRole: string;
   currentUserId: string;
 
+  currentUserGroupId
+  groups: GetGroupsDtoInterface[] = [];
+
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private fileService: FileService){}
 
   message: string;
@@ -68,6 +74,14 @@ export class DownloadComponent {
     this.loggedRole = this.authService.getRole();
     this.currentUserId = this.authService.getCurrentId();
     this.fileChosen = false
+
+    this.groupService.getCurrentUserGroupId(this.currentUserId).subscribe(data=>{
+      this.currentUserGroupId = data;
+    })
+
+    this.groupService.getAllGroups().subscribe(data =>{
+      this.groups = data
+    })
   }
 
   onCreate = () => {

@@ -179,12 +179,10 @@ textarea:focus {
 
 
 .users-item.master {
-  border-left-color: #3498db;
   background: rgba(52, 152, 219, 0.1);
 }
 
 .users-item.default {
-  border-left-color: #2ecc71;
   background: rgba(46, 204, 113, 0.1);
 }
 

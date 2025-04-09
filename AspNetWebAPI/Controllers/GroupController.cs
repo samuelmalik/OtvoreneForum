@@ -37,6 +37,20 @@ namespace AspNetCoreAPI.Controllers
             return new GetGroupsDto { Name = createGroup.Name, Id = newGroup.Id, Users = Enumerable.Empty<UserInfoDto>() };
         }
 
+        [HttpGet("getCurrentUserGroupId")]
+        public int GetCurrentUserGroupId([FromQuery(Name = "userId")] string userId)
+        {
+
+            int? groupId = _context.Users.Where(u => u.Id == userId).FirstOrDefault().GroupId;
+                          
+
+            if(groupId == null)
+            {
+                return -1;
+            }
+            return (int)groupId;
+        }
+
         [HttpGet("getGroups")]
         public IEnumerable <GetGroupsDto> GetGroups()
         {

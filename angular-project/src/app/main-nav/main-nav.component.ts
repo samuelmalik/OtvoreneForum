@@ -58,7 +58,7 @@ export class MainNavComponent implements OnInit{
 
   constructor(private snackBar: MatSnackBar, private sharedService:SharedService, private signalRService: SignalrService, ) {
     // real time notifications
-    this.clickEventsubscription=    this.sharedService.getClickEvent().subscribe(()=>{
+    this.clickEventsubscription =    this.sharedService.getClickEvent().subscribe(()=>{
       this.checkForNotifications();
     })
 
@@ -77,6 +77,7 @@ export class MainNavComponent implements OnInit{
     //real time notifications subscribe method
     this.signalRService.currentMessage.subscribe(data => {
         this.checkForNotifications();
+        console.log("zistujem ci ma notifikacie")
     });
   }
 

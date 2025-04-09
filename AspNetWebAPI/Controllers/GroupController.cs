@@ -100,6 +100,13 @@ namespace AspNetCoreAPI.Controllers
         {
             var group = _context.Groups.Where(g => g.Id == groupId).FirstOrDefault();
 
+            var users = _context.Users.Where(u => u.GroupId == groupId);
+
+            foreach (var user in users)
+            {
+                user.GroupId = null;
+            }
+
             _context.Groups.Remove(group);
             _context.SaveChanges();
             return GetUnassignedUsers();

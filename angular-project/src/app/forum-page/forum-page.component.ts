@@ -19,7 +19,7 @@ import { BreakpointObserver} from '@angular/cdk/layout';
 import {MatIcon} from "@angular/material/icon";
 import {NgClass} from "@angular/common";
 import {MatSelectModule} from "@angular/material/select";
-import {GetGroupsDtoInterface, UserInfoDtoInterface} from "../groups/groups.component";
+import {GetGroupsDtoInterface, UserInfoDtoInterface} from "../services/groups.service";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {MatCheckboxModule} from "@angular/material/checkbox";

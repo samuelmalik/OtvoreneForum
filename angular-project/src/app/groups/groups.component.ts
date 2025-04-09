@@ -1,5 +1,4 @@
 import {Component, Inject, inject, OnInit} from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
 import {CdkDragDrop,
   CdkDrag,
   CdkDragHandle,
@@ -9,9 +8,9 @@ import {CdkDragDrop,
   transferArrayItem,} from '@angular/cdk/drag-drop';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButton, MatIconButton} from "@angular/material/button";
-import {AddCommentLikeInterface} from "../services/forum.service";
 import {MatIcon} from "@angular/material/icon";
 import { DeviceDetectorService } from 'ngx-device-detector';
+import {GroupsService, GetGroupsDtoInterface, UserInfoDtoInterface, CreateGroupDtoInterface, AddUserToGroupDtoInterface} from "../services/groups.service";
 
 
 @Component({
@@ -22,7 +21,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
   styleUrl: './groups.component.css'
 })
 export class GroupsComponent implements OnInit{
-  private http = inject(HttpClient);
+  private groupsService: GroupsService = inject(GroupsService);
   public groupsList :GetGroupsDtoInterface[]
   public unassignedUsers :UserInfoDtoInterface[]
   public newGroupName: string
@@ -44,11 +43,11 @@ export class GroupsComponent implements OnInit{
   }
 
   ngOnInit(){
-    this.http.get<GetGroupsDtoInterface[]>(this.baseUrl + '/group/getGroups').subscribe(
+    this.groupsService.getAllGroups().subscribe(
       data => this.groupsList = data
     );
 
-    this.http.get<UserInfoDtoInterface[]>(this.baseUrl + '/group/unassignedUsers').subscribe(
+    this.groupsService.getUnassignedUsers().subscribe(
       data => this.unassignedUsers = data
     )
   }
@@ -57,7 +56,7 @@ export class GroupsComponent implements OnInit{
     let data: CreateGroupDtoInterface = {
       name: this.newGroupName
     }
-    this.http.post<GetGroupsDtoInterface>(`${this.baseUrl}/group/newGroup`, data).subscribe(data =>
+    this.groupsService.createGroup(data).subscribe(data =>
     this.groupsList.push(data))
     console.log(this.groupsList)
     this.newGroupName = ""
@@ -65,12 +64,10 @@ export class GroupsComponent implements OnInit{
 
   onDelete(id: number){
     this.groupIndexShift = this.groupIndexShift + this.groupsList.length
-    let params = new HttpParams();
-    params = params.append('groupId', id);
-    this.http.delete<UserInfoDtoInterface[]>(`${this.baseUrl}/group/deleteGroup`, {params: params}).subscribe((data) =>
+    this.groupsService.deleteGroup(id).subscribe((data) =>
     {
       this.unassignedUsers = data
-      this.http.get<GetGroupsDtoInterface[]>(this.baseUrl + '/group/getGroups').subscribe(
+      this.groupsService.getAllGroups().subscribe(
         (data) => {this.groupsList = data
         });
     })
@@ -102,38 +99,17 @@ export class GroupsComponent implements OnInit{
           userId: movedUserId,
           groupId: groupId
         }
-        this.http.put(`${this.baseUrl}/group/addUserToGroup`, data).subscribe()
+        this.groupsService.addUserToGroup(data).subscribe()
       } else {
         let data: AddUserToGroupDtoInterface ={
           userId: movedUserId,
           groupId: -1
         }
-        this.http.put(`${this.baseUrl}/group/addUserToGroup`, data).subscribe()
+        this.groupsService.addUserToGroup(data).subscribe()
       }
 
     }
   }
 
 
-}
-export interface UserInfoDtoInterface{
-  id: string
-  username: string
-  status: string
-  role: string
-}
-
-export interface GetGroupsDtoInterface{
-  id: number
-  name: string
-  users: UserInfoDtoInterface[]
-}
-
-export interface AddUserToGroupDtoInterface{
-  userId: string
-  groupId: number
-}
-
-export interface CreateGroupDtoInterface{
-  name: string
 }
